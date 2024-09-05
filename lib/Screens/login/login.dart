@@ -240,31 +240,27 @@ class LoginState extends State<_Login> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Email Address / Username',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 145, 136, 121),
-                          fontSize: 16,
-                        ),
-                      ),
+
                       const SizedBox(height: 3),
                       SizedBox(
                         width: screenWidth * 0.7,
                         height: 50,
-                        child: TextField(
+                        child: TextFormField(
                           controller: usernameCon,
                           decoration: InputDecoration(
-                            filled: true,
-                            fillColor: const Color.fromARGB(255, 235, 235, 235),
+                            // filled: true,
+                            // fillColor: const Color.fromARGB(255, 235, 235, 235),
+                            labelText: "Email / Username", // This will act as placeholder text
                             labelStyle: const TextStyle(
-                              color: Color.fromARGB(255, 156, 153, 147),
+                              color: Colors.grey
+                              //color: Color.fromARGB(255, 156, 153, 147),
                             ),
+
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: const BorderSide(
-                                // Remove const keyword here
-                                color: Color.fromARGB(255, 243, 243,
-                                    243), // Set border color same as fill color
+                                color: Colors.brown,
+                               // color: Color.fromARGB(255, 243, 243, 243), // Set border color same as fill color
                                 width: 2.0,
                               ),
                             ),
@@ -285,27 +281,26 @@ class LoginState extends State<_Login> {
                               ),
                             ),
                             prefixIcon: const Icon(Icons.person,
-                                size: 20,
-                                color: Color.fromARGB(255, 156, 153, 147)),
-                            contentPadding:
-                                const EdgeInsets.symmetric(vertical: 10),
+                                size: 20, color: Color.fromARGB(255, 156, 153, 147)),
+                            //contentPadding: const EdgeInsets.symmetric(vertical: 10),
                           ),
                           style: const TextStyle(
                               fontSize: 16,
                               color: Color.fromARGB(255, 147, 132, 86)),
                         ),
                       ),
-                      const SizedBox(height: 15),
+
+                       const SizedBox(height: 10),
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Password',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 145, 136, 121),
-                                fontSize: 15,
-                              ),
-                            ),
+                            // const Text(
+                            //   'Password',
+                            //   style: TextStyle(
+                            //     color: Color.fromARGB(255, 145, 136, 121),
+                            //     fontSize: 15,
+                            //   ),
+                            // ),
                             const SizedBox(height: 3),
                             SizedBox(
                               width: screenWidth * 0.7,
@@ -314,11 +309,12 @@ class LoginState extends State<_Login> {
                                 controller: passwordCon,
                                 obscureText: enablepassword,
                                 decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor:
-                                      const Color.fromARGB(255, 235, 235, 235),
+                                  labelText: "Password", // Label that will move to upper box
+                                  // filled: true,
+                                  // fillColor: const Color.fromARGB(255, 235, 235, 235),
                                   labelStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
+                                    color: Colors.grey
+                                    //color: Color.fromARGB(255, 156, 153, 147),
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
@@ -352,11 +348,8 @@ class LoginState extends State<_Login> {
                                           Color.fromARGB(255, 156, 153, 147)),
                                   suffixIcon: IconButton(
                                     icon: Icon(
-                                      enablepassword
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
-                                      color: const Color.fromARGB(
-                                          255, 156, 153, 147),
+                                      enablepassword ? Icons.visibility : Icons.visibility_off,
+                                      color: const Color.fromARGB(255, 156, 153, 147),
                                     ),
                                     onPressed: () {
                                       setState(() {
@@ -364,8 +357,8 @@ class LoginState extends State<_Login> {
                                       });
                                     },
                                   ),
-                                  contentPadding:
-                                      const EdgeInsets.symmetric(vertical: 10),
+                                  // contentPadding:
+                                  //     const EdgeInsets.symmetric(vertical: 10),
                                 ),
                                 style: const TextStyle(
                                   fontSize: 16,
@@ -380,7 +373,7 @@ class LoginState extends State<_Login> {
               ),
               Positioned(
                 bottom: 115,
-                height: 53,
+                height: 45,
                 width: screenWidth * 0.7,
                 child: Padding(
                   padding: const EdgeInsets.all(
@@ -452,7 +445,7 @@ class LoginState extends State<_Login> {
               ),
               Positioned(
                 bottom: screenHeight * 0.22,
-                right: screenWidth * 0.13,
+                right: screenWidth * 0.14,
                 child: TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -488,8 +481,8 @@ class LoginState extends State<_Login> {
                 ),
               ),
               Positioned(
-                bottom: screenHeight * 0.235,
-                left: screenWidth * 0.22,
+                bottom: screenHeight * 0.23,
+                left: screenWidth * 0.18,
                 child: const Row(
                   children: [
                     Text(

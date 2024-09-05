@@ -11,7 +11,7 @@ import 'package:pawprojui/Screens/petscreens/pet_upload.dart';
 import 'package:pawprojui/Screens/petscreens/petaccessories.dart';
 import 'package:pawprojui/Screens/petscreens/petdetailspage.dart';
 import 'package:pawprojui/Screens/petscreens/petfoods.dart';
-import 'package:pawprojui/Screens/petscreens/petsearchall.dart';
+//import 'package:pawprojui/Screens/petscreens/petsearchall.dart';
 import 'package:pawprojui/Screens/products/accessories/acce_upload.dart';
 import 'package:pawprojui/Screens/products/feeds/feeds_upload.dart';
 import 'package:pawprojui/Screens/user/profile.dart';
@@ -797,7 +797,7 @@ class _MyDashboardState extends State<MyDashboard> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(width: 10),
+                                          // const SizedBox(width: 10), (ITO YUNG MALING SOBRA SA TEXT BOX)
                                         ],
                                       ),
                                     ),

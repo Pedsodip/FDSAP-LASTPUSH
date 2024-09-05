@@ -60,7 +60,7 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
   List<String> accNames = [
     'DIY Cute Cat Collars',
     'Leash for Cats',
-    'Personlized Cat Tags',
+    'Personalized Cat Tags',
     'Dog tags',
     'Dog Collar',
     'Retractable Leash',
@@ -70,14 +70,15 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
   ];
 
   List<String> accDescriptions = [
-    'Description for DIY Cute Cat Collars a,daksdbkdakdbamdbkasda adkajbdadbaskdhadandamnd as dasdasbdakdasmd asdasbdac aw  haeo auhkaajdsamndbamd akdgakdasdas dasdadad asdavjadadad a dasdkak3riqygdafadf alh dsad asasba llk  dadas h  khsdas asdsydas asdhad   jdbsadbskdakn',
-    'Description for Leash for cats',
-    'Description for Personalized Cat Tags',
-    'Description for Dog Collar',
-    'Description for Retractable Leash',
-    'Description for Bone Chews',
-    'Description for Pet Hair Remover Roller',
-    'Description for Pet Litter Box',
+    'Customize your cat’s style with DIY Cute Cat Collars. These easy-to-make, adorable collars offer a personal touch, combining comfort and charm for your feline friend.',
+    'A Leash for Cats provides control and safety during outdoor adventures, allowing your cat to explore securely.',
+    "Personalized Cat Tags are custom-engraved identifiers that ensure your cat's safety. ",
+    "Dog Tags are essential ID tags that ensure your pet's safety. ",
+    'A Dog Collar combines style and function, providing a secure fit for your dog while offering a space for identification tags.',
+    'A Retractable Leash offers freedom and control, allowing your dog to explore while staying safely connected.',
+    "Bone Chews are durable treats that satisfy your dog's chewing instincts while promoting dental health. ",
+    'A Pet Hair Remover Roller efficiently lifts and removes pet hair from surfaces, making clean-up quick and easy.',
+    'A Pet Litter Box provides a clean and convenient space for your pet’s bathroom needs. ',
   ];
 
   List<double> accPrice = [
@@ -135,33 +136,33 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
             ),
           ),
         ),
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: const Icon(Icons.notifications),
-        //     iconSize: 35,
-        //     onPressed: () {
-        //       ///////
-        //     },
-        //   )
-        // ],
-        // bottom: PreferredSize(
-        //   preferredSize: Size.fromHeight(80),
-        //   child: Padding(
-        //     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-        //     // child: SizedBox(
-        //     //   height: 50,
-        //     //   // child: TextField(
-        //     //   //   decoration: InputDecoration(
-        //     //   //     hintText: 'Search',
-        //     //   //     prefixIcon: Icon(Icons.search),
-        //     //   //     border: OutlineInputBorder(
-        //     //   //       borderRadius: BorderRadius.circular(25),
-        //     //   //     ),
-        //     //   //   ),
-        //     //   // ),
-        //     // ),
-        //   ),
-        // ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            iconSize: 35,
+            onPressed: () {
+              //Handle searched data
+            },
+          )
+        ],
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(80),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+            child: SizedBox(
+              height: 50,
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -449,7 +450,7 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
                               child: Container(
                                 padding: EdgeInsets.all(10),
                                 child: const Text(
-                                  'See\nLocation',
+                                  'Add to\nCart',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.blueGrey,

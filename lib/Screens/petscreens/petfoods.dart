@@ -59,10 +59,10 @@ class _PetsFeedsPageState extends State<PetsFeedsPage> {
   ];
 
   List<String> feedsDescriptions = [
-    'vv',
+    'A Pedigree Pup is a purebred puppy with a documented lineage, ensuring high quality and breed standards. Ideal for dog lovers, it boasts excellent traits and distinctive characteristics.',
     'Royal Canin is a global leader in tailored pet nutrition, renowned for its commitment to providing precise, breed-specific formulas to meet the unique dietary needs of cats and dogs. Founded in France in 1968 by veterinary surgeon Dr. Jean Cathary, the brand has since expanded its reach worldwide, earning the trust of pet owners and professionals alike. Central to Royal Canins philosophy is the belief that every pet is unique, with distinct nutritional requirements based on factors such as age, breed, size, and specific health concerns.One of the key pillars of Royal Canins success lies in its extensive research and development efforts. The company collaborates with veterinarians, nutritionists, and other experts to continually innovate and refine its product offerings. This dedication to scientific advancement ensures that Royal Canin formulas are not only palatable but also highly effective in supporting pets` overall health and well-being. From specialized diets for sensitive stomachs to formulas designed to promote joint health or dental care, Royal Canin offers a comprehensive range of options to address a variety of pet health concerns. Royal Canin`s commitment to quality extends beyond its product formulations to encompass sustainability and responsible sourcing practices. The company places a strong emphasis on ethical sourcing of ingredients, ensuring that every component of its pet foods meets rigorous standards for safety and nutritional value. Additionally, Royal Canin prioritizes environmental sustainability throughout its operations, striving to minimize its ecological footprint and contribute to a healthier planet for future generations. Beyond its dedication to providing superior nutrition, Royal Canin also plays an active role in promoting pet welfare and education. Through partnerships with animal shelters, veterinary schools, and advocacy organizations, the company works to raise awareness about responsible pet ownership and the importance of proper nutrition in supporting pets` health and longevity. By combining scientific expertise with a genuine passion for pets, Royal Canin continues to set the standard for excellence in the pet food industry, enriching the lives of cats and dogs around the world.',
-    'dadaddd',
-    'wewrgbrh43',
+    'A Top Breed represents the pinnacle of canine excellence, known for its exceptional traits, health, and performance.',
+    'Sea Food for cats and dogs includes nutrient-rich fish and shellfish treats designed to support a healthy coat and provide essential vitamins and minerals.',
   ];
 
   List<double> feedsPrice = [
@@ -120,57 +120,58 @@ class _PetsFeedsPageState extends State<PetsFeedsPage> {
             ),
           ),
         ),
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: const Icon(Icons.notifications),
-        //     iconSize: 35,
-        //     onPressed: () {
-        //       // Handle notification button press
-        //     },
-        //   )
-        // ],
-        // bottom: PreferredSize(
-        //   preferredSize: Size.fromHeight(80),
-        //   child: Padding(
-        //     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        //     child: SizedBox(
-        //       height: 50,
-        //       child: TextField(
-        //         decoration: InputDecoration(
-        //           hintText: 'Search',
-        //           prefixIcon: Icon(Icons.search),
-        //           // suffixIcon: PopupMenuButton(
-        //           //   icon: const Icon(Icons.filter_list),
-        //           //   itemBuilder: (BuildContext context) {
-        //           //     return <PopupMenuEntry>[
-        //           //       const PopupMenuItem(
-        //           //         child: Text('Puppy'),
-        //           //         value: 'Filter1',
-        //           //       ),
-        //           //       const PopupMenuItem(
-        //           //         child: Text('Kitten'),
-        //           //         value: 'Filter2',
-        //           //       ),
-        //           //       const PopupMenuItem(
-        //           //         child: Text('Dog Adult'),
-        //           //         value: 'Filter3',
-        //           //       ),
-        //           //       const PopupMenuItem(
-        //           //           child: Text('Cat Adult'), value: 'Filter4'),
-        //           //     ];
-        //           //   },
-        //           //   onSelected: (value) {
-        //           //     print('Selected Filter: $value');
-        //           //   },
-        //           // ),
-        //           border: OutlineInputBorder(
-        //             borderRadius: BorderRadius.circular(25),
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            iconSize: 35,
+            onPressed: () {
+              // Handle notification button press
+            },
+          )
+        ],
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(80),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: SizedBox(
+              height: 50,
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  prefixIcon: Icon(Icons.search),
+                  suffixIcon: PopupMenuButton(
+                    icon: const Icon(Icons.filter_list),
+                    itemBuilder: (BuildContext context) {
+                      return <PopupMenuEntry>[
+                        const PopupMenuItem(
+                          child: Text('Php 0-100'),
+                          value: 'Filter1',
+                        ),
+                        const PopupMenuItem(
+                          child: Text('Php 101-500'),
+                          value: 'Filter2',
+                        ),
+                        const PopupMenuItem(
+                          child: Text('Php 500 and above'),
+                          value: 'Filter3',
+                        ),
+                        // const PopupMenuItem(
+                        //     child: Text('Php 701-1000'),
+                        //     value: 'Filter4'),
+                      ];
+                    },
+                    onSelected: (value) {
+                      print('Selected Filter: $value');
+                    },
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),

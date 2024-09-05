@@ -4,9 +4,7 @@ import '../login/login.dart';
 import 'email_confirmCP.dart';
 import 'package:http/http.dart' as http;
 
-void main() {
-  runApp(Email_CP());
-}
+
 
 class Email_CP extends StatelessWidget {
   @override

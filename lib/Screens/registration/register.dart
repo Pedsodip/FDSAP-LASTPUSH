@@ -26,7 +26,6 @@ class RegisterState extends State<RegisterPage> {
   TextEditingController addresss = TextEditingController();
   TextEditingController dateofbirth = TextEditingController();
   TextEditingController contact = TextEditingController();
-  // TextEditingController gender = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -194,7 +193,7 @@ class RegisterState extends State<RegisterPage> {
       headers: {
         "Content-Type": "application/json",
       },
-      body: jsonEncode({
+      body: jsonEncode(<String, String>{
         "firstname": fname,
         "lastname": lname,
         "address": add,
@@ -226,6 +225,9 @@ class RegisterState extends State<RegisterPage> {
     } else {
       setState(() {
         debugPrint("ERROR");
+        debugPrint(selectedgender);
+        debugPrint(response.body);
+        debugPrint(response.statusCode.toString());
       });
     }
   }
@@ -602,7 +604,7 @@ class RegisterState extends State<RegisterPage> {
                                     items: <String>[
                                       'Male',
                                       'Female',
-                                      'Prefer Not To Say',
+                                      'Others',
                                     ].map<DropdownMenuItem<String>>(
                                         (String value) {
                                       return DropdownMenuItem<String>(

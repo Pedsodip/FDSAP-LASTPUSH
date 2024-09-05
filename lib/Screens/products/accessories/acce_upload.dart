@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+//import 'package:pawprojui/Screens/petscreens/petaccessories.dart';
+
 
 class accUploadPage extends StatefulWidget {
   final int userID;
@@ -13,11 +15,11 @@ class accUploadPage extends StatefulWidget {
 
 class _accUploadPageState extends State<accUploadPage> {
   Map<String, List<String>> feedType = {
-    'Cat': [
+      'Cat': [
       'Kitten',
       'Adult',
     ],
-    'Dog': [
+      'Dog': [
       'Puppy',
       'Adult',
     ],
@@ -75,7 +77,7 @@ class _accUploadPageState extends State<accUploadPage> {
                 child: SingleChildScrollView(
                   child: Container(
                     width: screenWidth * 0.87,
-                    height: screenHeight * 0.86,
+                    height: screenHeight * 0.90,
                     padding: const EdgeInsets.all(20),
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -138,32 +140,30 @@ class _accUploadPageState extends State<accUploadPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          height: 30,
+                          height: 20,
                         ),
                         Visibility(
                           visible: showPrimaryFields,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Name',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 156, 153, 147),
-                                  fontSize: 16,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 3,
-                              ),
+                              // const Text(
+                              //   'Name',
+                              //   style: TextStyle(
+                              //     color: Color.fromARGB(255, 156, 153, 147),
+                              //     fontSize: 16,
+                              //   ),
+                              // ),
+                              // SizedBox(height: 3,),
                               Container(
                                 width: screenWidth * 0.7,
                                 height: 50,
-                                child: TextField(
+                                child: TextFormField(
                                   controller: feedID,
                                   decoration: InputDecoration(
                                     filled: true,
-                                    fillColor:
-                                        Color.fromARGB(255, 240, 240, 240),
+                                    fillColor: Color.fromARGB(255, 240, 240, 240),
+                                    labelText: 'Name',
                                     labelStyle: const TextStyle(
                                       color: Color.fromARGB(255, 156, 153, 147),
                                     ),
@@ -217,23 +217,23 @@ class _accUploadPageState extends State<accUploadPage> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Type',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                SizedBox(height: 3),
+                                // const Text(
+                                //   'Type',
+                                //   style: TextStyle(
+                                //     color: Color.fromARGB(255, 156, 153, 147),
+                                //     fontSize: 16,
+                                //   ),
+                                // ),
+                                // SizedBox(height: 3),
                                 Container(
                                   width: screenWidth * 0.7,
                                   height: 50,
-                                  child: TextField(
+                                  child: TextFormField(
                                     controller: feedName,
                                     decoration: InputDecoration(
                                       filled: true,
-                                      fillColor:
-                                          Color.fromARGB(255, 240, 240, 240),
+                                      fillColor: Color.fromARGB(255, 240, 240, 240),
+                                      labelText: 'Type',
                                       labelStyle: const TextStyle(
                                         color:
                                             Color.fromARGB(255, 156, 153, 147),
@@ -293,23 +293,23 @@ class _accUploadPageState extends State<accUploadPage> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Description',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                SizedBox(height: 3),
+                                // const Text(
+                                //   'Description',
+                                //   style: TextStyle(
+                                //     color: Color.fromARGB(255, 156, 153, 147),
+                                //     fontSize: 16,
+                                //   ),
+                                // ),
+                                // SizedBox(height: 3),
                                 Container(
                                   width: screenWidth * 0.7,
                                   height: 50,
-                                  child: TextField(
+                                  child: TextFormField(
                                     controller: feedName,
                                     decoration: InputDecoration(
                                       filled: true,
-                                      fillColor:
-                                          Color.fromARGB(255, 240, 240, 240),
+                                      fillColor: Color.fromARGB(255, 240, 240, 240),
+                                      labelText: 'Description',
                                       labelStyle: const TextStyle(
                                         color:
                                             Color.fromARGB(255, 156, 153, 147),
@@ -378,23 +378,23 @@ class _accUploadPageState extends State<accUploadPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Size',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 156, 153, 147),
-                                  fontSize: 16,
-                                ),
-                              ),
-                              SizedBox(height: 3),
+                              // const Text(
+                              //   'Size',
+                              //   style: TextStyle(
+                              //     color: Color.fromARGB(255, 156, 153, 147),
+                              //     fontSize: 16,
+                              //   ),
+                              // ),
+                              // SizedBox(height: 3),
                               Container(
                                 width: screenWidth * 0.7,
                                 height: 50,
-                                child: TextField(
+                                child: TextFormField(
                                   controller: amountAv,
                                   decoration: InputDecoration(
                                     filled: true,
-                                    fillColor: const Color.fromARGB(
-                                        255, 240, 240, 240),
+                                    fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                    labelText: 'Size',
                                     labelStyle: const TextStyle(
                                       color: Color.fromARGB(255, 156, 153, 147),
                                     ),
@@ -440,23 +440,23 @@ class _accUploadPageState extends State<accUploadPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Quantity',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 156, 153, 147),
-                                  fontSize: 16,
-                                ),
-                              ),
-                              SizedBox(height: 3),
+                              // const Text(
+                              //   'Quantity',
+                              //   style: TextStyle(
+                              //     color: Color.fromARGB(255, 156, 153, 147),
+                              //     fontSize: 16,
+                              //   ),
+                              // ),
+                              // SizedBox(height: 3),
                               Container(
                                 width: screenWidth * 0.7,
-                                height: 200,
-                                child: TextField(
+                                height: 100,
+                                child: TextFormField(
                                   controller: feedDesc,
                                   decoration: InputDecoration(
                                     filled: true,
-                                    fillColor: const Color.fromARGB(
-                                        255, 240, 240, 240),
+                                    fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                    labelText: 'Quantity',
                                     labelStyle: const TextStyle(
                                       color: Color.fromARGB(255, 156, 153, 147),
                                     ),
@@ -505,12 +505,11 @@ class _accUploadPageState extends State<accUploadPage> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20.0), // Add horizontal padding
                               child: Container(
-                                height: 60,
-                                width: MediaQuery.of(context).size.width *
-                                    0.7, // Use MediaQuery to get screen width
+                                height: 45,
+                                width: MediaQuery.of(context).size.width * 0.7, // Use MediaQuery to get screen width
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    // _checkinput();
+                                     // _checkinput();
                                   },
                                   style: ButtonStyle(
                                     shape: MaterialStateProperty.all<
@@ -525,7 +524,7 @@ class _accUploadPageState extends State<accUploadPage> {
                                       Color.fromARGB(255, 110, 77, 34),
                                     ),
                                     elevation:
-                                        MaterialStateProperty.all<double>(0),
+                                        MaterialStateProperty.all<double>(20),
                                   ),
                                   child: Center(
                                     child: Text(
@@ -542,7 +541,7 @@ class _accUploadPageState extends State<accUploadPage> {
                             ),
                           ),
                         Positioned(
-                            bottom: 190,
+                            bottom: 300,
                             left: 70,
                             child: Visibility(
                               visible: showWidget,

@@ -138,15 +138,15 @@ class _PetSearchAllPageState extends State<PetSearchAllPage> {
               },
             ),
             //function for notification
-            // actions: <Widget>[
-            //   IconButton(
-            //     icon: const Icon(Icons.notifications),
-            //     iconSize: 35,
-            //     onPressed: () {
-            //       // Handle notification button press
-            //     },
-            //   )
-            // ],
+            actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.notifications),
+                iconSize: 35,
+                onPressed: () {
+                  // Handle notification button press
+                },
+              )
+            ],
 //Search and filter function here
             bottom: PreferredSize(
               preferredSize: Size.fromHeight(80),
@@ -165,34 +165,34 @@ class _PetSearchAllPageState extends State<PetSearchAllPage> {
                         contentPadding:
                             const EdgeInsets.symmetric(vertical: 10),
                         prefixIcon: const Icon(Icons.search),
-                        // suffixIcon: PopupMenuButton(
-                        //   icon: const Icon(Icons.filter_list),
-                        //   itemBuilder: (BuildContext context) {
-                        //     return <PopupMenuEntry>[
-                        //       const PopupMenuItem(
-                        //         child: Text('Cats'),
-                        //         value: 'Filter1',
-                        //       ),
-                        //       const PopupMenuItem(
-                        //         value: 'Filter2',
-                        //         child: Text('Dog'),
-                        //       ),
-                        //       const PopupMenuItem(
-                        //         value: 'Filter3',
-                        //         child: Text('Pet Accessories'),
-                        //       ),
-                        //       const PopupMenuItem(
-                        //         child: Text('Pet Food'),
-                        //         value: 'Filter4',
-                        //       ),
-                        //       //
-                        //     ];
-                        //   },
-                        //   onSelected: (value) {
-                        //     ///
-                        //     print('Selected Filter: $value');
-                        //   },
-                        // ),
+                        suffixIcon: PopupMenuButton(
+                          icon: const Icon(Icons.filter_list),
+                          itemBuilder: (BuildContext context) {
+                            return <PopupMenuEntry>[
+                              const PopupMenuItem(
+                                child: Text('Cats'),
+                                value: 'Filter1',
+                              ),
+                              const PopupMenuItem(
+                                value: 'Filter2',
+                                child: Text('Dog'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'Filter3',
+                                child: Text('Pet Accessories'),
+                              ),
+                              const PopupMenuItem(
+                                child: Text('Pet Food'),
+                                value: 'Filter4',
+                              ),
+                              //
+                            ];
+                          },
+                          onSelected: (value) {
+                            ///
+                            print('Selected Filter: $value');
+                          },
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: BorderSide(
@@ -291,7 +291,7 @@ class _PetSearchAllPageState extends State<PetSearchAllPage> {
                           flex: 1,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 30),
+                                vertical: 8 , horizontal: 30),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
