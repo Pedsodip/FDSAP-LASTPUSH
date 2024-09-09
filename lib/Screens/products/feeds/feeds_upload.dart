@@ -75,7 +75,7 @@ class _feedUploadPageState extends State<feedUploadPage> {
                 child: SingleChildScrollView(
                   child: Container(
                     width: screenWidth * 0.87,
-                    height: screenHeight * 0.86,
+                    height: screenHeight * 0.87,
                     padding: const EdgeInsets.all(20),
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -145,13 +145,13 @@ class _feedUploadPageState extends State<feedUploadPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Name',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 156, 153, 147),
-                                  fontSize: 16,
-                                ),
-                              ),
+                              // const Text(
+                              //   'Name',
+                              //   style: TextStyle(
+                              //     color: Color.fromARGB(255, 156, 153, 147),
+                              //     fontSize: 16,
+                              //   ),
+                              // ),
                               SizedBox(
                                 height: 3,
                               ),
@@ -161,11 +161,12 @@ class _feedUploadPageState extends State<feedUploadPage> {
                                 child: TextField(
                                   controller: feedID,
                                   decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor:
-                                        Color.fromARGB(255, 240, 240, 240),
+                                    // filled: true,
+                                    // fillColor: Color.fromARGB(255, 240, 240, 240),
+                                    labelText: 'Name',
                                     labelStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 156, 153, 147),
+                                      color: Colors.black38,
+                                      // color: Color.fromARGB(255, 156, 153, 147),
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
@@ -178,8 +179,8 @@ class _feedUploadPageState extends State<feedUploadPage> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: const BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 198, 198, 198),
+                                        color: Colors.black38,
+                                        // color: Color.fromARGB(255, 198, 198, 198),
                                         width: 2.0,
                                       ),
                                     ),
@@ -217,13 +218,13 @@ class _feedUploadPageState extends State<feedUploadPage> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Type',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
-                                    fontSize: 16,
-                                  ),
-                                ),
+                                // const Text(
+                                //   'Type',
+                                //   style: TextStyle(
+                                //     color: Color.fromARGB(255, 156, 153, 147),
+                                //     fontSize: 16,
+                                //   ),
+                                // ),
                                 SizedBox(height: 3),
                                 Container(
                                   width: screenWidth * 0.7,
@@ -231,12 +232,12 @@ class _feedUploadPageState extends State<feedUploadPage> {
                                   child: TextField(
                                     controller: feedName,
                                     decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor:
-                                          Color.fromARGB(255, 240, 240, 240),
+                                      // filled: true,
+                                      // fillColor: Color.fromARGB(255, 240, 240, 240),
+                                      labelText: 'Type',
                                       labelStyle: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 156, 153, 147),
+                                        color: Colors.black38,
+                                        // color: Color.fromARGB(255, 156, 153, 147),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -253,8 +254,8 @@ class _feedUploadPageState extends State<feedUploadPage> {
                                         borderRadius:
                                             BorderRadius.circular(10.0),
                                         borderSide: const BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 198, 198, 198),
+                                          color: Colors.black38,
+                                          // color: Color.fromARGB(255, 198, 198, 198),
                                           width: 2.0,
                                         ),
                                       ),
@@ -293,13 +294,13 @@ class _feedUploadPageState extends State<feedUploadPage> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Description',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
-                                    fontSize: 16,
-                                  ),
-                                ),
+                                // const Text(
+                                //   'Description',
+                                //   style: TextStyle(
+                                //     color: Color.fromARGB(255, 156, 153, 147),
+                                //     fontSize: 16,
+                                //   ),
+                                // ),
                                 SizedBox(height: 3),
                                 Container(
                                   width: screenWidth * 0.7,
@@ -307,12 +308,12 @@ class _feedUploadPageState extends State<feedUploadPage> {
                                   child: TextField(
                                     controller: feedName,
                                     decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor:
-                                          Color.fromARGB(255, 240, 240, 240),
+                                      // filled: true,
+                                      // fillColor: Color.fromARGB(255, 240, 240, 240),
+                                      labelText: 'Desciption',
                                       labelStyle: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 156, 153, 147),
+                                        color: Colors.black38,
+                                        // color: Color.fromARGB(255, 156, 153, 147),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -329,8 +330,8 @@ class _feedUploadPageState extends State<feedUploadPage> {
                                         borderRadius:
                                             BorderRadius.circular(10.0),
                                         borderSide: const BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 198, 198, 198),
+                                          color: Colors.black38,
+                                          // color: Color.fromARGB(255, 198, 198, 198),
                                           width: 2.0,
                                         ),
                                       ),
@@ -378,13 +379,13 @@ class _feedUploadPageState extends State<feedUploadPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Weight',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 156, 153, 147),
-                                  fontSize: 16,
-                                ),
-                              ),
+                              // const Text(
+                              //   'Weight',
+                              //   style: TextStyle(
+                              //     color: Color.fromARGB(255, 156, 153, 147),
+                              //     fontSize: 16,
+                              //   ),
+                              // ),
                               SizedBox(height: 3),
                               Container(
                                 width: screenWidth * 0.7,
@@ -392,11 +393,12 @@ class _feedUploadPageState extends State<feedUploadPage> {
                                 child: TextField(
                                   controller: amountAv,
                                   decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: const Color.fromARGB(
-                                        255, 240, 240, 240),
+                                    // filled: true,
+                                    // fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                    labelText: 'Weight',
                                     labelStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 156, 153, 147),
+                                      color: Colors.black38,
+                                      // color: Color.fromARGB(255, 156, 153, 147),
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
@@ -408,8 +410,8 @@ class _feedUploadPageState extends State<feedUploadPage> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: const BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 198, 198, 198),
+                                          color: Colors.black38,
+                                          // color: Color.fromARGB(255, 198, 198, 198),
                                           width: 2.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
@@ -440,13 +442,13 @@ class _feedUploadPageState extends State<feedUploadPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Quantity',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 156, 153, 147),
-                                  fontSize: 16,
-                                ),
-                              ),
+                              // const Text(
+                              //   'Quantity',
+                              //   style: TextStyle(
+                              //     color: Color.fromARGB(255, 156, 153, 147),
+                              //     fontSize: 16,
+                              //   ),
+                              // ),
                               SizedBox(height: 3),
                               Container(
                                 width: screenWidth * 0.7,
@@ -454,11 +456,12 @@ class _feedUploadPageState extends State<feedUploadPage> {
                                 child: TextField(
                                   controller: feedDesc,
                                   decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: const Color.fromARGB(
-                                        255, 240, 240, 240),
+                                    // filled: true,
+                                    // fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                    labelText: 'Quantity',
                                     labelStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 156, 153, 147),
+                                      color: Colors.black38,
+                                      // color: Color.fromARGB(255, 156, 153, 147),
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
@@ -470,8 +473,8 @@ class _feedUploadPageState extends State<feedUploadPage> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: const BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 198, 198, 198),
+                                          color: Colors.black38,
+                                        // color: Color.fromARGB(255, 198, 198, 198),
                                           width: 2.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
@@ -505,12 +508,11 @@ class _feedUploadPageState extends State<feedUploadPage> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20.0), // Add horizontal padding
                               child: Container(
-                                height: 60,
-                                width: MediaQuery.of(context).size.width *
-                                    0.7, // Use MediaQuery to get screen width
+                                height: 45,
+                                width: MediaQuery.of(context).size.width * 0.7, // Use MediaQuery to get screen width
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    // _checkinput();
+                                    //_checkinput();
                                   },
                                   style: ButtonStyle(
                                     shape: MaterialStateProperty.all<
@@ -524,8 +526,7 @@ class _feedUploadPageState extends State<feedUploadPage> {
                                         MaterialStateProperty.all<Color>(
                                       Color.fromARGB(255, 110, 77, 34),
                                     ),
-                                    elevation:
-                                        MaterialStateProperty.all<double>(0),
+                                    elevation: MaterialStateProperty.all<double>(20),
                                   ),
                                   child: Center(
                                     child: Text(

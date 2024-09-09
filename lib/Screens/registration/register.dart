@@ -293,7 +293,7 @@ class RegisterState extends State<RegisterPage> {
               Positioned(
                 top: 30,
                 child: Image.asset(
-                  'assets/furpaw.png',
+                  'assets/design1/furpaw.png',
                   width: 100,
                   height: 100,
                 ),
@@ -323,13 +323,13 @@ class RegisterState extends State<RegisterPage> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'First Name',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
-                                    fontSize: 16,
-                                  ),
-                                ),
+                                // const Text(
+                                //   'First Name',
+                                //   style: TextStyle(
+                                //     color: Color.fromARGB(255, 156, 153, 147),
+                                //     fontSize: 16,
+                                //   ),
+                                // ),
                                 SizedBox(height: 3),
                                 Container(
                                   width: screenWidth * 0.7,
@@ -340,9 +340,9 @@ class RegisterState extends State<RegisterPage> {
                                       filled: true,
                                       fillColor:
                                           Color.fromARGB(255, 240, 240, 240),
+                                      labelText: 'First Name',
                                       labelStyle: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 156, 153, 147),
+                                        color: Color.fromARGB(255, 156, 153, 147),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -397,13 +397,13 @@ class RegisterState extends State<RegisterPage> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Last Name',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
-                                    fontSize: 16,
-                                  ),
-                                ),
+                                // const Text(
+                                //   'Last Name',
+                                //   style: TextStyle(
+                                //     color: Color.fromARGB(255, 156, 153, 147),
+                                //     fontSize: 16,
+                                //   ),
+                                // ),
                                 SizedBox(height: 3),
                                 Container(
                                   width: screenWidth * 0.7,
@@ -414,9 +414,9 @@ class RegisterState extends State<RegisterPage> {
                                       filled: true,
                                       fillColor:
                                           Color.fromARGB(255, 240, 240, 240),
+                                      labelText: 'Last Name',
                                       labelStyle: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 156, 153, 147),
+                                        color: Color.fromARGB(255, 156, 153, 147),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -473,13 +473,13 @@ class RegisterState extends State<RegisterPage> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Address',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
-                                    fontSize: 16,
-                                  ),
-                                ),
+                                // const Text(
+                                //   'Address',
+                                //   style: TextStyle(
+                                //     color: Color.fromARGB(255, 156, 153, 147),
+                                //     fontSize: 16,
+                                //   ),
+                                // ),
                                 SizedBox(height: 3),
                                 Container(
                                   width: screenWidth * 0.7,
@@ -488,11 +488,10 @@ class RegisterState extends State<RegisterPage> {
                                     controller: addresss,
                                     decoration: InputDecoration(
                                       filled: true,
-                                      fillColor: const Color.fromARGB(
-                                          255, 240, 240, 240),
+                                      fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                      labelText: 'Address',
                                       labelStyle: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 156, 153, 147),
+                                        color: Color.fromARGB(255, 156, 153, 147),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -538,13 +537,13 @@ class RegisterState extends State<RegisterPage> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Gender',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
-                                    fontSize: 16,
-                                  ),
-                                ),
+                                // const Text(
+                                //   'Gender',
+                                //   style: TextStyle(
+                                //     color: Color.fromARGB(255, 156, 153, 147),
+                                //     fontSize: 16,
+                                //   ),
+                                // ),
                                 SizedBox(height: 3),
                                 Container(
                                   width: screenWidth * 0.7,
@@ -553,11 +552,10 @@ class RegisterState extends State<RegisterPage> {
                                     value: gender,
                                     decoration: InputDecoration(
                                       filled: true,
-                                      fillColor: const Color.fromARGB(
-                                          255, 240, 240, 240),
+                                      fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                      labelText: 'Gender',
                                       labelStyle: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 169, 169, 169),
+                                        color: Color.fromARGB(255, 169, 169, 169),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -622,13 +620,13 @@ class RegisterState extends State<RegisterPage> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Contact Number',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
-                                    fontSize: 16,
-                                  ),
-                                ),
+                                // const Text(
+                                //   'Contact Number',
+                                //   style: TextStyle(
+                                //     color: Color.fromARGB(255, 156, 153, 147),
+                                //     fontSize: 16,
+                                //   ),
+                                // ),
                                 Container(
                                   width: screenWidth * 0.7,
                                   height: 50,
@@ -636,11 +634,9 @@ class RegisterState extends State<RegisterPage> {
                                     controller: contact,
                                     decoration: InputDecoration(
                                       filled: true,
-                                      fillColor: const Color.fromARGB(
-                                          255, 240, 240, 240),
-                                      labelStyle: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 156, 153, 147),
+                                      fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                      labelText: 'Contact Number',
+                                      labelStyle: const TextStyle(color: Color.fromARGB(255, 156, 153, 147),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -697,13 +693,13 @@ class RegisterState extends State<RegisterPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Date of Birth',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 156, 153, 147),
-                                  fontSize: 16,
-                                ),
-                              ),
+                              // const Text(
+                              //   'Date of Birth',
+                              //   style: TextStyle(
+                              //     color: Color.fromARGB(255, 156, 153, 147),
+                              //     fontSize: 16,
+                              //   ),
+                              // ),
                               SizedBox(height: 3),
                               Container(
                                 width: screenWidth * 0.7,
@@ -715,11 +711,9 @@ class RegisterState extends State<RegisterPage> {
                                         controller: dateofbirth,
                                         decoration: InputDecoration(
                                           filled: true,
-                                          fillColor: const Color.fromARGB(
-                                              255, 240, 240, 240),
-                                          labelStyle: const TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 156, 153, 147),
+                                          fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                          labelText: 'Date of Birth',
+                                          labelStyle: const TextStyle(color: Color.fromARGB(255, 156, 153, 147),
                                           ),
                                           border: OutlineInputBorder(
                                             borderRadius:

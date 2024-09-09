@@ -35,7 +35,15 @@ class MyHomePage extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        color: const Color.fromARGB(255, 255, 255, 255),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+                'assets/design1/pinkbg.png'),
+            fit: BoxFit.cover
+          )
+        ),
+        // color: Colors.white,
+        // color: const Color.fromARGB(255, 255, 255, 255),
         child: Stack(
           alignment: Alignment.center,
           children: [
@@ -49,20 +57,20 @@ class MyHomePage extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
+                      // Positioned(
+                      //   top: screenHeight * 0.08,
+                      //   child: Image.asset(
+                      //     'assets/design1/paw.png',
+                      //     width: screenWidth * 0.2,
+                      //     height: screenHeight * 0.11,
+                      //   ),
+                      // ),
                       Positioned(
-                        top: screenHeight * 0.08,
+                        top: 1,
                         child: Image.asset(
-                          'assets/design1/paw.png',
-                          width: screenWidth * 0.2,
-                          height: screenHeight * 0.11,
-                        ),
-                      ),
-                      Positioned(
-                        top: screenHeight * 0.15,
-                        child: Image.asset(
-                          'assets/design1/furpect_paw.png',
-                          width: screenWidth * 0.6,
-                          height: screenHeight * 0.2,
+                          'assets/design1/introdog.png',
+                          width: screenWidth * 0.9,
+                          height: screenHeight * 0.9,
                         ),
                       ),
                     ],
@@ -71,33 +79,33 @@ class MyHomePage extends StatelessWidget {
                 // Add more children to the Column if needed
               ],
             ),
-            Positioned(
-              top: screenHeight *
-                  0.30, // Adjusted top position to move the widget downward
-              child: Image.asset(
-                'assets/design1/dog_start.png',
-                width: screenWidth * 0.5,
-                height: screenHeight * 0.35,
-              ),
-            ),
-            Positioned(
-              bottom: screenHeight * 0.4,
-              right: screenWidth * 0.05,
-              child: Image.asset(
-                'assets/design1/pawprinttwo.png',
-                width: screenWidth * 0.2,
-                height: screenHeight * 0.12,
-              ),
-            ),
-            Positioned(
-              bottom: screenHeight * 0.35,
-              left: screenWidth * 0.05,
-              child: Image.asset(
-                'assets/design1/pawprintone.png',
-                width: screenWidth * 0.2,
-                height: screenHeight * 0.12,
-              ),
-            ),
+            // Positioned(
+            //   top: screenHeight *
+            //       0.30, // Adjusted top position to move the widget downward
+            //   child: Image.asset(
+            //     'assets/design1/dog_start.png',
+            //     width: screenWidth * 0.5,
+            //     height: screenHeight * 0.35,
+            //   ),
+            // ),
+            // Positioned(
+            //   bottom: screenHeight * 0.4,
+            //   right: screenWidth * 0.05,
+            //   child: Image.asset(
+            //     'assets/design1/pawprinttwo.png',
+            //     width: screenWidth * 0.2,
+            //     height: screenHeight * 0.12,
+            //   ),
+            // ),
+            // Positioned(
+            //   bottom: screenHeight * 0.35,
+            //   left: screenWidth * 0.05,
+            //   child: Image.asset(
+            //     'assets/design1/pawprintone.png',
+            //     width: screenWidth * 0.2,
+            //     height: screenHeight * 0.12,
+            //   ),
+            // ),
             Positioned(
               bottom: screenHeight * 0.25,
               child: const Text(

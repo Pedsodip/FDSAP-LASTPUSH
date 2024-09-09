@@ -209,8 +209,7 @@ class _PetSearchAllPageState extends State<PetSearchAllPage> {
           ),
           //Card List
           body: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: 15), // Adjust the horizontal padding
+            padding: EdgeInsets.symmetric(horizontal: 15), // Adjust the horizontal padding
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
@@ -219,17 +218,14 @@ class _PetSearchAllPageState extends State<PetSearchAllPage> {
               ),
               itemCount: products.length, //Dami ng Cards
               itemBuilder: (BuildContext context, int index) {
-                //kulay ng CARDS pra alternate
+                //kulay ng CARDS para alternate
                 Color cardColor;
                 if (index == 0) {
-                  cardColor =
-                      Color.fromARGB(255, 244, 243, 243); // unang index (white)
+                  cardColor = Color.fromARGB(255, 244, 243, 243); // unang index (white)
                 } else if ((index - 1) % 4 < 2) {
-                  cardColor = Color.fromARGB(255, 207, 184,
-                      153); // Brown color sa index number 2, 3, 6, 7, 10, ...
+                  cardColor = Color.fromARGB(255, 207, 184, 153); // Brown color sa index number 2, 3, 6, 7, 10, ...
                 } else {
-                  cardColor = const Color.fromARGB(255, 244, 243,
-                      243); // White fcolor sa index number 4, 5, 8, 9, 12, ...
+                  cardColor = const Color.fromARGB(255, 244, 243, 243); // White color sa index number 4, 5, 8, 9, 12, ...
                 }
                 return GestureDetector(
                   onTap: () {
@@ -245,8 +241,7 @@ class _PetSearchAllPageState extends State<PetSearchAllPage> {
                   child: Card(
                     color: cardColor,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          20), // Adjust the radius as needed
+                      borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -268,10 +263,8 @@ class _PetSearchAllPageState extends State<PetSearchAllPage> {
                               child: Stack(
                                 children: [
                                   Positioned(
-                                    top:
-                                        10, // Adjust this value to position the text vertically
-                                    left:
-                                        10, // Adjust this value to position the text horizontally
+                                    top: 10, // Adjust this value to position the text vertically
+                                    left: 10, // Adjust this value to position the text horizontally
                                     child: Text(
                                       '\₱${products[index % products.length]['cost']}',
                                       style: TextStyle(
@@ -313,14 +306,14 @@ class _PetSearchAllPageState extends State<PetSearchAllPage> {
                                         const Text(
                                           'Breed: ',
                                           style: TextStyle(
-                                            fontSize: 16.0,
+                                            fontSize: 14.0,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         Text(
                                           '${products[index % products.length]['breed']}',
                                           style: const TextStyle(
-                                            fontSize: 14.0,
+                                            fontSize: 12.0,
                                             fontWeight: FontWeight.normal,
                                           ),
                                         ),
@@ -331,13 +324,13 @@ class _PetSearchAllPageState extends State<PetSearchAllPage> {
                                         const Text(
                                           'Age: ',
                                           style: TextStyle(
-                                            fontSize: 16.0,
+                                            fontSize: 14.0,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         Text(
                                           '${products[index % products.length]['pet_age']} y/o',
-                                          style: TextStyle(fontSize: 14.0),
+                                          style: TextStyle(fontSize: 12.0),
                                         ),
                                       ],
                                     ),
@@ -352,13 +345,13 @@ class _PetSearchAllPageState extends State<PetSearchAllPage> {
                                         const Text(
                                           'Weight: ',
                                           style: TextStyle(
-                                            fontSize: 16.0,
+                                            fontSize: 14.0,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         Text(
                                           '${products[index % products.length]['pet_weight']} KG',
-                                          style: TextStyle(fontSize: 14.0),
+                                          style: TextStyle(fontSize: 12.0),
                                         ),
                                       ],
                                     ),
@@ -367,13 +360,13 @@ class _PetSearchAllPageState extends State<PetSearchAllPage> {
                                         const Text(
                                           'Birthdate: ',
                                           style: TextStyle(
-                                            fontSize: 16.0,
+                                            fontSize: 14.0,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         Text(
                                           '${products[index % products.length]['pet_bday']}',
-                                          style: TextStyle(fontSize: 14.0),
+                                          style: TextStyle(fontSize: 12.0),
                                         ),
                                       ],
                                     ),

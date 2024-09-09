@@ -44,8 +44,8 @@ class PetUploadState extends State<PetUploadPage> {
   int maxLength = 11;
   TextEditingController petID = TextEditingController();
   TextEditingController name = TextEditingController();
-  TextEditingController type = TextEditingController();
-  TextEditingController breed = TextEditingController();
+  // TextEditingController type = TextEditingController();
+  // TextEditingController breed = TextEditingController();
   TextEditingController dateofbirth = TextEditingController();
   TextEditingController weight = TextEditingController();
   TextEditingController price = TextEditingController();
@@ -72,7 +72,10 @@ class PetUploadState extends State<PetUploadPage> {
   bool enablepassword = true;
   bool enablepassword2 = true;
 
-  String selectedtype = 'Cat';
+  get type => null;
+  String selectedtype =  'Cat';
+
+  get breed => null;
   String selectedbreed = 'Persian';
 
   get gender => null;
@@ -86,7 +89,7 @@ class PetUploadState extends State<PetUploadPage> {
 
 
   
-  Future<void>  _listingTable(String nameOfPet, String selectedbreed, String selectedtype,String gender, String bday,String weight, String price) async {
+  Future<void>  _listingTable(String nameOfPet, String selectedtype, String selectedbreed, String price, String weight, String bday,String gender) async {
     String dateUpload = DateTime.now().toString();
     var url = Uri.parse('http://$domain:8070/addtolist');
     var response = await http.post(
@@ -104,7 +107,7 @@ class PetUploadState extends State<PetUploadPage> {
         "gender": gender,
         "date_of_birth": bday,
         "weight": weight,
-        "price":  price ,
+        "price":  price,
         "image": "test"
       }),
     );
@@ -165,9 +168,9 @@ class PetUploadState extends State<PetUploadPage> {
         return;
       }
 
-      //   if (selectedGender == '') {
-      //   selectedGender = 'N/A';
-      // }
+        if (selectedGender == '') {
+        selectedGender = 'N/A';
+      }
 
       showWidget = false;
       showSecondaryFields = true;
@@ -374,7 +377,7 @@ class PetUploadState extends State<PetUploadPage> {
                   ),
                 ),
                 Positioned(
-                  top: 110,
+                  top: 100,
                   child: Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Column(
@@ -386,13 +389,13 @@ class PetUploadState extends State<PetUploadPage> {
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'Pet Name',
-                                    style: TextStyle(
-                                      color: Color.fromARGB(255, 156, 153, 147),
-                                      fontSize: 16,
-                                    ),
-                                  ),
+                                  // const Text(
+                                  //   'Pet Name',
+                                  //   style: TextStyle(
+                                  //     color: Color.fromARGB(255, 156, 153, 147),
+                                  //     fontSize: 16,
+                                  //   ),
+                                  // ),
                                   SizedBox(height: 3),
                                   Container(
                                     width: screenWidth * 0.7,
@@ -400,19 +403,19 @@ class PetUploadState extends State<PetUploadPage> {
                                     child: TextField(
                                       controller: name,
                                       decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor:
-                                            Color.fromARGB(255, 240, 240, 240),
+                                        // filled: true,
+                                        // fillColor: Color.fromARGB(255, 240, 240, 240),
+                                        labelText: 'Pet Name',
                                         labelStyle: const TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 156, 153, 147),
+                                          color: Colors.black38,
+                                          // color: Color.fromARGB(255, 156, 153, 147),
                                         ),
                                         border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                           borderSide: const BorderSide(
-                                            color: Color.fromARGB(
-                                                255, 156, 153, 147),
+                                            color: Colors.white10,
+                                            // color: Color.fromARGB(255, 156, 153, 147),
                                             width: 2.0,
                                           ),
                                         ),
@@ -420,8 +423,8 @@ class PetUploadState extends State<PetUploadPage> {
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                           borderSide: const BorderSide(
-                                            color: Color.fromARGB(255, 198, 198,
-                                                198), // Set the focused border color
+                                            color: Colors.black38,
+                                            // color: Color.fromARGB(255, 198, 198,198), // Set the focused border color
                                             width: 2.0,
                                           ),
                                         ),
@@ -455,33 +458,33 @@ class PetUploadState extends State<PetUploadPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Type',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
-                                    fontSize: 16,
-                                  ),
-                                ),
+                                // const Text(
+                                //   'Type',
+                                //   style: TextStyle(
+                                //     color: Color.fromARGB(255, 156, 153, 147),
+                                //     fontSize: 16,
+                                //   ),
+                                // ),
                                 SizedBox(height: 3),
                                 Container(
                                   width: screenWidth * 0.7,
                                   height: 50,
                                   child: DropdownButtonFormField<String>(
-                                    value: selectedtype,
+                                    value: type,
+                                    // value: type,
                                     decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: const Color.fromARGB(
-                                          255, 240, 240, 240),
+                                      // filled: true,
+                                      // fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                      labelText: 'Type',
                                       labelStyle: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 169, 169, 169),
+                                        color: Colors.black38,
+                                        // color: Color.fromARGB(255, 169, 169, 169),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
                                         borderSide: const BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 156, 153, 147),
+                                          color: Color.fromARGB(255, 156, 153, 147),
                                           width: 2.0,
                                         ),
                                       ),
@@ -489,8 +492,8 @@ class PetUploadState extends State<PetUploadPage> {
                                         borderRadius:
                                             BorderRadius.circular(10.0),
                                         borderSide: const BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 198, 198, 198),
+                                          color: Colors.black38,
+                                          // color: Color.fromARGB(255, 198, 198, 198),
                                           width: 2.0,
                                         ),
                                       ),
@@ -499,10 +502,8 @@ class PetUploadState extends State<PetUploadPage> {
                                             BorderRadius.circular(10.0),
                                         borderSide: BorderSide(
                                           color: showTextFieldBorderT
-                                              ? Color.fromARGB(
-                                                  255, 255, 132, 132)
-                                              : Color.fromARGB(
-                                                  255, 240, 240, 240),
+                                              ? Color.fromARGB(255, 255, 132, 132)
+                                              : Color.fromARGB(255, 240, 240, 240),
                                           width: 2.0,
                                         ),
                                       ),
@@ -515,25 +516,25 @@ class PetUploadState extends State<PetUploadPage> {
                                     ),
                                     onChanged: (String? newValue) {
                                       setState(() {
-                                        selectedtype = newValue!;
-                                        // Reset selected breed when type changes
-                                        selectedbreed =
-                                            breedsMap[selectedtype]![0];
+                                        selectedtype = newValue!; // Reset selected breed when type changes
+                                        selectedbreed = breedsMap[selectedtype]![0];
                                       });
                                     },
-                                    items: <String>['Cat', 'Dog', 'Other/s']
-                                        .map<DropdownMenuItem<String>>(
+                                    items: <String>[
+                                      'Cat',
+                                      'Dog',
+                                      'Other/s'
+                                    ].map<DropdownMenuItem<String>>(
+
                                       (String value) {
                                         return DropdownMenuItem<String>(
                                           value: value,
                                           child: Text(value),
                                         );
-                                      },
-                                    ).toList(),
+                                      }).toList(),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ]),
                           ),
                           SizedBox(height: 15),
                           Visibility(
@@ -541,26 +542,27 @@ class PetUploadState extends State<PetUploadPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Breed',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
-                                    fontSize: 16,
-                                  ),
-                                ),
+                                // const Text(
+                                //   'Breed',
+                                //   style: TextStyle(
+                                //     color: Color.fromARGB(255, 156, 153, 147),
+                                //     fontSize: 16,
+                                //   ),
+                                // ),
                                 SizedBox(height: 3),
                                 Container(
                                   width: screenWidth * 0.7,
                                   height: 50,
                                   child: DropdownButtonFormField<String>(
-                                    value: selectedbreed,
+                                    value: breed,
+                                    // value: selectedbreed,
                                     decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: const Color.fromARGB(
-                                          255, 240, 240, 240),
+                                      // filled: true,
+                                      // fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                      labelText: 'Breed',
                                       labelStyle: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 169, 169, 169),
+                                          color: Colors.black38,
+                                        // color: Color.fromARGB(255, 169, 169, 169),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -575,8 +577,8 @@ class PetUploadState extends State<PetUploadPage> {
                                         borderRadius:
                                             BorderRadius.circular(10.0),
                                         borderSide: const BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 198, 198, 198),
+                                          color: Colors.black38,
+                                          // color: Color.fromARGB(255, 198, 198, 198),
                                           width: 2.0,
                                         ),
                                       ),
@@ -624,13 +626,13 @@ class PetUploadState extends State<PetUploadPage> {
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'Price (₱)',
-                                    style: TextStyle(
-                                      color: Color.fromARGB(255, 156, 153, 147),
-                                      fontSize: 16,
-                                    ),
-                                  ),
+                                  // const Text(
+                                  //   'Price (₱)',
+                                  //   style: TextStyle(
+                                  //     color: Color.fromARGB(255, 156, 153, 147),
+                                  //     fontSize: 16,
+                                  //   ),
+                                  // ),
                                   SizedBox(height: 3),
                                   Container(
                                     width: screenWidth * 0.7,
@@ -640,18 +642,17 @@ class PetUploadState extends State<PetUploadPage> {
                                       keyboardType: TextInputType
                                           .number, // Set the keyboard type to only allow numbers
                                       inputFormatters: <TextInputFormatter>[
-                                        LengthLimitingTextInputFormatter(
-                                            7), // Restrict the input length to 11 characters
+                                        LengthLimitingTextInputFormatter(7), // Restrict the input length to 11 characters
                                         FilteringTextInputFormatter
                                             .digitsOnly // Restrict input to only digits
                                       ],
                                       decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: const Color.fromARGB(
-                                            255, 240, 240, 240),
+                                        // filled: true,
+                                        // fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                        labelText: 'Price',
                                         labelStyle: const TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 156, 153, 147),
+                                          color: Colors.black38,
+                                          // color: Color.fromARGB(255, 156, 153, 147),
                                         ),
                                         border: OutlineInputBorder(
                                           borderRadius:
@@ -665,8 +666,8 @@ class PetUploadState extends State<PetUploadPage> {
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                           borderSide: const BorderSide(
-                                              color: Color.fromARGB(
-                                                  255, 198, 198, 198),
+                                              color: Colors.black38,
+                                              // color: Color.fromARGB(255, 198, 198, 198),
                                               width: 2.0),
                                         ),
                                         enabledBorder: OutlineInputBorder(
@@ -692,54 +693,123 @@ class PetUploadState extends State<PetUploadPage> {
                                   ),
                                 ]),
                           ),
+
+                          // SizedBox(height: 15),
+                          // Visibility(
+                          //   visible: showPrimaryFields,
+                          //   child: Column(
+                          //     crossAxisAlignment: CrossAxisAlignment.start,
+                          //     children: [
+                          //       SizedBox(height: 3),
+                          //       Container(
+                          //         width: screenWidth * 0.7,
+                          //         height: 50,
+                          //         child: DropdownButtonFormField<String>(
+                          //           value: selectedprice, // The current selected value for the dropdown
+                          //           decoration: InputDecoration(
+                          //             // filled: true,
+                          //             // fillColor: const Color.fromARGB(255, 240, 240, 240),
+                          //             labelText: 'Price Range',
+                          //             labelStyle: const TextStyle(
+                          //               color: Colors.black38,
+                          //               // color: Color.fromARGB(255, 156, 153, 147),
+                          //             ),
+                          //             border: OutlineInputBorder(
+                          //               borderRadius: BorderRadius.circular(10.0),
+                          //               borderSide: const BorderSide(
+                          //                 color: Color.fromARGB(255, 156, 153, 147),
+                          //                 width: 2.0,
+                          //               ),
+                          //             ),
+                          //             focusedBorder: OutlineInputBorder(
+                          //               borderRadius: BorderRadius.circular(10.0),
+                          //               borderSide: const BorderSide(
+                          //                 color: Colors.black38,
+                          //                 // color: Color.fromARGB(255, 198, 198, 198),
+                          //                 width: 2.0,
+                          //               ),
+                          //             ),
+                          //             enabledBorder: OutlineInputBorder(
+                          //               borderRadius: BorderRadius.circular(10.0),
+                          //               borderSide: BorderSide(
+                          //                 color: showTextFieldBorderP
+                          //                     ? Color.fromARGB(255, 255, 132, 132)
+                          //                     : Color.fromARGB(255, 240, 240, 240),
+                          //                 width: 2.0,
+                          //               ),
+                          //             ),
+                          //             contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                          //           ),
+                          //           style: TextStyle(
+                          //             fontSize: 16,
+                          //             color: Color.fromARGB(255, 135, 132, 127),
+                          //           ),
+                          //           onChanged: (String? newValue) {
+                          //             setState(() {
+                          //               selectedprice = newValue!;
+                          //             });
+                          //           },
+                          //           items: <String>[
+                          //             '0-100',
+                          //             '101-300',
+                          //             '300 and above'
+                          //           ].map<DropdownMenuItem<String>>((String value) {
+                          //             return DropdownMenuItem<String>(
+                          //               value: value,
+                          //               child: Text(value),
+                          //             );
+                          //           }).toList(),
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+
+                          SizedBox(height: 15),
                           Visibility(
                             visible: showPrimaryFields,
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'Weight (KG)',
-                                    style: TextStyle(
-                                      color: Color.fromARGB(255, 156, 153, 147),
-                                      fontSize: 16,
-                                    ),
-                                  ),
+                                  // const Text(
+                                  //   'Weight (KG)',
+                                  //   style: TextStyle(
+                                  //     color: Color.fromARGB(255, 156, 153, 147),
+                                  //     fontSize: 16,
+                                  //   ),
+                                  // ),
                                   SizedBox(height: 3),
                                   Container(
                                     width: screenWidth * 0.7,
                                     height: 50,
                                     child: TextField(
                                       controller: weight,
-                                      keyboardType: TextInputType
-                                          .number, // Set the keyboard type to only allow numbers
+                                      keyboardType: TextInputType.number, // Set the keyboard type to only allow numbers
                                       inputFormatters: <TextInputFormatter>[
-                                        LengthLimitingTextInputFormatter(
-                                            2), // Restrict the input length to 11 characters
-                                        FilteringTextInputFormatter
-                                            .digitsOnly // Restrict input to only digits
+                                        LengthLimitingTextInputFormatter(2), // Restrict the input length to 11 characters
+                                        FilteringTextInputFormatter.digitsOnly // Restrict input to only digits
                                       ],
                                       decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: const Color.fromARGB(
-                                            255, 240, 240, 240),
+                                        // filled: true,
+                                        // fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                        labelText: 'Weight (KG)',
                                         labelStyle: const TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 156, 153, 147),
+                                          color: Colors.black38,
+                                          // color: Color.fromARGB(255, 156, 153, 147),
                                         ),
                                         border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                           borderSide: const BorderSide(
-                                              color: Color.fromARGB(
-                                                  255, 156, 153, 147),
+                                              color: Color.fromARGB(255, 156, 153, 147),
                                               width: 2.0),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                           borderSide: const BorderSide(
-                                              color: Color.fromARGB(
-                                                  255, 198, 198, 198),
+                                            color: Colors.black38,
+                                            // color: Color.fromARGB(255, 198, 198, 198),
                                               width: 2.0),
                                         ),
                                         enabledBorder: OutlineInputBorder(
@@ -771,13 +841,13 @@ class PetUploadState extends State<PetUploadPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Date of Birth',
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
-                                    fontSize: 16,
-                                  ),
-                                ),
+                                // const Text(
+                                //   'Date of Birth',
+                                //   style: TextStyle(
+                                //     color: Color.fromARGB(255, 156, 153, 147),
+                                //     fontSize: 16,
+                                //   ),
+                                // ),
                                 SizedBox(height: 3),
                                 Container(
                                   width: screenWidth * 0.7,
@@ -788,12 +858,12 @@ class PetUploadState extends State<PetUploadPage> {
                                         child: TextField(
                                           controller: dateofbirth,
                                           decoration: InputDecoration(
-                                            filled: true,
-                                            fillColor: const Color.fromARGB(
-                                                255, 240, 240, 240),
+                                            // filled: true,
+                                            // fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                            labelText: 'Date of Birth',
                                             labelStyle: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 156, 153, 147),
+                                              color: Colors.black38,
+                                              // color: Color.fromARGB(255, 156, 153, 147),
                                             ),
                                             border: OutlineInputBorder(
                                               borderRadius:
@@ -808,8 +878,8 @@ class PetUploadState extends State<PetUploadPage> {
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
                                               borderSide: const BorderSide(
-                                                color: Color.fromARGB(
-                                                    255, 198, 198, 198),
+                                                color: Colors.black38,
+                                                // color: Color.fromARGB(255, 198, 198, 198),
                                                 width: 2.0,
                                               ),
                                             ),
@@ -873,13 +943,13 @@ class PetUploadState extends State<PetUploadPage> {
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'Pet Gender',
-                                    style: TextStyle(
-                                      color: Color.fromARGB(255, 156, 153, 147),
-                                      fontSize: 16,
-                                    ),
-                                  ),
+                                  // const Text(
+                                  //   'Pet Gender',
+                                  //   style: TextStyle(
+                                  //     color: Color.fromARGB(255, 156, 153, 147),
+                                  //     fontSize: 16,
+                                  //   ),
+                                  // ),
                                   SizedBox(height: 3),
                                   Container(
                                     width: screenWidth * 0.7,
@@ -887,19 +957,18 @@ class PetUploadState extends State<PetUploadPage> {
                                     child: DropdownButtonFormField<String>(
                                       value: gender,
                                       decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: const Color.fromARGB(
-                                            255, 240, 240, 240),
+                                        // filled: true,
+                                        // fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                        labelText: 'Pet Gender',
                                         labelStyle: const TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 169, 169, 169),
+                                          color: Colors.black38,
+                                          // color: Color.fromARGB(255, 169, 169, 169),
                                         ),
                                         border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                           borderSide: const BorderSide(
-                                            color: Color.fromARGB(
-                                                255, 156, 153, 147),
+                                            color: Color.fromARGB(255, 156, 153, 147),
                                             width: 2.0,
                                           ),
                                         ),
@@ -907,8 +976,8 @@ class PetUploadState extends State<PetUploadPage> {
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                           borderSide: const BorderSide(
-                                            color: Color.fromARGB(
-                                                255, 198, 198, 198),
+                                             color: Colors.black38,
+                                            // color: Color.fromARGB(255, 198, 198, 198),
                                             width: 2.0,
                                           ),
                                         ),
@@ -1059,8 +1128,7 @@ class PetUploadState extends State<PetUploadPage> {
                         onTap: () {
                           _selectImageAndUpload(
                               userData['firstname'] + userData['lastname'],
-                              userData[
-                                  'address']); // Method to open file manager and select image
+                              userData['address']); // Method to open file manager and select image
                         },
                         child: Container(
                           width: screenWidth * 0.7,
@@ -1090,7 +1158,7 @@ class PetUploadState extends State<PetUploadPage> {
                 if (isButtonVisiblenext)
                   Positioned(
                     bottom: 60,
-                    height: 60,
+                    height: 45,
                     width: screenWidth * 0.7,
                     child: Stack(
                       children: [
@@ -1098,8 +1166,7 @@ class PetUploadState extends State<PetUploadPage> {
                           alignment: Alignment
                               .center, // Center the button within the Stack
                           child: Padding(
-                            padding: const EdgeInsets.all(
-                                3.0), // Add padding to the button
+                            padding: const EdgeInsets.all(0), // Add padding to the button
                             child: ElevatedButton(
                               onPressed: () {
                                 _checkinput();
@@ -1113,14 +1180,12 @@ class PetUploadState extends State<PetUploadPage> {
                                 ),
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                  Color.fromARGB(255, 110, 77,
-                                      34), // Set the button's background color
+                                  Color.fromARGB(255, 110, 77, 34), // Set the button's background color
                                 ),
-                                elevation: MaterialStateProperty.all<double>(
-                                    0), // Remove button elevation
+                                elevation: MaterialStateProperty.all<double>(20), // Remove button elevation
                               ),
                               child: SizedBox(
-                                height: 50,
+                                height: 45,
                                 child: Center(
                                   child: Text(
                                     'Next',
@@ -1184,8 +1249,8 @@ class PetUploadState extends State<PetUploadPage> {
                     ),
                   ),
                 Positioned(
-                    bottom: 190,
-                    left: 70,
+                    bottom: 110,
+                    // left: 70,
                     child: Visibility(
                       visible: showWidget,
                       child: Text(

@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawprojui/Screens/dashboard/mydashboard.dart';
+import 'package:pawprojui/Screens/registration/register.dart';
 import '../../domain.dart';
-import '../email/email.dart';
+// import '../email/email.dart';
 import '../email/email_CP.dart';
 
 void main() {
@@ -183,7 +184,7 @@ class LoginState extends State<_Login> {
                 ),
               ),
               Positioned(
-                top: 15,
+                top: 25,
                 left: -5,
                 child: Image.asset(
                   'assets/design1/design1.png',
@@ -191,14 +192,14 @@ class LoginState extends State<_Login> {
                   height: 130,
                 ),
               ),
-              Positioned(
-                  top: -5,
-                  right: -15,
-                  child: Image.asset(
-                    'assets/design1/design2.png',
-                    width: 130,
-                    height: 130,
-                  )),
+              // Positioned(
+              //     top: -5,
+              //     right: -15,
+              //     child: Image.asset(
+              //       'assets/design1/design2.png',
+              //       width: 130,
+              //       height: 130,
+              //     )),
               Positioned(
                 bottom: screenHeight * 0.73,
                 child: Image.asset(
@@ -215,18 +216,18 @@ class LoginState extends State<_Login> {
                   height: 300,
                 ),
               ),
-              Positioned(
-                left: -22,
-                top: 350,
-                child: Image.asset(
-                  'assets/design1/design3.png',
-                  width: 140,
-                  height: 140,
-                ),
-              ),
+              // Positioned(
+              //   left: -22,
+              //   top: 150,
+              //   child: Image.asset(
+              //     'assets/design1/design3.png',
+              //     width: 140,
+              //     height: 140,
+              //   ),
+              // ),
               Positioned(
                 right: -5,
-                top: 360,
+                top: 230,
                 child: Image.asset(
                   'assets/design1/design5.png',
                   width: 120,
@@ -372,7 +373,7 @@ class LoginState extends State<_Login> {
                 ),
               ),
               Positioned(
-                bottom: 115,
+                bottom: 90,
                 height: 45,
                 width: screenWidth * 0.7,
                 child: Padding(
@@ -392,8 +393,7 @@ class LoginState extends State<_Login> {
                         const Color.fromARGB(255, 110, 77,
                             34), // Set the button's background color
                       ),
-                      elevation: MaterialStateProperty.all<double>(
-                          0), // Remove button elevation
+                      elevation: MaterialStateProperty.all<double>(0), // Remove button elevation
                     ),
                     child: const SizedBox(
                       width:
@@ -414,7 +414,7 @@ class LoginState extends State<_Login> {
                 ),
               ),
               Positioned(
-                bottom: 65,
+                bottom: 55,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -429,7 +429,8 @@ class LoginState extends State<_Login> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Email()),
+                          MaterialPageRoute(builder: (context) => RegisterPage(email: 'sss')),
+                          // MaterialPageRoute(builder: (context) => Email()),
                         );
                       },
                       child: const Text(
@@ -456,7 +457,7 @@ class LoginState extends State<_Login> {
                   child: const Text(
                     'Forget password?',
                     style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 13,
                         color: Colors.blue,
                         fontWeight: FontWeight.w500),
                   ),
@@ -464,7 +465,7 @@ class LoginState extends State<_Login> {
               ),
               Positioned(
                 bottom: screenHeight * 0.22,
-                left: screenWidth * 0.123,
+                left: screenWidth * 0.13,
                 child: Row(
                   children: [
                     Checkbox(
@@ -481,14 +482,14 @@ class LoginState extends State<_Login> {
                 ),
               ),
               Positioned(
-                bottom: screenHeight * 0.23,
-                left: screenWidth * 0.18,
+                bottom: screenHeight * 0.237,
+                left: screenWidth * 0.22,
                 child: const Row(
                   children: [
                     Text(
                       'Remember me',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 13,
                         color: Color.fromARGB(255, 153, 133, 93),
                       ),
                     ),

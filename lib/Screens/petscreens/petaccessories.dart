@@ -145,16 +145,60 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
             },
           )
         ],
+      //   bottom: PreferredSize(
+      //     preferredSize: Size.fromHeight(80),
+      //     child: Padding(
+      //       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+      //       child: SizedBox(
+      //         height: 50,
+      //         child: TextField(
+      //           decoration: InputDecoration(
+      //             hintText: 'Search',
+      //             prefixIcon: Icon(Icons.search),
+      //             border: OutlineInputBorder(
+      //               borderRadius: BorderRadius.circular(25),
+      //             ),
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(80),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: SizedBox(
               height: 50,
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'Search',
                   prefixIcon: Icon(Icons.search),
+                  suffixIcon: PopupMenuButton(
+                    icon: const Icon(Icons.filter_list),
+                    itemBuilder: (BuildContext context) {
+                      return <PopupMenuEntry>[
+                        const PopupMenuItem(
+                          child: Text('Collars'),
+                          value: 'Filter1',
+                        ),
+                        const PopupMenuItem(
+                          child: Text('Tags'),
+                          value: 'Filter2',
+                        ),
+                        const PopupMenuItem(
+                          child: Text('More..'),
+                          value: 'Filter3',
+                        ),
+                        // const PopupMenuItem(
+                        //     child: Text('Php 701-1000'),
+                        //     value: 'Filter4'),
+                      ];
+                    },
+                    onSelected: (value) {
+                      print('Selected Filter: $value');
+                    },
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(25),
                   ),
