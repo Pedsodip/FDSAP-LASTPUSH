@@ -53,7 +53,7 @@ class _MyDashboardState extends State<MyDashboard> {
     var client = http.Client();
     try {
       final response = await client
-          .get(Uri.parse('http://$domain:8070/byID?id=${widget.userID}'));
+          .get(Uri.parse('http://$domain:8080/api/user?id=${widget.userID}'));
 
       if (response.statusCode == 200) {
         // Parse the JSON response
@@ -88,7 +88,7 @@ class _MyDashboardState extends State<MyDashboard> {
   Future<void> fetchAllProducts() async {
     try {
       final response =
-          await client.get(Uri.parse('http://$domain:8070/dashdata'));
+          await client.get(Uri.parse('http://$domain:8080/api/all/pet'));
 
       if (response.statusCode == 200) {
         // Parse the JSON response
@@ -135,13 +135,23 @@ class _MyDashboardState extends State<MyDashboard> {
     // Check if user data has been fetched
     if (dataofUser.isEmpty) {
       // If dataofUser is empty, display a loading indicator or any placeholder widget
-      return Center(child: CircularProgressIndicator());
+      // return Center(child: CircularProgressIndicator());
+      return Center(
+        child: Text(
+          'No Data Available',
+        ),
+      );
     } else {
       Map<String, dynamic> userData = dataofUser.first;
 
       if (products.isEmpty) {
         // If dataofUser is empty, display a loading indicator or any placeholder widget
-        return Center(child: CircularProgressIndicator());
+        // return Center(child: CircularProgressIndicator());
+        return Center(
+          child: Text(
+            'No Data Available',
+          ),
+        );
       } else {
         return Scaffold(
           appBar: AppBar(
@@ -177,6 +187,7 @@ class _MyDashboardState extends State<MyDashboard> {
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(255, 248, 237, 222),
                   ),
+                  margin: EdgeInsets.only(bottom: 20),
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -191,20 +202,37 @@ class _MyDashboardState extends State<MyDashboard> {
                       children: <Widget>[
                         CircleAvatar(
                           radius: 50,
-                          backgroundImage: userData['profile_image'] != null
-                              ? MemoryImage(
-                                  base64Decode(userData['profile_image']!))
-                              : const AssetImage('assets/default_profile.png')
-                                  as ImageProvider,
+                          backgroundImage: userData['profile_picture'] == null
+                              ? const NetworkImage(
+                                  'https://raw.githubusercontent.com/Valenzuela08/ImageStorage/main/images/default_profile.png')
+                              : NetworkImage(userData['profile_picture']),
                         ),
                         const SizedBox(width: 10),
-                        Text(
-                          '${userData['firstname']} ${userData['lastname']}',
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 0, 0, 0),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 50),
+                              child: Text(
+                                '${userData['firstname']} ${userData['lastname']}',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                              child: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.edit,
+                                    size: 20,
+                                  )),
+                            )
+                          ],
                         ),
                       ],
                     ),
@@ -471,9 +499,11 @@ class _MyDashboardState extends State<MyDashboard> {
                                       ),
                                     ],
                                     image: DecorationImage(
-                                      image: AssetImage(
-                                        'assets/design1/paw1.png',
-                                      ),
+                                      image: NetworkImage(
+                                          '${products[index % products.length]['image_product']}'),
+                                      // AssetImage(
+                                      //   'assets/design1/paw1.png',
+                                      // ),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -638,200 +668,201 @@ class _MyDashboardState extends State<MyDashboard> {
                                     //     borderRadius: BorderRadius.circular(15),
                                     //   ),
                                     //   child: SingleChildScrollView(
-                                        child: Column(
+                                    child: Column(
+                                      children: [
+                                        ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: Image(
+                                              image: NetworkImage(
+                                                  '${products[index % products.length]['image_product']}'),
+                                              height: 100,
+                                              width: 100,
+                                            )),
+                                        // const SizedBox(width:.5),
+                                        // Container(
+                                        //   padding: const EdgeInsets.all(5),
+                                        //   decoration: BoxDecoration(
+                                        //     borderRadius:
+                                        //         BorderRadius.circular(0),
+                                        //   ),
+                                        //   child: ClipRRect(
+                                        //     borderRadius:
+                                        //         BorderRadius.circular(10),
+                                        //     child: Image.asset(
+                                        //       'assets/design1/paw.png',
+                                        //       height: 100,
+                                        //       width: 100,
+                                        //       fit: BoxFit.cover,
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        const SizedBox(
+                                            height:
+                                                7), // Space between image and text
+                                        Text(
+                                          '${products[index % products.length]['petname']}',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.brown,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        Text(
+                                          '${products[index % products.length]['breed']}',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                Color.fromARGB(255, 83, 79, 79),
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
 
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius: BorderRadius.circular(10),
-                                              child: Image.asset(
-                                                'assets/design1/paw.png',
-                                                height: 100,
-                                                width: 100,
-                                                // fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                            // const SizedBox(width:.5),
-                                            // Container(
-                                            //   padding: const EdgeInsets.all(5),
-                                            //   decoration: BoxDecoration(
-                                            //     borderRadius:
-                                            //         BorderRadius.circular(0),
-                                            //   ),
-                                            //   child: ClipRRect(
-                                            //     borderRadius:
-                                            //         BorderRadius.circular(10),
-                                            //     child: Image.asset(
-                                            //       'assets/design1/paw.png',
-                                            //       height: 100,
-                                            //       width: 100,
-                                            //       fit: BoxFit.cover,
-                                            //     ),
-                                            //   ),
-                                            // ),
-                                            const SizedBox(height: 7), // Space between image and text
-                                            Text(
-                                              '${products[index % products.length]['petname']}',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.brown,
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                            Text(
-                                              '${products[index % products.length]['breed']}',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Color.fromARGB(255, 83, 79, 79),
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-
-                                          // const SizedBox(width: 20),
-                                          // Row(
-                                          //   children: [
-                                          //     Column(
-                                          //       crossAxisAlignment:
-                                          //           CrossAxisAlignment.start,
-                                          //       children: [
-                                          //         SizedBox(height: 20),
-                                          //         Text(
-                                          //           '${products[index % products.length]['petname']}',
-                                          //           style: const TextStyle(
-                                          //             fontWeight: FontWeight.bold,
-                                          //             color: Colors.brown,
-                                          //             // color: Color.fromARGB(255, 83, 79, 79),
-                                          //             fontSize: 20,
-                                          //           ),
-                                          //         ),
-                                          //         Text(
-                                          //           '${products[index % products.length]['breed']}',
-                                          //           style: const TextStyle(
-                                          //             fontWeight:
-                                          //                 FontWeight.bold,
-                                          //             color: Color.fromARGB(
-                                          //                 255, 83, 79, 79),
-                                          //           ),
-                                          //           textAlign: TextAlign.start,
-                                          //         ),
-                                          //         const SizedBox(height: 5),
-                                          //         const SizedBox(height: 10),
-                                                  // Row(
-                                                  //   children: [
-                                                  //     const Icon(
-                                                  //       Icons.transgender,
-                                                  //       size: 15,
-                                                  //     ),
-                                                  //     const SizedBox(width: 05),
-                                                  //     Text(
-                                                  //       '${products[index % products.length]['pet_gender']}',
-                                                  //       style: const TextStyle(
-                                                  //         fontWeight:
-                                                  //             FontWeight.w400,
-                                                  //         color: Color.fromARGB(
-                                                  //             255, 83, 79, 79),
-                                                  //       ),
-                                                  //     ),
-                                                  //   ],
-                                                  // ),
-                                              //     const SizedBox(height: 1),
-                                              //     Row(
-                                              //       children: [
-                                              //         const Icon(
-                                              //           Icons.scale,
-                                              //           size: 15,
-                                              //         ),
-                                              //         const SizedBox(width: 5),
-                                              //         Text(
-                                              //           '${products[index % products.length]['pet_weight']}KG',
-                                              //           style: const TextStyle(
-                                              //             fontWeight:
-                                              //                 FontWeight.w400,
-                                              //             color: Color.fromARGB(
-                                              //                 255, 83, 79, 79),
-                                              //           ),
-                                              //         ),
-                                              //       ],
-                                              //     ),
-                                              //   ],
-                                              // ),
-                                              // SizedBox(width: 100),
-                                              // Column(
-                                              //   crossAxisAlignment:
-                                              //       CrossAxisAlignment.start,
-                                              //   children: [
-                                              //     const SizedBox(height: 10),
-                                              //     Container(
-                                              //       child: SizedBox(
-                                              //         height: 70,
-                                              //         width: 50,
-                                              //         child: Center(
-                                              //           child: Text(
-                                              //             '₱${products[index % products.length]['cost']}',
-                                              //             style:
-                                              //                 const TextStyle(
-                                              //               fontSize: 23,
-                                              //               color:
-                                              //                   Color.fromARGB(
-                                              //                       255,
-                                              //                       83,
-                                              //                       79,
-                                              //                       79),
-                                              //               fontWeight:
-                                              //                   FontWeight.bold,
-                                              //             ),
-                                              //           ),
-                                              //         ),
-                                              //       ),
-                                              //     ),
-                                              //     const SizedBox(height: 4),
-                                              //     Row(
-                                              //       children: [
-                                              //         const Icon(
-                                              //           Icons.av_timer_rounded,
-                                              //           size: 15,
-                                              //         ),
-                                              //         const SizedBox(width: 10),
-                                              //         Text(
-                                              //           '${products[index % products.length]['pet_age']} y/o',
-                                              //           style: const TextStyle(
-                                              //             fontWeight:
-                                              //                 FontWeight.w400,
-                                              //             color: Color.fromARGB(
-                                              //                 255, 83, 79, 79),
-                                              //           ),
-                                              //         ),
-                                              //       ],
-                                              //     ),
-                                              //     const SizedBox(height: 1),
-                                                  // Row(
-                                                  //   children: [
-                                                  //     const Icon(
-                                                  //       Icons.calendar_month,
-                                                  //       size: 15,
-                                                  //     ),
-                                                  //     const SizedBox(width: 10),
-                                                  //     Text(
-                                                  //       '${products[index % products.length]['pet_bday']}',
-                                                  //       style: const TextStyle(
-                                                  //         fontWeight:
-                                                  //             FontWeight.w400,
-                                                  //         color: Color.fromARGB(255, 83, 79, 79),
-                                                  //       ),
-                                                  //     ),
-                                                  //   ],
-                                                  // ),
-                                          //       ],
-                                          //     ),
-                                          //   ],
-                                          // ),
-                                          // const SizedBox(width: 10), (ITO YUNG MALING SOBRA SA TEXT BOX)
-
-                                        ],
-                                      ),
+                                        // const SizedBox(width: 20),
+                                        // Row(
+                                        //   children: [
+                                        //     Column(
+                                        //       crossAxisAlignment:
+                                        //           CrossAxisAlignment.start,
+                                        //       children: [
+                                        //         SizedBox(height: 20),
+                                        //         Text(
+                                        //           '${products[index % products.length]['petname']}',
+                                        //           style: const TextStyle(
+                                        //             fontWeight: FontWeight.bold,
+                                        //             color: Colors.brown,
+                                        //             // color: Color.fromARGB(255, 83, 79, 79),
+                                        //             fontSize: 20,
+                                        //           ),
+                                        //         ),
+                                        //         Text(
+                                        //           '${products[index % products.length]['breed']}',
+                                        //           style: const TextStyle(
+                                        //             fontWeight:
+                                        //                 FontWeight.bold,
+                                        //             color: Color.fromARGB(
+                                        //                 255, 83, 79, 79),
+                                        //           ),
+                                        //           textAlign: TextAlign.start,
+                                        //         ),
+                                        //         const SizedBox(height: 5),
+                                        //         const SizedBox(height: 10),
+                                        // Row(
+                                        //   children: [
+                                        //     const Icon(
+                                        //       Icons.transgender,
+                                        //       size: 15,
+                                        //     ),
+                                        //     const SizedBox(width: 05),
+                                        //     Text(
+                                        //       '${products[index % products.length]['pet_gender']}',
+                                        //       style: const TextStyle(
+                                        //         fontWeight:
+                                        //             FontWeight.w400,
+                                        //         color: Color.fromARGB(
+                                        //             255, 83, 79, 79),
+                                        //       ),
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                        //     const SizedBox(height: 1),
+                                        //     Row(
+                                        //       children: [
+                                        //         const Icon(
+                                        //           Icons.scale,
+                                        //           size: 15,
+                                        //         ),
+                                        //         const SizedBox(width: 5),
+                                        //         Text(
+                                        //           '${products[index % products.length]['pet_weight']}KG',
+                                        //           style: const TextStyle(
+                                        //             fontWeight:
+                                        //                 FontWeight.w400,
+                                        //             color: Color.fromARGB(
+                                        //                 255, 83, 79, 79),
+                                        //           ),
+                                        //         ),
+                                        //       ],
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                        // SizedBox(width: 100),
+                                        // Column(
+                                        //   crossAxisAlignment:
+                                        //       CrossAxisAlignment.start,
+                                        //   children: [
+                                        //     const SizedBox(height: 10),
+                                        //     Container(
+                                        //       child: SizedBox(
+                                        //         height: 70,
+                                        //         width: 50,
+                                        //         child: Center(
+                                        //           child: Text(
+                                        //             '₱${products[index % products.length]['cost']}',
+                                        //             style:
+                                        //                 const TextStyle(
+                                        //               fontSize: 23,
+                                        //               color:
+                                        //                   Color.fromARGB(
+                                        //                       255,
+                                        //                       83,
+                                        //                       79,
+                                        //                       79),
+                                        //               fontWeight:
+                                        //                   FontWeight.bold,
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //       ),
+                                        //     ),
+                                        //     const SizedBox(height: 4),
+                                        //     Row(
+                                        //       children: [
+                                        //         const Icon(
+                                        //           Icons.av_timer_rounded,
+                                        //           size: 15,
+                                        //         ),
+                                        //         const SizedBox(width: 10),
+                                        //         Text(
+                                        //           '${products[index % products.length]['pet_age']} y/o',
+                                        //           style: const TextStyle(
+                                        //             fontWeight:
+                                        //                 FontWeight.w400,
+                                        //             color: Color.fromARGB(
+                                        //                 255, 83, 79, 79),
+                                        //           ),
+                                        //         ),
+                                        //       ],
+                                        //     ),
+                                        //     const SizedBox(height: 1),
+                                        // Row(
+                                        //   children: [
+                                        //     const Icon(
+                                        //       Icons.calendar_month,
+                                        //       size: 15,
+                                        //     ),
+                                        //     const SizedBox(width: 10),
+                                        //     Text(
+                                        //       '${products[index % products.length]['pet_bday']}',
+                                        //       style: const TextStyle(
+                                        //         fontWeight:
+                                        //             FontWeight.w400,
+                                        //         color: Color.fromARGB(255, 83, 79, 79),
+                                        //       ),
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                        //       ],
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                        // const SizedBox(width: 10), (ITO YUNG MALING SOBRA SA TEXT BOX)
+                                      ],
                                     ),
                                   ),
+                                ),
                                 // ),
-                                );
+                              );
                             },
                           ),
                         ),

@@ -10,9 +10,8 @@ import 'dart:convert';
 import '../email/email.dart';
 
 class RegisterPage extends StatefulWidget {
-  final String email;
 
-  const RegisterPage({required this.email});
+  const RegisterPage({super.key});
 
   @override
   RegisterState createState() => RegisterState();
@@ -124,14 +123,14 @@ class RegisterState extends State<RegisterPage> {
   }
 
   void _insertUser() async {
-    String email = widget.email;
+    // String email = widget.email;
     String fname = firstname.text;
     String lname = lastname.text;
     String add = addresss.text;
     String cont = contact.text;
     String sex = selectedgender;
     String date = dateofbirth.text;
-    String emailadd = email;
+    // String emailadd = email;
     String uname = username.text;
     String pass = password.text;
     String cpass = confirmpassword.text;
@@ -200,7 +199,7 @@ class RegisterState extends State<RegisterPage> {
         "dateofbirth": date,
         "contact_no": cont,
         "gender": sex,
-        "email": emailadd,
+        // "email": emailadd,
         "username": uname,
         "password": pass,
         "profile_picture": profile,
@@ -234,27 +233,28 @@ class RegisterState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    email.text = widget.email;
+    // email.text = widget.email;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 207, 184, 153),
-        ),
+        // appBar: AppBar(
+        //   backgroundColor: const Color.fromARGB(255, 207, 184, 153),
+        // ),
         body: Container(
           color: Color.fromARGB(255, 207, 184, 153),
           child: Stack(
             alignment: Alignment.center,
             children: [
               Image.asset(
-                'assets/design1/brown.png',
-                width: double.infinity,
-                height: double.infinity,
+                'assets/design1/brownbg.png',
+                width: screenWidth * 1,
+                height: screenHeight * 1,
                 fit: BoxFit.cover,
               ),
               Positioned(
+                top: 90,
                 child: Container(
                   width: screenWidth * 0.87,
                   height: screenHeight * 0.86,
@@ -272,14 +272,20 @@ class RegisterState extends State<RegisterPage> {
               ),
               if (isButtonVisiblenext)
                 Positioned(
-                  top: 50,
+                  top: 110,
                   left: screenWidth * 0.1,
                   child: Container(
                     width: 25,
                     height: 25,
                     child: InkWell(
                       onTap: () {
-                        _return_email();
+                        setState(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => LoginPage()),
+                            // MaterialPageRoute(builder: (context) => Email()),
+                          );
+                        });
                       },
                       borderRadius: BorderRadius.circular(10.0),
                       child: Image.asset(
@@ -291,15 +297,15 @@ class RegisterState extends State<RegisterPage> {
                   ),
                 ),
               Positioned(
-                top: 30,
+                top: 90,
                 child: Image.asset(
-                  'assets/design1/furpaw.png',
+                  'assets/design1/banner.png',
                   width: 100,
                   height: 100,
                 ),
               ),
               const Positioned(
-                top: 110,
+                top: 190,
                 child: Text(
                   'Create Your Account',
                   style: TextStyle(
@@ -311,7 +317,7 @@ class RegisterState extends State<RegisterPage> {
                 ),
               ),
               Positioned(
-                top: 110,
+                top: 200,
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Column(
@@ -337,9 +343,8 @@ class RegisterState extends State<RegisterPage> {
                                   child: TextField(
                                     controller: firstname,
                                     decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor:
-                                          Color.fromARGB(255, 240, 240, 240),
+                                      // filled: true,
+                                      // fillColor: Color.fromARGB(255, 240, 240, 240),
                                       labelText: 'First Name',
                                       labelStyle: const TextStyle(
                                         color: Color.fromARGB(255, 156, 153, 147),
@@ -411,9 +416,8 @@ class RegisterState extends State<RegisterPage> {
                                   child: TextField(
                                     controller: lastname,
                                     decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor:
-                                          Color.fromARGB(255, 240, 240, 240),
+                                      // filled: true,
+                                      // fillColor: Color.fromARGB(255, 240, 240, 240),
                                       labelText: 'Last Name',
                                       labelStyle: const TextStyle(
                                         color: Color.fromARGB(255, 156, 153, 147),
@@ -487,8 +491,8 @@ class RegisterState extends State<RegisterPage> {
                                   child: TextField(
                                     controller: addresss,
                                     decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                      // filled: true,
+                                      // fillColor: const Color.fromARGB(255, 240, 240, 240),
                                       labelText: 'Address',
                                       labelStyle: const TextStyle(
                                         color: Color.fromARGB(255, 156, 153, 147),
@@ -551,8 +555,8 @@ class RegisterState extends State<RegisterPage> {
                                   child: DropdownButtonFormField<String>(
                                     value: gender,
                                     decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                      // filled: true,
+                                      // fillColor: const Color.fromARGB(255, 240, 240, 240),
                                       labelText: 'Gender',
                                       labelStyle: const TextStyle(
                                         color: Color.fromARGB(255, 169, 169, 169),
@@ -633,8 +637,8 @@ class RegisterState extends State<RegisterPage> {
                                   child: TextField(
                                     controller: contact,
                                     decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                      // filled: true,
+                                      // fillColor: const Color.fromARGB(255, 240, 240, 240),
                                       labelText: 'Contact Number',
                                       labelStyle: const TextStyle(color: Color.fromARGB(255, 156, 153, 147),
                                       ),
@@ -710,8 +714,8 @@ class RegisterState extends State<RegisterPage> {
                                       child: TextField(
                                         controller: dateofbirth,
                                         decoration: InputDecoration(
-                                          filled: true,
-                                          fillColor: const Color.fromARGB(255, 240, 240, 240),
+                                          // filled: true,
+                                          // fillColor: const Color.fromARGB(255, 240, 240, 240),
                                           labelText: 'Date of Birth',
                                           labelStyle: const TextStyle(color: Color.fromARGB(255, 156, 153, 147),
                                           ),
@@ -789,8 +793,34 @@ class RegisterState extends State<RegisterPage> {
                       ]),
                 ),
               ),
+              if (isButtonVisiblesignup)
+                Positioned(
+                  top: 110,
+                  left: screenWidth * 0.1,
+                  child: Container(
+                    width: 25,
+                    height: 25,
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RegisterPage()),
+                            // MaterialPageRoute(builder: (context) => Email()),
+                          );
+                        });
+                      },
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.asset(
+                        'assets/design1/arrow_button.png', // Replace this with your image path
+                        width: 10, // Adjust image width
+                        height: 10, // Adjust image height
+                      ),
+                    ),
+                  ),
+                ),
               Positioned(
-                top: 110,
+                top: 200,
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Column(
@@ -802,40 +832,40 @@ class RegisterState extends State<RegisterPage> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Email Address',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 156, 153, 147),
-                                  fontSize: 16,
-                                ),
-                              ),
+                              // const Text(
+                              //   'Email Address',
+                              //   style: TextStyle(
+                              //     color: Color.fromARGB(255, 156, 153, 147),
+                              //     fontSize: 16,
+                              //   ),
+                              // ),
                               SizedBox(height: 3),
                               Container(
                                 width: screenWidth * 0.7,
                                 height: 50,
                                 child: TextField(
                                   controller: email,
-                                  enabled: false,
+                                  enabled: true,
                                   decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor:
-                                        Color.fromARGB(255, 240, 240, 240),
+                                    // filled: true,
+                                    // fillColor: Color.fromARGB(255, 240, 240, 240),
+                                    labelText: 'Email Address',
                                     labelStyle: TextStyle(
-                                      color: Color.fromARGB(255, 156, 153, 147),
+                                      color: Colors.black38,
+                                      // color: Color.fromARGB(255, 156, 153, 147),
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: const BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 156, 153, 147),
+                                        color: Color.fromARGB(255, 156, 153, 147),
                                         width: 2.0,
                                       ),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: const BorderSide(
-                                        color: Color.fromARGB(255, 198, 198,
-                                            198), // Set the focused border color
+                                        color: Colors.black38,
+                                        // color: Color.fromARGB(255, 198, 198, 198), // Set the focused border color
                                         width: 2.0,
                                       ),
                                     ),
@@ -866,13 +896,13 @@ class RegisterState extends State<RegisterPage> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Username',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 156, 153, 147),
-                                  fontSize: 16,
-                                ),
-                              ),
+                              // const Text(
+                              //   'Username',
+                              //   style: TextStyle(
+                              //     color: Color.fromARGB(255, 156, 153, 147),
+                              //     fontSize: 16,
+                              //   ),
+                              // ),
                               SizedBox(height: 3),
                               Container(
                                 width: screenWidth * 0.7,
@@ -880,9 +910,9 @@ class RegisterState extends State<RegisterPage> {
                                 child: TextField(
                                   controller: username,
                                   decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor:
-                                        Color.fromARGB(255, 240, 240, 240),
+                                    // filled: true,
+                                    // fillColor: Color.fromARGB(255, 240, 240, 240),
+                                    labelText: 'Username',
                                     labelStyle: TextStyle(
                                       color: Color.fromARGB(255, 156, 153, 147),
                                     ),
@@ -897,8 +927,8 @@ class RegisterState extends State<RegisterPage> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: const BorderSide(
-                                        color: Color.fromARGB(255, 198, 198,
-                                            198), // Set the focused border color
+                                        color: Colors.black38,
+                                        // color: Color.fromARGB(255, 198, 198, 198), // Set the focused border color
                                         width: 2.0,
                                       ),
                                     ),
@@ -929,13 +959,13 @@ class RegisterState extends State<RegisterPage> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Password',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 156, 153, 147),
-                                  fontSize: 16,
-                                ),
-                              ),
+                              // const Text(
+                              //   'Password',
+                              //   style: TextStyle(
+                              //     color: Color.fromARGB(255, 156, 153, 147),
+                              //     fontSize: 16,
+                              //   ),
+                              // ),
                               SizedBox(height: 3),
                               Container(
                                 width: screenWidth * 0.7,
@@ -944,9 +974,9 @@ class RegisterState extends State<RegisterPage> {
                                   controller: password,
                                   obscureText: enablepassword,
                                   decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor:
-                                        Color.fromARGB(255, 240, 240, 240),
+                                    // filled: true,
+                                    // fillColor:Color.fromARGB(255, 240, 240, 240),
+                                    labelText: 'Password',
                                     labelStyle: TextStyle(
                                       color: Color.fromARGB(255, 156, 153, 147),
                                     ),
@@ -961,8 +991,8 @@ class RegisterState extends State<RegisterPage> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: const BorderSide(
-                                        color: Color.fromARGB(255, 198, 198,
-                                            198), // Set the focused border color
+                                        color: Colors.black38,
+                                        // color: Color.fromARGB(255, 198, 198, 198), // Set the focused border color
                                         width: 2.0,
                                       ),
                                     ),
@@ -1007,13 +1037,13 @@ class RegisterState extends State<RegisterPage> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Confirm Password',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 156, 153, 147),
-                                  fontSize: 16,
-                                ),
-                              ),
+                              // const Text(
+                              //   'Confirm Password',
+                              //   style: TextStyle(
+                              //     color: Color.fromARGB(255, 156, 153, 147),
+                              //     fontSize: 16,
+                              //   ),
+                              // ),
                               SizedBox(height: 3),
                               Container(
                                 width: screenWidth * 0.7,
@@ -1022,9 +1052,9 @@ class RegisterState extends State<RegisterPage> {
                                   controller: confirmpassword,
                                   obscureText: enablepassword2,
                                   decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor:
-                                        Color.fromARGB(255, 240, 240, 240),
+                                    // filled: true,
+                                    // fillColor: Color.fromARGB(255, 240, 240, 240),
+                                    labelText: 'Confirm Password',
                                     labelStyle: TextStyle(
                                       color: Color.fromARGB(255, 156, 153, 147),
                                     ),
@@ -1039,8 +1069,8 @@ class RegisterState extends State<RegisterPage> {
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: const BorderSide(
-                                        color: Color.fromARGB(255, 198, 198,
-                                            198), // Set the focused border color
+                                        color: Colors.black38,
+                                        // color: Color.fromARGB(255, 198, 198, 198), // Set the focused border color
                                         width: 2.0,
                                       ),
                                     ),
@@ -1156,7 +1186,8 @@ class RegisterState extends State<RegisterPage> {
                                   0), // Remove button elevation
                             ),
                             child: SizedBox(
-                              height: 50,
+                              width: screenWidth * .7,
+                              height: 40,
                               child: Center(
                                 child: Text(
                                   'Next',
@@ -1196,11 +1227,11 @@ class RegisterState extends State<RegisterPage> {
                               0), // Remove button elevation
                         ),
                         child: SizedBox(
-                          width: screenWidth * 0.6, // Set width to screen width
-                          height: 50,
+                          width: screenWidth * 0.5, // Set width to screen width
+                          height: 30,
                           child: Center(
                             child: Text(
-                              'Sign Up',
+                              'Send OTP',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,

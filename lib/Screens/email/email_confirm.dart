@@ -145,7 +145,7 @@ class _EmailConfirmState extends State<EmailConfirm> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => RegisterPage(email: widget.emailAddress)),
+              builder: (context) => RegisterPage()),
         );
         resetOtpTimer();
         // Clear entered OTP

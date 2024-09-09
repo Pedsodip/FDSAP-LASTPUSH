@@ -40,105 +40,137 @@ class LoginState extends State<_Login> {
 
   bool enablepassword = true;
 
-  Future<void> _fetchUser(String email, String password) async {
-    String email = usernameCon.text;
-    String password = passwordCon.text;
+  // Future<void> login(String email, String password) async {
+  //   String email = usernameCon.text;
+  //   String password = passwordCon.text;
+  //
+  //   // Validate name and password input
+  //   if (email.isEmpty || password.isEmpty) {
+  //     setState(() {
+  //       showWidget = true;
+  //       showTextFieldBorder = true;
+  //       message = 'Please enter your username and password.';
+  //
+  //       Timer(const Duration(seconds: 5), () {
+  //         setState(() {
+  //           showWidget = false;
+  //           showTextFieldBorder = false;
+  //         });
+  //       });
+  //     });
+  //     return;
+  //   }
+  //
+  //   void fetchItems() async {
+  //     String email = usernameCon.text;
+  //     String password = passwordCon.text;
+  //     final response = await http.get(Uri.parse(
+  //         'http://$domain:8070/api/users/all?email_or_username=$email&password=$password'));
+  //     if (response.statusCode == 200) {
+  //       setState(() {
+  //         List<dynamic> dataList = jsonDecode(response.body) as List;
+  //         if (dataList.isNotEmpty) {
+  //           // Extract the first item from the list (assuming there's only one)
+  //           Map<String, dynamic> userData = dataList.first;
+  //
+  //           // Access the "firstname" value
+  //           int userID = userData['id'] ?? '';
+  //           debugPrint('userid: $userID');
+  //           Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //               builder: (context) => MyDashboard(
+  //                 userID: userID,
+  //               ),
+  //             ),
+  //           );
+  //         } else {
+  //           // Handle case when the list is empty
+  //           debugPrint('No data found');
+  //         }
+  //       });
+  //     } else {
+  //       throw Exception('Failed to load items');
+  //     }
+  //   }
+  //
+  //   // Make GET request to API
+  //   final url = Uri.parse(
+  //       'http://$domain:8070/api/users?email_or_username=$email&password=$password');
+  //
+  //   final response = await http.get(
+  //     url,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "Access-Control-Allow-Origin":
+  //           "*", // Ensure this matches CORS settings on server
+  //     },
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //     var jsonResponse = jsonDecode(response.body);
+  //     if (jsonResponse.containsKey('error')) {
+  //       setState(() {
+  //         debugPrint(jsonResponse['error']);
+  //       });
+  //     } else {
+  //       setState(() {
+  //         fetchItems();
+  //       });
+  //     }
+  //   } else {
+  //     setState(() {
+  //       debugPrint("Login failed");
+  //       showWidget = true;
+  //       showTextFieldBorder = true;
+  //       message = 'Incorrect Username or Password';
+  //       usernameCon.clear();
+  //       passwordCon.clear();
+  //
+  //       Timer(const Duration(seconds: 5), () {
+  //         setState(() {
+  //           showWidget = false;
+  //           showTextFieldBorder = false;
+  //         });
+  //       });
+  //     });
+  //   }
+  // }
 
-    // Validate name and password input
-    if (email.isEmpty || password.isEmpty) {
-      setState(() {
-        showWidget = true;
-        showTextFieldBorder = true;
-        message = 'Please enter your username and password.';
-
-        Timer(const Duration(seconds: 5), () {
-          setState(() {
-            showWidget = false;
-            showTextFieldBorder = false;
-          });
-        });
-      });
-      return;
-    }
-
-    void fetchItems() async {
-      String email = usernameCon.text;
-      String password = passwordCon.text;
-      final response = await http.get(Uri.parse(
-          'http://$domain:8070/api/users/all?email_or_username=$email&password=$password'));
-      if (response.statusCode == 200) {
-        setState(() {
-          List<dynamic> dataList = jsonDecode(response.body) as List;
-          if (dataList.isNotEmpty) {
-            // Extract the first item from the list (assuming there's only one)
-            Map<String, dynamic> userData = dataList.first;
-
-            // Access the "firstname" value
-            int userID = userData['id'] ?? '';
-            debugPrint('userid: $userID');
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyDashboard(
-                  userID: userID,
-                ),
-              ),
-            );
-          } else {
-            // Handle case when the list is empty
-            debugPrint('No data found');
-          }
-        });
-      } else {
-        throw Exception('Failed to load items');
-      }
-    }
-
-    // Make GET request to API
-    final url = Uri.parse(
-        'http://$domain:8070/api/users?email_or_username=$email&password=$password');
-
-    final response = await http.get(
-      url,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin":
-            "*", // Ensure this matches CORS settings on server
-      },
-    );
-
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-      if (jsonResponse.containsKey('error')) {
-        setState(() {
-          debugPrint(jsonResponse['error']);
-        });
-      } else {
-        setState(() {
-          fetchItems();
-        });
-      }
-    } else {
-      setState(() {
-        debugPrint("Login failed");
-        showWidget = true;
-        showTextFieldBorder = true;
-        message = 'Incorrect Username or Password';
-        usernameCon.clear();
-        passwordCon.clear();
-
-        Timer(const Duration(seconds: 5), () {
-          setState(() {
-            showWidget = false;
-            showTextFieldBorder = false;
-          });
-        });
-      });
-    }
-  }
 
   List<dynamic> getDatas() {
     return dataofuser;
+  }
+
+  Future<void> login() async {
+    String email = usernameCon.text;
+    String password = passwordCon.text;
+
+    final Map<String, dynamic> requestBody = {
+      "username": email,
+      "password": password,
+    };
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:8080/api/login'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(requestBody),
+    );
+    print(response.statusCode);
+    final jsonData = json.decode(response.body);
+    if (response.statusCode == 200) {
+      print(jsonData);
+      userID = jsonData['Data']['id'];
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MyDashboard(
+            userID: userID,
+          ),
+        ),
+      );
+    } else {
+      throw Exception('Failed to load items');
+    }
   }
 
   @override
@@ -148,50 +180,50 @@ class LoginState extends State<_Login> {
 
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        ),
+        // appBar: AppBar(
+        //   backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        // ),
         body: Container(
           color: const Color.fromARGB(255, 207, 184, 153),
           child: Stack(
             alignment: Alignment.center,
             children: [
-              Image.asset(
-                'assets/design1/brown.png',
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.cover,
-              ),
+              // Image.asset(
+              //   'assets/design1/brown.png',
+              //   width: double.infinity,
+              //   height: double.infinity,
+              //   fit: BoxFit.cover,
+              // ),
               Positioned(
-                top: 0,
+                top: 1,
                 left: 0,
                 right: 0,
                 child: Image.asset(
-                  'assets/design1/bg_white.png',
+                  'assets/design1/logbg.png',
                   width: screenWidth * 0.9, // Set width to screen width
                   height:
-                      screenHeight * 0.55, // Set height to 30% of screen height
+                      screenHeight * 1, // Set height to 30% of screen height
                   fit: BoxFit.fill, // Adjust the fit as needed
                 ),
               ),
-              Positioned(
-                bottom: 50,
-                child: Image.asset(
-                  'assets/design1/white_login.png',
-                  width: screenWidth * 0.83, // Set width to screen width
-                  height: 500, // Set height to 30% of screen height
-                  fit: BoxFit.fill, // Adjust the fit as needed
-                ),
-              ),
-              Positioned(
-                top: 25,
-                left: -5,
-                child: Image.asset(
-                  'assets/design1/design1.png',
-                  width: 130,
-                  height: 130,
-                ),
-              ),
+              // Positioned(
+              //   bottom: 50,
+              //   child: Image.asset(
+              //     'assets/design1/white_login.png',
+              //     width: screenWidth * 0.83, // Set width to screen width
+              //     height: 500, // Set height to 30% of screen height
+              //     fit: BoxFit.fill, // Adjust the fit as needed
+              //   ),
+              // ),
+              // Positioned(
+              //   top: 25,
+              //   left: -5,
+              //   child: Image.asset(
+              //     'assets/design1/design1.png',
+              //     width: 130,
+              //     height: 130,
+              //   ),
+              // ),
               // Positioned(
               //     top: -5,
               //     right: -15,
@@ -200,20 +232,20 @@ class LoginState extends State<_Login> {
               //       width: 130,
               //       height: 130,
               //     )),
+              // Positioned(
+              //   bottom: screenHeight * 0.73,
+              //   child: Image.asset(
+              //     'assets/design1/paw.png',
+              //     width: 90,
+              //     height: 90,
+              //   ),
+              // ),
               Positioned(
-                bottom: screenHeight * 0.73,
+                top: 100,
                 child: Image.asset(
-                  'assets/design1/paw.png',
-                  width: 90,
-                  height: 90,
-                ),
-              ),
-              Positioned(
-                bottom: screenHeight * 0.50,
-                child: Image.asset(
-                  'assets/design1/furpect_paw.png',
-                  width: 300,
-                  height: 300,
+                  'assets/design1/loginlogo.png',
+                  width: screenWidth * 0.8,
+                  height: screenHeight * 0.6,
                 ),
               ),
               // Positioned(
@@ -225,17 +257,17 @@ class LoginState extends State<_Login> {
               //     height: 140,
               //   ),
               // ),
+              // Positioned(
+              //   right: -5,
+              //   top: 230,
+              //   child: Image.asset(
+              //     'assets/design1/design5.png',
+              //     width: 120,
+              //     height: 120,
+              //   ),
+              // ),
               Positioned(
-                right: -5,
-                top: 230,
-                child: Image.asset(
-                  'assets/design1/design5.png',
-                  width: 120,
-                  height: 120,
-                ),
-              ),
-              Positioned(
-                bottom: screenHeight * 0.25,
+                bottom: screenHeight * 0.23,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -381,7 +413,9 @@ class LoginState extends State<_Login> {
                       3.0), // Add padding to the left and right
                   child: ElevatedButton(
                     onPressed: () {
-                      _fetchUser(usernameCon.text, passwordCon.text);
+                      setState(() {
+                        login();
+                      });
                     },
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -429,7 +463,7 @@ class LoginState extends State<_Login> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => RegisterPage(email: 'sss')),
+                          MaterialPageRoute(builder: (context) => const RegisterPage()),
                           // MaterialPageRoute(builder: (context) => Email()),
                         );
                       },
@@ -445,7 +479,7 @@ class LoginState extends State<_Login> {
                 ),
               ),
               Positioned(
-                bottom: screenHeight * 0.22,
+                bottom: screenHeight * 0.2,
                 right: screenWidth * 0.14,
                 child: TextButton(
                   onPressed: () {
@@ -464,7 +498,7 @@ class LoginState extends State<_Login> {
                 ),
               ),
               Positioned(
-                bottom: screenHeight * 0.22,
+                bottom: screenHeight * 0.198,
                 left: screenWidth * 0.13,
                 child: Row(
                   children: [
@@ -482,7 +516,7 @@ class LoginState extends State<_Login> {
                 ),
               ),
               Positioned(
-                bottom: screenHeight * 0.237,
+                bottom: screenHeight * 0.215,
                 left: screenWidth * 0.22,
                 child: const Row(
                   children: [

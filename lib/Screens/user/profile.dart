@@ -32,7 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var client = http.Client();
     try {
       final response = await client
-          .get(Uri.parse('http://$domain:8070/byID?id=${widget.userID}'));
+          .get(Uri.parse('http://$domain:8080/api/user?id=${widget.userID}'));
 
       if (response.statusCode == 200) {
         // Parse the JSON response
@@ -216,7 +216,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     fetchUserData();
-    fetchuserItems();
+    // fetchuserItems();
   }
 
   @override
