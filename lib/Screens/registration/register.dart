@@ -40,6 +40,9 @@ class RegisterState extends State<RegisterPage> {
   bool showTextFieldBorderUN = false;
   bool showTextFieldBorderPASS = false;
   bool showTextFieldBorderCPASS = false;
+  bool enablepassword = true;
+  // bool showTextFieldBorderPASS = false;
+  String? passwordError;
 
   String message = "";
   bool showWidget = false;
@@ -49,7 +52,7 @@ class RegisterState extends State<RegisterPage> {
 
   bool isButtonVisiblesignup = false;
   bool isButtonVisiblenext = true;
-  bool enablepassword = true;
+  // bool enablepassword = true;
   bool enablepassword2 = true;
 
   get gender => null;
@@ -293,6 +296,12 @@ class RegisterState extends State<RegisterPage> {
     } catch (e) {
       debugPrint('Error: $e');
     }
+  }
+
+  bool validatePassword(String password) {
+    String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regExp = RegExp(pattern);
+    return regExp.hasMatch(password);
   }
 
 
@@ -1127,79 +1136,79 @@ class RegisterState extends State<RegisterPage> {
                       Visibility(
                         visible: showSecondaryFields,
                         child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // const Text(
-                              //   'Password',
-                              //   style: TextStyle(
-                              //     color: Color.fromARGB(255, 156, 153, 147),
-                              //     fontSize: 16,
-                              //   ),
-                              // ),
-                              SizedBox(height: 3),
-                              Container(
-                                width: screenWidth * 0.7,
-                                height: 50,
-                                child: TextField(
-                                  controller: password,
-                                  obscureText: enablepassword,
-                                  decoration: InputDecoration(
-                                    // filled: true,
-                                    // fillColor:Color.fromARGB(255, 240, 240, 240),
-                                    labelText: 'Password',
-                                    labelStyle: TextStyle(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 3),
+                            Container(
+                              width: screenWidth * 0.7,
+                              height: 50,
+                              child: TextField(
+                                controller: password,
+                                obscureText: enablepassword,
+                                decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  labelStyle: TextStyle(
+                                    color: Color.fromARGB(255, 156, 153, 147),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: const BorderSide(
+                                      color: Color.fromARGB(255, 156, 153, 147),
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.black38,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: BorderSide(
+                                      color: showTextFieldBorderPASS
+                                          ? Color.fromARGB(255, 255, 132, 132)
+                                          : Color.fromARGB(255, 240, 240, 240),
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      enablepassword ? Icons.visibility : Icons.visibility_off,
                                       color: Color.fromARGB(255, 156, 153, 147),
                                     ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: const BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 156, 153, 147),
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: const BorderSide(
-                                        color: Colors.black38,
-                                        // color: Color.fromARGB(255, 198, 198, 198), // Set the focused border color
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                        color: showTextFieldBorderPASS
-                                            ? Color.fromARGB(255, 255, 132, 132)
-                                            : Color.fromARGB(
-                                                255, 240, 240, 240),
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                    suffixIcon: IconButton(
-                                      icon: Icon(
-                                        enablepassword
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
-                                        color:
-                                            Color.fromARGB(255, 156, 153, 147),
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          enablepassword = !enablepassword;
-                                        });
-                                      },
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 20),
+                                    onPressed: () {
+                                      setState(() {
+                                        enablepassword = !enablepassword;
+                                      });
+                                    },
                                   ),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Color.fromARGB(255, 135, 132, 127),
-                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                  errorText: passwordError, // Display error text if validation fails
                                 ),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color.fromARGB(255, 135, 132, 127),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    // Validate password on input change
+                                    if (validatePassword(value)) {
+                                      passwordError = null; // No error if valid
+                                      showTextFieldBorderPASS = false;
+                                    } else {
+                                      passwordError =
+                                      'Password must contain number, special character, and be alphanumeric.';
+                                      showTextFieldBorderPASS = true;
+                                    }
+                                  });
+                                },
                               ),
-                            ]),
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 10),
                       Visibility(
@@ -1207,13 +1216,6 @@ class RegisterState extends State<RegisterPage> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // const Text(
-                              //   'Confirm Password',
-                              //   style: TextStyle(
-                              //     color: Color.fromARGB(255, 156, 153, 147),
-                              //     fontSize: 16,
-                              //   ),
-                              // ),
                               SizedBox(height: 3),
                               Container(
                                 width: screenWidth * 0.7,

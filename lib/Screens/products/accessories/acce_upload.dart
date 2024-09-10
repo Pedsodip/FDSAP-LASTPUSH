@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+import 'dart:io' show File, Platform;
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-//import 'package:pawprojui/Screens/petscreens/petaccessories.dart';
+import 'package:image_picker/image_picker.dart';
 
 
 class accUploadPage extends StatefulWidget {
@@ -14,16 +16,13 @@ class accUploadPage extends StatefulWidget {
 }
 
 class _accUploadPageState extends State<accUploadPage> {
-  Map<String, List<String>> feedType = {
-      'Cat': [
-      'Kitten',
-      'Adult',
-    ],
-      'Dog': [
-      'Puppy',
-      'Adult',
-    ],
-  };
+
+  TextEditingController name = TextEditingController();
+  TextEditingController type = TextEditingController();
+  TextEditingController desc = TextEditingController();
+  TextEditingController size = TextEditingController();
+  TextEditingController quantity = TextEditingController();
+  TextEditingController cost = TextEditingController();
 
   bool showTextFieldBorderPI = false;
   bool showTextFieldBorderN = false;
@@ -44,21 +43,83 @@ class _accUploadPageState extends State<accUploadPage> {
   bool enablepassword = true;
   bool enablepassword2 = true;
 
-  String selectedtype = 'Cat';
-  String selectedbreed = 'Persian';
+  File? image;
+  final picker = ImagePicker();
+  String? _fileName;
+  Future<void> _pickImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        image = File(pickedFile.path); // Store the file object
+        _fileName = pickedFile.name; // Store the file name
+      });
+    }
+  }
+
+  void clearFields(){
+    setState(() {
+      name.clear();
+      type.clear();
+      desc.clear();
+      size.clear();
+      quantity.clear();
+      cost.clear();
+    });
+  }
+
+  Future<void> _uploadAcc() async {
+    int idOfUser = widget.userID;
+    String _name = name.text;
+    String _type = type.text;
+    String description = desc.text;
+    String _size = size.text;
+    int quan = int.parse(quantity.text);
+    int price = int.parse(cost.text);
+    var url = Uri.parse('http://10.0.2.2:8080/api/add/accessory');
+
+    var request = http.MultipartRequest('POST', url);
+
+    // Add the form fields
+    request.fields['UserID'] = idOfUser.toString();
+    request.fields['Name'] = _name;
+    request.fields['Description'] = description;
+    request.fields['Type'] = _type;
+    request.fields['Size'] = _size;
+    request.fields['Cost'] = price.toString();
+    request.fields['Quantity'] = quan.toString();
+
+
+    if (image != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+        'image',
+        image!.path,
+        filename: _fileName,
+      ));
+    }
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      var responseData = await response.stream.bytesToString();
+      var jsonResponse = jsonDecode(responseData);
+      clearFields();
+      show(context,'Acessory added successfully!');
+      print('Acessory added successfully: $jsonResponse');
+    } else {
+      var responseData = await response.stream.bytesToString();
+      var jsonResponse = jsonDecode(responseData);
+      var errorMessage = jsonDecode(jsonResponse.body)['Message'];
+      show(context, errorMessage);
+      print('Failed to add Acessory: $jsonResponse');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    var feedID;
-    var feedName;
-    var amountAv;
-    var feedDesc;
-
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 207, 184, 153),
         ),
@@ -132,438 +193,477 @@ class _accUploadPageState extends State<accUploadPage> {
                   ),
                 ),
               ),
+
+              // TextFields
               Positioned(
-                  top: 110,
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 30,
+                top: 100,
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 30),
+                      // name
+                      Container(
+                        width: screenWidth * 0.7,
+                        height: 40,
+                        child: TextField(
+                          controller: name,
+                          cursorHeight: 20,
+                          decoration: InputDecoration(
+                            labelText: 'Name',
+                            labelStyle: const TextStyle(
+                              fontSize: 16,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                // color: Color.fromARGB(255, 156, 153, 147),
+                                width: 2.0,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 198, 198,
+                                    198), // Set the focused border color
+                                width: 2.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: showTextFieldBorderN
+                                    ? Color.fromARGB(255, 255, 132, 132)
+                                    : Color.fromARGB(255, 240, 240, 240),
+                                width: 2.0,
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                          ),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 135, 132, 127),
+                          ),
                         ),
-                        Visibility(
-                          visible: showPrimaryFields,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // const Text(
-                              //   'Name',
-                              //   style: TextStyle(
-                              //     color: Color.fromARGB(255, 156, 153, 147),
-                              //     fontSize: 16,
-                              //   ),
-                              // ),
-                              // SizedBox(height: 3,),
-                              Container(
-                                width: screenWidth * 0.7,
-                                height: 50,
-                                child: TextFormField(
-                                  controller: feedID,
-                                  decoration: InputDecoration(
-                                    // filled: true,
-                                    // fillColor: Color.fromARGB(255, 240, 240, 240),
-                                    labelText: 'Name',
-                                    labelStyle: const TextStyle(
-                                      color: Colors.black38,
-                                      // color: Color.fromARGB(255, 156, 153, 147),
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: const BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 156, 153, 147),
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: const BorderSide(
-                                        color: Colors.black38,
-                                        // color: Color.fromARGB(255, 198, 198, 198),
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                        color: showTextFieldBorderPI
-                                            ? Color.fromARGB(255, 255, 132, 132)
-                                            : Color.fromARGB(
-                                                255, 240, 240, 240),
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 20),
-                                  ),
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Color.fromARGB(255, 135, 132, 127),
-                                  ),
-                                  onTap: () {
-                                    setState(() {
-                                      showTextFieldBorderPI =
-                                          false; // Update the border color state
-                                    });
-                                  },
+                      ),
+                      SizedBox(height: 15),
+                      Container(
+                        width: screenWidth * 0.7,
+                        height: 40,
+                        child: TextField(
+                          controller: type,
+                          cursorHeight: 20,
+                          decoration: InputDecoration(
+                            labelText: 'Type',
+                            labelStyle: const TextStyle(
+                              fontSize: 16,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                // color: Color.fromARGB(255, 156, 153, 147),
+                                width: 2.0,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 198, 198,
+                                    198), // Set the focused border color
+                                width: 2.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: showTextFieldBorderN
+                                    ? Color.fromARGB(255, 255, 132, 132)
+                                    : Color.fromARGB(255, 240, 240, 240),
+                                width: 2.0,
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                          ),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 135, 132, 127),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Container(
+                        width: screenWidth * 0.7,
+                        height: 40,
+                        child: TextField(
+                          controller: desc,
+                          cursorHeight: 20,
+                          decoration: InputDecoration(
+                            labelText: 'Description',
+                            labelStyle: const TextStyle(
+                              fontSize: 16,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                // color: Color.fromARGB(255, 156, 153, 147),
+                                width: 2.0,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 198, 198,
+                                    198), // Set the focused border color
+                                width: 2.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: showTextFieldBorderN
+                                    ? Color.fromARGB(255, 255, 132, 132)
+                                    : Color.fromARGB(255, 240, 240, 240),
+                                width: 2.0,
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                          ),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 135, 132, 127),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Container(
+                        width: screenWidth * 0.7,
+                        height: 40,
+                        child: TextField(
+                          controller: size,
+                          cursorHeight: 20,
+                          decoration: InputDecoration(
+                            labelText: 'Size',
+                            labelStyle: const TextStyle(
+                              fontSize: 16,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                // color: Color.fromARGB(255, 156, 153, 147),
+                                width: 2.0,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 198, 198,
+                                    198), // Set the focused border color
+                                width: 2.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: showTextFieldBorderN
+                                    ? Color.fromARGB(255, 255, 132, 132)
+                                    : Color.fromARGB(255, 240, 240, 240),
+                                width: 2.0,
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                          ),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 135, 132, 127),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Container(
+                        width: screenWidth * 0.7,
+                        height: 40,
+                        child: TextField(
+                          controller: cost,
+                          cursorHeight: 20,
+                          decoration: InputDecoration(
+                            labelText: 'Price',
+                            labelStyle: const TextStyle(
+                              fontSize: 16,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                // color: Color.fromARGB(255, 156, 153, 147),
+                                width: 2.0,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 198, 198,
+                                    198), // Set the focused border color
+                                width: 2.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: showTextFieldBorderN
+                                    ? Color.fromARGB(255, 255, 132, 132)
+                                    : Color.fromARGB(255, 240, 240, 240),
+                                width: 2.0,
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                          ),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 135, 132, 127),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Container(
+                        width: screenWidth * 0.7,
+                        height: 40,
+                        child: TextField(
+                          controller: quantity,
+                          cursorHeight: 20,
+                          decoration: InputDecoration(
+                            labelText: 'Quantity',
+                            labelStyle: const TextStyle(
+                              fontSize: 16,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                // color: Color.fromARGB(255, 156, 153, 147),
+                                width: 2.0,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 198, 198,
+                                    198), // Set the focused border color
+                                width: 2.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: showTextFieldBorderN
+                                    ? Color.fromARGB(255, 255, 132, 132)
+                                    : Color.fromARGB(255, 240, 240, 240),
+                                width: 2.0,
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                          ),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 135, 132, 127),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap:
+                            _pickImage, // Call image picker when tapped
+                            child: Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color:
+                                const Color.fromARGB(255, 240, 240, 240),
+                                borderRadius: BorderRadius.circular(10.0),
+                                border: Border.all(
+                                  color: const Color.fromARGB(
+                                      255, 156, 153, 147),
+                                  width: 2.0,
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 15),
-                        Visibility(
-                          visible: showPrimaryFields,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // const Text(
-                                //   'Type',
-                                //   style: TextStyle(
-                                //     color: Color.fromARGB(255, 156, 153, 147),
-                                //     fontSize: 16,
-                                //   ),
-                                // ),
-                                // SizedBox(height: 3),
-                                Container(
-                                  width: screenWidth * 0.7,
-                                  height: 50,
-                                  child: TextFormField(
-                                    controller: feedName,
-                                    decoration: InputDecoration(
-                                      // filled: true,
-                                      // fillColor: Color.fromARGB(255, 240, 240, 240),
-                                      labelText: 'Type',
-                                      labelStyle: const TextStyle(
-                                        color: Colors.black38,
-                                        // color: Color.fromARGB(255, 156, 153, 147),
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide(
-                                          color: showTextFieldBorderN
-                                              ? Color.fromARGB(
-                                                  255, 255, 132, 132)
-                                              : Colors.transparent,
-                                          width: 2.0,
-                                        ),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: const BorderSide(
-                                          color: Colors.black38,
-                                          // color: Color.fromARGB(255, 198, 198, 198),
-                                          width: 2.0,
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide(
-                                          color: showTextFieldBorderN
-                                              ? Color.fromARGB(
-                                                  255, 255, 132, 132)
-                                              : Color.fromARGB(
-                                                  255, 240, 240, 240),
-                                          width: 2.0,
-                                        ),
-                                      ),
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 20),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  // Center the selected image or icon
+                                  Center(
+                                    child: const Icon(
+                                      Icons.camera_alt,
+                                      color:
+                                      Color.fromARGB(255, 135, 132, 127),
+                                      size: 30,
                                     ),
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Color.fromARGB(255, 135, 132, 127),
-                                    ),
-                                    onTap: () {
-                                      setState(() {
-                                        showTextFieldBorderN =
-                                            false; // Update the border color state
-                                      });
-                                    },
                                   ),
-                                ),
-                              ]),
-                        ),
-                        SizedBox(height: 15),
-                        Visibility(
-                          visible: showPrimaryFields,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // const Text(
-                                //   'Description',
-                                //   style: TextStyle(
-                                //     color: Color.fromARGB(255, 156, 153, 147),
-                                //     fontSize: 16,
-                                //   ),
-                                // ),
-                                // SizedBox(height: 3),
-                                Container(
-                                  width: screenWidth * 0.7,
-                                  height: 50,
-                                  child: TextFormField(
-                                    controller: feedName,
-                                    decoration: InputDecoration(
-                                      // filled: true,
-                                      // fillColor: Color.fromARGB(255, 240, 240, 240),
-                                      labelText: 'Description',
-                                      labelStyle: const TextStyle(
-                                        color: Colors.black38,
-                                        // color: Color.fromARGB(255, 156, 153, 147),
+
+                                  // Position the "Add" icon on the bottom right corner
+                                  Positioned(
+                                    bottom: 5.0, // Adjust spacing as needed
+                                    right: 5.0,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(2.0),
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.green,
                                       ),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide(
-                                          color: showTextFieldBorderN
-                                              ? Color.fromARGB(
-                                                  255, 255, 132, 132)
-                                              : Colors.transparent,
-                                          width: 2.0,
-                                        ),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: const BorderSide(
-                                          color: Colors.black38,
-                                          // color: Color.fromARGB(255, 198, 198, 198),
-                                          width: 2.0,
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        borderSide: BorderSide(
-                                          color: showTextFieldBorderN
-                                              ? Color.fromARGB(
-                                                  255, 255, 132, 132)
-                                              : Color.fromARGB(
-                                                  255, 240, 240, 240),
-                                          width: 2.0,
-                                        ),
-                                      ),
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 20),
-                                    ),
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Color.fromARGB(255, 135, 132, 127),
-                                    ),
-                                    onTap: () {
-                                      setState(() {
-                                        showTextFieldBorderN =
-                                            false; // Update the border color state
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ]),
-                        ),
-                        SizedBox(height: 15),
-                        Visibility(
-                          visible: showPrimaryFields,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 3),
-                            ],
-                          ),
-                        ),
-                        Visibility(
-                          visible: showPrimaryFields,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // const Text(
-                              //   'Size',
-                              //   style: TextStyle(
-                              //     color: Color.fromARGB(255, 156, 153, 147),
-                              //     fontSize: 16,
-                              //   ),
-                              // ),
-                              // SizedBox(height: 3),
-                              Container(
-                                width: screenWidth * 0.7,
-                                height: 50,
-                                child: TextFormField(
-                                  controller: amountAv,
-                                  decoration: InputDecoration(
-                                    // filled: true,
-                                    // fillColor: const Color.fromARGB(255, 240, 240, 240),
-                                    labelText: 'Size',
-                                    labelStyle: const TextStyle(
-                                      color: Colors.black38,
-                                      // color: Color.fromARGB(255, 156, 153, 147),
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: const BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 156, 153, 147),
-                                          width: 2.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: const BorderSide(
-                                          color: Colors.black38,
-                                          // color: Color.fromARGB(255, 198, 198, 198),
-                                          width: 2.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                          color: showTextFieldBorderW
-                                              ? Color.fromARGB(
-                                                  255, 255, 132, 132)
-                                              : Color.fromARGB(
-                                                  255, 240, 240, 240),
-                                          width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 20),
-                                  ),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Color.fromARGB(255, 135, 132, 127),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 15),
-                        Visibility(
-                          visible: showPrimaryFields,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // const Text(
-                              //   'Quantity',
-                              //   style: TextStyle(
-                              //     color: Color.fromARGB(255, 156, 153, 147),
-                              //     fontSize: 16,
-                              //   ),
-                              // ),
-                              // SizedBox(height: 3),
-                              Container(
-                                width: screenWidth * 0.7,
-                                height: 190,
-                                child: TextFormField(
-                                  controller: feedDesc,
-                                  decoration: InputDecoration(
-                                    // filled: true,
-                                    // fillColor: const Color.fromARGB(255, 240, 240, 240),
-                                    labelText: 'Quantity',
-                                    labelStyle: const TextStyle(
-                                      color: Colors.black38,
-                                      // color: Color.fromARGB(255, 156, 153, 147),
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: const BorderSide(
-                                          color: Color.fromARGB(
-                                              255, 156, 153, 147),
-                                          width: 2.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: const BorderSide(
-                                          color: Colors.black38,
-                                          // color: Color.fromARGB(255, 198, 198, 198),
-                                          width: 2.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                          color: showTextFieldBorderP
-                                              ? Color.fromARGB(
-                                                  255, 255, 132, 132)
-                                              : Color.fromARGB(
-                                                  255, 240, 240, 240),
-                                          width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 20),
-                                  ),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Color.fromARGB(255, 135, 132, 127),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        if (isButtonVisiblenext)
-                          Positioned(
-                            bottom: 50,
-                            left: 0,
-                            right: 0,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0), // Add horizontal padding
-                              child: Container(
-                                height: 45,
-                                width: MediaQuery.of(context).size.width * 0.7, // Use MediaQuery to get screen width
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                     // _checkinput();
-                                  },
-                                  style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                    ),
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                      Color.fromARGB(255, 110, 77, 34),
-                                    ),
-                                    elevation: MaterialStateProperty.all<double>(20),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Next',
-                                      style: TextStyle(
+                                      child: const Icon(
+                                        Icons.add,
+                                        size: 15,
                                         color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 2.0, // Space between icon and filename
+                          ),
+
+                          // Display filename to the right of the gesture detector
+                          if (_fileName != null)
+                            SizedBox(
+                              width: 150,
+                              child: Text(
+                                _fileName!,
+                                overflow:
+                                TextOverflow.ellipsis, // Prevent overflow
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black54,
+                                ),
+                                textAlign: TextAlign
+                                    .right, // Align text to the right
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // submit button
+              Positioned(
+                bottom: 20,
+                height: 60,
+                width: screenWidth * 0.7,
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment
+                          .center, // Center the button within the Stack
+                      child: Padding(
+                        padding: const EdgeInsets.all(
+                            3.0), // Add padding to the button
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // _checkinput();
+                            _uploadAcc();
+                          },
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              Color.fromARGB(255, 110, 77,
+                                  34), // Set the button's background color
+                            ),
+                            elevation: MaterialStateProperty.all<double>(
+                                0), // Remove button elevation
+                          ),
+                          child: SizedBox(
+                            height: 35,
+                            child: Center(
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
                           ),
-                        Positioned(
-                            bottom: 300,
-                            left: 70,
-                            child: Visibility(
-                              visible: showWidget,
-                              child: Text(
-                                message,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Color.fromARGB(255, 255, 51, 51),
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Roboto-Black',
-                                ),
-                              ),
-                            )),
-                      ],
+                        ),
+                      ),
                     ),
-                  )),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+void show(BuildContext context, String title) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        title: null,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets/design1/paw_result.png',
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                ),
+                SizedBox(height: 20, width: 30),
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: const Color.fromARGB(255, 98, 74, 26),
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                // Text (foreground) color
+                backgroundColor: Color.fromARGB(255, 110, 77, 34),
+                side: BorderSide(
+                    color: const Color.fromARGB(255, 90, 90, 90),
+                    width: 1), // Border color and width
+              ),
+              child: Text(
+                'Ok',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    },
+  );
 }

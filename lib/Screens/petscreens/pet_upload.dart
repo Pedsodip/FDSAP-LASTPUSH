@@ -1027,6 +1027,7 @@ class PetUploadState extends State<PetUploadPage> {
                     ),
                   ),
                 ),
+                // submit button
                 Positioned(
                   bottom: 20,
                   height: 60,
