@@ -233,8 +233,11 @@ class _PetSearchAllPageState extends State<PetSearchAllPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => PetDetailsScreen(
-                                petID: products[index % products.length]['id'],
-                                userID: widget.userID,
+                            petID: products[
+                            index % products.length]['id'],
+                            userID: widget.userID,
+                            ownerID: products[
+                            index % products.length]['user_id'],
                               )),
                     );
                   },

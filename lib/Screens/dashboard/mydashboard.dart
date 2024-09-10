@@ -53,7 +53,7 @@ class _MyDashboardState extends State<MyDashboard> {
     var client = http.Client();
     try {
       final response = await client
-          .get(Uri.parse('http://$domain:8080/api/user?id=${widget.userID}'));
+          .get(Uri.parse('http://$domain/api/user?id=${widget.userID}'));
 
       if (response.statusCode == 200) {
         // Parse the JSON response
@@ -88,7 +88,7 @@ class _MyDashboardState extends State<MyDashboard> {
   Future<void> fetchAllProducts() async {
     try {
       final response =
-          await client.get(Uri.parse('http://$domain:8080/api/all/pet'));
+          await client.get(Uri.parse('http://$domain/api/all/pet'));
 
       if (response.statusCode == 200) {
         // Parse the JSON response
@@ -135,12 +135,12 @@ class _MyDashboardState extends State<MyDashboard> {
     // Check if user data has been fetched
     if (dataofUser.isEmpty) {
       // If dataofUser is empty, display a loading indicator or any placeholder widget
-      // return Center(child: CircularProgressIndicator());
-      return Center(
-        child: Text(
-          'No Data Available',
-        ),
-      );
+      return Center(child: CircularProgressIndicator());
+      // return Center(
+      //   child: Text(
+      //     'No Data Available',
+      //   ),
+      // );
     } else {
       Map<String, dynamic> userData = dataofUser.first;
 
@@ -471,9 +471,11 @@ class _MyDashboardState extends State<MyDashboard> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => PetDetailsScreen(
-                                      petID: products[index % products.length]
-                                          ['id'],
+                                      petID: products[
+                                      index % products.length]['id'],
                                       userID: widget.userID,
+                                      ownerID: products[
+                                      index % products.length]['user_id'],
                                     ),
                                   ),
                                 );
@@ -652,9 +654,11 @@ class _MyDashboardState extends State<MyDashboard> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               PetDetailsScreen(
-                                            petID: products[
+                                                petID: products[
                                                 index % products.length]['id'],
-                                            userID: widget.userID,
+                                                userID: widget.userID,
+                                                ownerID: products[
+                                                index % products.length]['user_id'],
                                           ),
                                         ),
                                       );

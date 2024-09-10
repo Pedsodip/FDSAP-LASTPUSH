@@ -9,12 +9,12 @@ import '../map/google_map.dart';
 import '../user/profile.dart';
 import 'package:http/http.dart' as http;
 
-class PetDetailsScreen extends StatefulWidget {
-  final int petID;
-  final int userID;
+class PetDetailsScreen extends StatefulWidget { final int petID;
+final int userID;
+final int ownerID;
 
   // ignore: prefer_const_constructors_in_immutables
-  PetDetailsScreen({required this.petID, required this.userID});
+  PetDetailsScreen({required this.petID, required this.userID, required this.ownerID});
   
   @override
   _PetDetailsScreenState createState() => _PetDetailsScreenState();
@@ -32,16 +32,14 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
     var client = http.Client();
     try {
       final response = await client
-          .get(Uri.parse('http://$domain:8070/indivProduct?userid=${widget.petID}'));
+          .get(Uri.parse('http://$domain/api/pet?id=${widget.petID}'));
 
       if (response.statusCode == 200) {
-        // Parse the JSON response
         dynamic responseData = jsonDecode(response.body);
 
         if (responseData is Map<String, dynamic>) {
-          // If responseData is a JSON object (Map)
           setState(() {
-            dataofpet = [responseData]; // Wrap responseData in a list
+            dataofpet = [responseData];
           });
         } else if (responseData is List<dynamic>) {
           // If responseData is a JSON array (List)
@@ -95,7 +93,7 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
     var client = http.Client();
     try {
       final response = await client
-          .get(Uri.parse('http://$domain:8070/byID?id=${2}'));
+          .get(Uri.parse('http://$domain/api/user?id=${widget.ownerID}'));
 
       if (response.statusCode == 200) {
         // Parse the JSON response
@@ -276,10 +274,10 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(
                               10), // Adjust the radius as needed
-                          child: Image.asset(
-                            'assets/design1/paw.png',
+                          child:Image.network(
+                            '${petdata['image_product']}',
                             width: double.infinity,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fitHeight,
                           ),
                         ),
                       );
@@ -531,10 +529,11 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
                                   ),
                                 ),
                                 child: CircleAvatar(
-                                  radius: 36,
-                                  backgroundImage: AssetImage(
-                                        'assets/design1/paw.png',
-                                  ),
+                                  radius: 40,
+                                  backgroundImage: NetworkImage(userdata['profile_picture'])
+                                  // AssetImage(
+                                  //       'assets/design1/paw.png',
+                                  // ),
                                 ),
                               ),
                             ),
@@ -546,7 +545,7 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${petdata['sellerfullname']}',
+                                '${userdata['firstname']+' '+userdata['lastname']}',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
@@ -567,7 +566,7 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
                                   height: 40.0,
                                   child: FloatingActionButton(
                                     onPressed: () {
-                                      MessageBox.show(context, userdata['contact_no'], userdata['email']);
+                                      MessageBox.show(context, userdata['contact'], userdata['email']);
                                     },
                                     backgroundColor:
                                         ui.Color.fromARGB(255, 255, 255, 255),

@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, duplicate_import
+import 'dart:io' show File;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import '../../domain.dart';
 import '../login/login.dart';
 import 'terms_condition.dart';
@@ -10,7 +12,6 @@ import 'dart:convert';
 import '../email/email.dart';
 
 class RegisterPage extends StatefulWidget {
-
   const RegisterPage({super.key});
 
   @override
@@ -53,6 +54,66 @@ class RegisterState extends State<RegisterPage> {
 
   get gender => null;
   String selectedgender = '';
+  String enteredOtp = '';
+
+  void _sendOtp(BuildContext context) async {
+    String apiUrl = 'http://$domain/api/send/otp';
+    String recipientEmail = email.text;
+
+    if (recipientEmail.isEmpty) {
+      return
+        // _showOtpDialog(context, recipientEmail);
+        MessageBox.show(context, "Email Not Found!");
+    }
+
+    try {
+      var response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<String, String>{
+          'email': recipientEmail,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        String otp = data['otp'];
+        debugPrint(
+            'OTP generated and sent successfully to $recipientEmail. OTP: $otp');
+
+        // Show OTP dialog
+        _showOtpDialog(context, recipientEmail);
+      } else if (response.statusCode == 400) {
+        var errorMessage = jsonDecode(response.body)['error'];
+        debugPrint('Error Message: $errorMessage');
+        // Optionally show error message dialog
+      } else {
+        debugPrint(
+            'Failed to generate OTP. Status code: ${response.statusCode}');
+        debugPrint('Response: ${response.body}');
+        // Use `showDialog` or another method to display error
+        MessageBox.show(context, "Email Invalid");
+      }
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+  }
+
+  File? image;
+  final picker = ImagePicker();
+  String? _fileName;
+
+  Future<void> _pickImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        image = File(pickedFile.path); // Store the file object
+        _fileName = pickedFile.name; // Store the file name
+      });
+    }
+  }
 
   void _checkinput() {
     setState(() {
@@ -106,130 +167,259 @@ class RegisterState extends State<RegisterPage> {
     });
   }
 
-  void _return() {
-    setState(() {
-      showSecondaryFields = false;
-      showPrimaryFields = true;
-      isButtonVisiblenext = true;
-      isButtonVisiblesignup = false;
-    });
-  }
+  Future<void> _adduser() async {
 
-  void _return_email() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Email()),
-    );
-  }
+      String fname = firstname.text;
+      String lname = lastname.text;
+      String add = addresss.text;
+      String dOB = dateofbirth.text;
+      String cont = contact.text;
+      String sex = selectedgender;
+      String mail = email.text;
+      String uname = username.text;
+      String pass = password.text;
 
-  void _insertUser() async {
-    // String email = widget.email;
-    String fname = firstname.text;
-    String lname = lastname.text;
-    String add = addresss.text;
-    String cont = contact.text;
-    String sex = selectedgender;
-    String date = dateofbirth.text;
-    // String emailadd = email;
-    String uname = username.text;
-    String pass = password.text;
-    String cpass = confirmpassword.text;
-    String profile =
-        'https://th.bing.com/th/id/OIP.eCrcK2BiqwBGE1naWwK3UwHaHa?rs=1&pid=ImgDetMain';
-    String bio = "Hi I'am $uname ";
-    bool anyEmpty = false;
+    var url = Uri.parse('http://$domain/api/Register');
 
-    if (username.text.isEmpty) {
-      anyEmpty = true;
-      showTextFieldBorderUN = true;
-    } else {
-      showTextFieldBorderUN = false;
+    var request = http.MultipartRequest('POST', url);
+
+    // Add the form fields
+    request.fields['Firstname'] = fname;
+    request.fields['Lastname'] = lname;
+    request.fields['Address'] = add;
+    request.fields['DateOfBirth'] = dOB;
+    request.fields['Contact'] = cont;
+    request.fields['Gender'] = sex;
+    request.fields['Email'] = mail;
+    request.fields['Username'] = uname;
+    request.fields['Password'] = pass;
+    if (image != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+        'image',
+        image!.path,
+        filename: _fileName,
+      ));
     }
-
-    if (password.text.isEmpty) {
-      anyEmpty = true;
-      showTextFieldBorderPASS = true;
-    } else {
-      showTextFieldBorderPASS = false;
-    }
-
-    if (confirmpassword.text.isEmpty) {
-      anyEmpty = true;
-      showTextFieldBorderCPASS = true;
-    } else {
-      showTextFieldBorderCPASS = false;
-    }
-
-    if (anyEmpty) {
-      setState(() {
-        message = 'Please fill out all empty fields.';
-        showWidget = true;
-      });
-
-      return;
-    }
-
-    if (pass != cpass) {
-      setState(() {
-        message = 'Password Do not Match';
-        showTextFieldBorderPASS = true;
-        showTextFieldBorderCPASS = true;
-        showWidget = true;
-      });
-      return;
-    }
-    if (sex == '') {
-      sex = 'N/A';
-    }
-
-    if (dateofbirth.text.isEmpty) {
-      date = 'N/A';
-    }
-
-    var url = Uri.parse('http://$domain:8070/api/users');
-    var response = await http.post(
-      url,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: jsonEncode(<String, String>{
-        "firstname": fname,
-        "lastname": lname,
-        "address": add,
-        "dateofbirth": date,
-        "contact_no": cont,
-        "gender": sex,
-        // "email": emailadd,
-        "username": uname,
-        "password": pass,
-        "profile_picture": profile,
-        "bio": bio
-      }),
-    );
-
+    var response = await request.send();
     if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-      setState(() {
-        message = jsonResponse['message'];
-        MessageBox.show(context, "Congratulations!",
-            "You're officially part of our furry family!");
-      });
-    } else if (response.statusCode == 409) {
-      // Email or username already exists
-      setState(() {
-        message = 'Email already exists or in use';
-        showWidget = true;
-        showTextFieldBorderMAIL = true;
-      });
+      var responseData = await response.stream.bytesToString();
+      var jsonResponse = jsonDecode(responseData);
+      print('User added successfully: $jsonResponse');
+      // Show "Congratulations!" message
+      successAdded(context, "Congratulations!");
+
     } else {
-      setState(() {
-        debugPrint("ERROR");
-        debugPrint(selectedgender);
-        debugPrint(response.body);
-        debugPrint(response.statusCode.toString());
-      });
+      var responseData = await response.stream.bytesToString();
+      var jsonResponse = jsonDecode(responseData);
+      var errorMessage = jsonDecode(jsonResponse.body)['Message'];
+      MessageBox.show(context, errorMessage);
+      print('Failed to add pet: $jsonResponse');
     }
   }
+
+  void _showOtpDialog(BuildContext context, String email) {
+    TextEditingController otpController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+          title: Center(child: const Text('Enter Your OTP')),
+          content: TextField(
+            maxLength: 6,
+            textAlign: TextAlign.center,
+            controller: otpController,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(counterText: ''),
+          ),
+          actions: <Widget>[
+            Center(
+              child:
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  // Text (foreground) color
+                  backgroundColor: Color.fromARGB(255, 110, 77, 34),
+                  side: BorderSide(
+                      color: const Color.fromARGB(255, 90, 90, 90),
+                      width: 1), // Border color and width
+                ),
+                onPressed: () {
+                  _validateOtp(context, email, otpController.text);
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: const Text("Submit",style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _validateOtp(BuildContext context, String email, String otp) async {
+    String apiUrl =
+        'http://$domain/api/validate/otp'; // Update with your actual API
+
+    try {
+      var response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<String, String>{
+          'email': email,
+          'otp': otp,
+        }),
+      );
+      if (response.statusCode == 200) {
+        var message = jsonDecode(response.body)['Message'];
+        debugPrint('OTP validation successful: $message');
+        // MessageBox.show(context, message);
+        // _showSuccessDialog(context);
+        await _adduser();
+
+      } else {
+        debugPrint('Failed to validate OTP: ${response.statusCode}');
+        var errorMessage = jsonDecode(response.body)['Message'];
+
+        MessageBox.show(context, errorMessage);
+        // Pass the actual context instead of BuildContext type
+        // _showErrorDialog(context, errorMessage);
+      }
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+  }
+
+
+  // void _return() {
+  //   setState(() {
+  //     showSecondaryFields = false;
+  //     showPrimaryFields = true;
+  //     isButtonVisiblenext = true;
+  //     isButtonVisiblesignup = false;
+  //   });
+  // }
+
+  // void _return_email() {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => Email()),
+  //   );
+  // }
+
+  // void _insertUser() async {
+  //   // String email = widget.email;
+  //   String fname = firstname.text;
+  //   String lname = lastname.text;
+  //   String add = addresss.text;
+  //   String cont = contact.text;
+  //   String sex = selectedgender;
+  //   String date = dateofbirth.text;
+  //   // String emailadd = email;
+  //   String uname = username.text;
+  //   String pass = password.text;
+  //   String cpass = confirmpassword.text;
+  //   String profile =
+  //       'https://th.bing.com/th/id/OIP.eCrcK2BiqwBGE1naWwK3UwHaHa?rs=1&pid=ImgDetMain';
+  //   String bio = "Hi I'am $uname ";
+  //   bool anyEmpty = false;
+  //
+  //   if (username.text.isEmpty) {
+  //     anyEmpty = true;
+  //     showTextFieldBorderUN = true;
+  //   } else {
+  //     showTextFieldBorderUN = false;
+  //   }
+  //
+  //   if (password.text.isEmpty) {
+  //     anyEmpty = true;
+  //     showTextFieldBorderPASS = true;
+  //   } else {
+  //     showTextFieldBorderPASS = false;
+  //   }
+  //
+  //   if (confirmpassword.text.isEmpty) {
+  //     anyEmpty = true;
+  //     showTextFieldBorderCPASS = true;
+  //   } else {
+  //     showTextFieldBorderCPASS = false;
+  //   }
+  //
+  //   if (anyEmpty) {
+  //     setState(() {
+  //       message = 'Please fill out all empty fields.';
+  //       showWidget = true;
+  //     });
+  //
+  //     return;
+  //   }
+  //
+  //   if (pass != cpass) {
+  //     setState(() {
+  //       message = 'Password Do not Match';
+  //       showTextFieldBorderPASS = true;
+  //       showTextFieldBorderCPASS = true;
+  //       showWidget = true;
+  //     });
+  //     return;
+  //   }
+  //   if (sex == '') {
+  //     sex = 'N/A';
+  //   }
+  //
+  //   if (dateofbirth.text.isEmpty) {
+  //     date = 'N/A';
+  //   }
+  //
+  //   var url = Uri.parse('http://$domain:8070/api/users');
+  //   var response = await http.post(
+  //     url,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: jsonEncode(<String, String>{
+  //       "firstname": fname,
+  //       "lastname": lname,
+  //       "address": add,
+  //       "dateofbirth": date,
+  //       "contact_no": cont,
+  //       "gender": sex,
+  //       // "email": emailadd,
+  //       "username": uname,
+  //       "password": pass,
+  //       "profile_picture": profile,
+  //       "bio": bio
+  //     }),
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //     var jsonResponse = jsonDecode(response.body);
+  //     setState(() {
+  //       message = jsonResponse['message'];
+  //       MessageBox.show(context, "Congratulations!",
+  //           "You're officially part of our furry family!");
+  //     });
+  //   } else if (response.statusCode == 409) {
+  //     // Email or username already exists
+  //     setState(() {
+  //       message = 'Email already exists or in use';
+  //       showWidget = true;
+  //       showTextFieldBorderMAIL = true;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       debugPrint("ERROR");
+  //       debugPrint(selectedgender);
+  //       debugPrint(response.body);
+  //       debugPrint(response.statusCode.toString());
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -239,6 +429,7 @@ class RegisterState extends State<RegisterPage> {
 
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         // appBar: AppBar(
         //   backgroundColor: const Color.fromARGB(255, 207, 184, 153),
         // ),
@@ -271,6 +462,7 @@ class RegisterState extends State<RegisterPage> {
                 ),
               ),
               if (isButtonVisiblenext)
+                // back icon
                 Positioned(
                   top: 110,
                   left: screenWidth * 0.1,
@@ -282,7 +474,8 @@ class RegisterState extends State<RegisterPage> {
                         setState(() {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => LoginPage()),
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()),
                             // MaterialPageRoute(builder: (context) => Email()),
                           );
                         });
@@ -304,6 +497,7 @@ class RegisterState extends State<RegisterPage> {
                   height: 100,
                 ),
               ),
+              // create account text
               const Positioned(
                 top: 190,
                 child: Text(
@@ -316,6 +510,7 @@ class RegisterState extends State<RegisterPage> {
                   ),
                 ),
               ),
+              // TextFields
               Positioned(
                 top: 200,
                 child: Padding(
@@ -347,7 +542,8 @@ class RegisterState extends State<RegisterPage> {
                                       // fillColor: Color.fromARGB(255, 240, 240, 240),
                                       labelText: 'First Name',
                                       labelStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 156, 153, 147),
+                                        color:
+                                            Color.fromARGB(255, 156, 153, 147),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -420,7 +616,8 @@ class RegisterState extends State<RegisterPage> {
                                       // fillColor: Color.fromARGB(255, 240, 240, 240),
                                       labelText: 'Last Name',
                                       labelStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 156, 153, 147),
+                                        color:
+                                            Color.fromARGB(255, 156, 153, 147),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -477,13 +674,6 @@ class RegisterState extends State<RegisterPage> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // const Text(
-                                //   'Address',
-                                //   style: TextStyle(
-                                //     color: Color.fromARGB(255, 156, 153, 147),
-                                //     fontSize: 16,
-                                //   ),
-                                // ),
                                 SizedBox(height: 3),
                                 Container(
                                   width: screenWidth * 0.7,
@@ -491,11 +681,10 @@ class RegisterState extends State<RegisterPage> {
                                   child: TextField(
                                     controller: addresss,
                                     decoration: InputDecoration(
-                                      // filled: true,
-                                      // fillColor: const Color.fromARGB(255, 240, 240, 240),
                                       labelText: 'Address',
                                       labelStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 156, 153, 147),
+                                        color:
+                                            Color.fromARGB(255, 156, 153, 147),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -541,13 +730,6 @@ class RegisterState extends State<RegisterPage> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // const Text(
-                                //   'Gender',
-                                //   style: TextStyle(
-                                //     color: Color.fromARGB(255, 156, 153, 147),
-                                //     fontSize: 16,
-                                //   ),
-                                // ),
                                 SizedBox(height: 3),
                                 Container(
                                   width: screenWidth * 0.7,
@@ -555,11 +737,10 @@ class RegisterState extends State<RegisterPage> {
                                   child: DropdownButtonFormField<String>(
                                     value: gender,
                                     decoration: InputDecoration(
-                                      // filled: true,
-                                      // fillColor: const Color.fromARGB(255, 240, 240, 240),
                                       labelText: 'Gender',
                                       labelStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 169, 169, 169),
+                                        color:
+                                            Color.fromARGB(255, 169, 169, 169),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -624,23 +805,16 @@ class RegisterState extends State<RegisterPage> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // const Text(
-                                //   'Contact Number',
-                                //   style: TextStyle(
-                                //     color: Color.fromARGB(255, 156, 153, 147),
-                                //     fontSize: 16,
-                                //   ),
-                                // ),
                                 Container(
                                   width: screenWidth * 0.7,
                                   height: 50,
                                   child: TextField(
                                     controller: contact,
                                     decoration: InputDecoration(
-                                      // filled: true,
-                                      // fillColor: const Color.fromARGB(255, 240, 240, 240),
                                       labelText: 'Contact Number',
-                                      labelStyle: const TextStyle(color: Color.fromARGB(255, 156, 153, 147),
+                                      labelStyle: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 156, 153, 147),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -697,13 +871,6 @@ class RegisterState extends State<RegisterPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // const Text(
-                              //   'Date of Birth',
-                              //   style: TextStyle(
-                              //     color: Color.fromARGB(255, 156, 153, 147),
-                              //     fontSize: 16,
-                              //   ),
-                              // ),
                               SizedBox(height: 3),
                               Container(
                                 width: screenWidth * 0.7,
@@ -712,12 +879,13 @@ class RegisterState extends State<RegisterPage> {
                                   children: [
                                     Expanded(
                                       child: TextField(
+                                        readOnly: true,
                                         controller: dateofbirth,
                                         decoration: InputDecoration(
-                                          // filled: true,
-                                          // fillColor: const Color.fromARGB(255, 240, 240, 240),
                                           labelText: 'Date of Birth',
-                                          labelStyle: const TextStyle(color: Color.fromARGB(255, 156, 153, 147),
+                                          labelStyle: const TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 156, 153, 147),
                                           ),
                                           border: OutlineInputBorder(
                                             borderRadius:
@@ -805,7 +973,8 @@ class RegisterState extends State<RegisterPage> {
                         setState(() {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => RegisterPage()),
+                            MaterialPageRoute(
+                                builder: (context) => RegisterPage()),
                             // MaterialPageRoute(builder: (context) => Email()),
                           );
                         });
@@ -857,7 +1026,8 @@ class RegisterState extends State<RegisterPage> {
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: const BorderSide(
-                                        color: Color.fromARGB(255, 156, 153, 147),
+                                        color:
+                                            Color.fromARGB(255, 156, 153, 147),
                                         width: 2.0,
                                       ),
                                     ),
@@ -1109,10 +1279,90 @@ class RegisterState extends State<RegisterPage> {
                               ),
                             ]),
                       ),
+                      SizedBox(height: 20),
+                      Visibility(
+                        visible: showSecondaryFields,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap:
+                                  _pickImage, // Call image picker when tapped
+                              child: Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(255, 240, 240, 240),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(
+                                    color: const Color.fromARGB(
+                                        255, 156, 153, 147),
+                                    width: 2.0,
+                                  ),
+                                ),
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    // Center the selected image or icon
+                                    Center(
+                                      child: const Icon(
+                                        Icons.camera_alt,
+                                        color:
+                                            Color.fromARGB(255, 135, 132, 127),
+                                        size: 30,
+                                      ),
+                                    ),
+
+                                    // Position the "Add" icon on the bottom right corner
+                                    Positioned(
+                                      bottom: 5.0, // Adjust spacing as needed
+                                      right: 5.0,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(2.0),
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.green,
+                                        ),
+                                        child: const Icon(
+                                          Icons.add,
+                                          size: 15,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 2.0, // Space between icon and filename
+                            ),
+
+                            // Display filename to the right of the gesture detector
+                            if (_fileName != null)
+                              SizedBox(
+                                width: 150,
+                                child: Text(
+                                  _fileName!,
+                                  overflow:
+                                      TextOverflow.ellipsis, // Prevent overflow
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black54,
+                                  ),
+                                  textAlign: TextAlign
+                                      .right, // Align text to the right
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
+              // policy checkbox
               if (isButtonVisiblesignup)
                 Positioned(
                   bottom: 120,
@@ -1154,6 +1404,7 @@ class RegisterState extends State<RegisterPage> {
                     ],
                   ),
                 ),
+              // Next Button
               if (isButtonVisiblenext)
                 Positioned(
                   bottom: 60,
@@ -1206,12 +1457,16 @@ class RegisterState extends State<RegisterPage> {
                   ),
                 ),
               if (isButtonVisiblesignup)
+                // sendOTP button
                 Positioned(
                   bottom: 70,
                   child: Stack(
                     children: [
                       ElevatedButton(
-                        onPressed: isChecked ? _insertUser : null,
+                        onPressed: isChecked
+                            ? () =>
+                                _sendOtp(context) // Wrap _sendOtp in a closure
+                            : null,
                         style: ButtonStyle(
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -1219,9 +1474,16 @@ class RegisterState extends State<RegisterPage> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                            Color.fromARGB(255, 110, 77,
-                                34), // Set the button's background color
+                          backgroundColor:
+                              MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.disabled)) {
+                                return Color.fromARGB(
+                                    255, 200, 200, 200); // Disabled color
+                              }
+                              return Color.fromARGB(
+                                  255, 110, 77, 34); // Enabled color
+                            },
                           ),
                           elevation: MaterialStateProperty.all<double>(
                               0), // Remove button elevation
@@ -1240,7 +1502,7 @@ class RegisterState extends State<RegisterPage> {
                             ),
                           ),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ),
@@ -1268,7 +1530,7 @@ class RegisterState extends State<RegisterPage> {
 }
 
 class MessageBox {
-  static void show(BuildContext context, String title, String message) {
+  static void show(BuildContext context, String title) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -1287,7 +1549,7 @@ class MessageBox {
                     height: 50,
                     fit: BoxFit.cover,
                   ),
-                  SizedBox(width: 20),
+                  SizedBox(height: 20, width: 30),
                   Text(
                     title,
                     style: TextStyle(
@@ -1295,33 +1557,37 @@ class MessageBox {
                         color: const Color.fromARGB(255, 98, 74, 26),
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(width: 30),
-                  Text(
-                    message,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: const Color.fromARGB(
-                          255, 0, 0, 0), // Change text color
-                    ),
-                  ),
+                  // SizedBox(width: 30),
+                  // Text(
+                  //   message,
+                  //   style: TextStyle(
+                  //     fontSize: 12,
+                  //     color: const Color.fromARGB(
+                  //         255, 0, 0, 0), // Change text color
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(height: 20),
-              TextButton(
+              ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
+                  Navigator.pop(context);
                 },
+                style: ElevatedButton.styleFrom(
+                  // Text (foreground) color
+                  backgroundColor: Color.fromARGB(255, 110, 77, 34),
+                  side: BorderSide(
+                      color: const Color.fromARGB(255, 90, 90, 90),
+                      width: 1), // Border color and width
+                ),
                 child: Text(
-                  'Back to Log in',
+                  'Ok',
                   style: TextStyle(
-                    color: const Color.fromARGB(255, 90, 90, 90),
-                    decoration: TextDecoration.underline,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
+              )
             ],
           ),
         );
@@ -1329,3 +1595,66 @@ class MessageBox {
     );
   }
 }
+
+void successAdded(BuildContext context, String title) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        title: null,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets/design1/paw_result.png',
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                ),
+                SizedBox(height: 20, width: 30),
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: const Color.fromARGB(255, 98, 74, 26),
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage(),),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                // Text (foreground) color
+                backgroundColor: Color.fromARGB(255, 110, 77, 34),
+                side: BorderSide(
+                    color: const Color.fromARGB(255, 90, 90, 90),
+                    width: 1), // Border color and width
+              ),
+              child: Text(
+                'Ok',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    },
+  );
+}
+
+
+
+

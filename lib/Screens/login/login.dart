@@ -180,6 +180,7 @@ class LoginState extends State<_Login> {
 
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         // appBar: AppBar(
         //   backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         // ),
@@ -241,7 +242,7 @@ class LoginState extends State<_Login> {
               //   ),
               // ),
               Positioned(
-                top: 100,
+                top: 80,
                 child: Image.asset(
                   'assets/design1/loginlogo.png',
                   width: screenWidth * 0.8,
@@ -266,14 +267,14 @@ class LoginState extends State<_Login> {
               //     height: 120,
               //   ),
               // ),
+              // username password
               Positioned(
-                bottom: screenHeight * 0.23,
+                bottom: screenHeight * 0.35,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       const SizedBox(height: 3),
                       SizedBox(
                         width: screenWidth * 0.7,
@@ -404,8 +405,9 @@ class LoginState extends State<_Login> {
                   ),
                 ),
               ),
+              // login button
               Positioned(
-                bottom: 90,
+                bottom: 200,
                 height: 45,
                 width: screenWidth * 0.7,
                 child: Padding(
@@ -447,8 +449,73 @@ class LoginState extends State<_Login> {
                   ),
                 ),
               ),
+              // remeber me
               Positioned(
-                bottom: 55,
+                bottom: screenHeight * 0.300,
+                left: screenWidth * 0.13,
+                child: Row(
+                  children: [
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: isChecked,
+                          onChanged: (bool? value) {
+                            // Handle checkbox state changes
+                            setState(() {
+                              isChecked = value ?? false;
+                            });
+                          },
+                          activeColor: const Color.fromARGB(255, 153, 133, 93),
+                        ),
+                        Text(
+                          'Remember me',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Color.fromARGB(255, 153, 133, 93),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 40),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Email_CP()),
+                          );
+                        },
+                        child: const Text(
+                          'Forget password?',
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 200,
+                left: 74,
+                child: Visibility(
+                  visible: showWidget,
+                  child: Text(
+                    message,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: Color.fromARGB(255, 255, 5, 5),
+                      fontWeight: FontWeight.bold, // Font Weight
+                      fontFamily: 'Roboto-Black', // System font
+                    ),
+                  ),
+                ),
+              ),
+              // Dont have account
+              Positioned(
+                bottom: 150,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -476,74 +543,6 @@ class LoginState extends State<_Login> {
                       ),
                     ),
                   ],
-                ),
-              ),
-              Positioned(
-                bottom: screenHeight * 0.2,
-                right: screenWidth * 0.14,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Email_CP()),
-                    );
-                  },
-                  child: const Text(
-                    'Forget password?',
-                    style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: screenHeight * 0.198,
-                left: screenWidth * 0.13,
-                child: Row(
-                  children: [
-                    Checkbox(
-                      value: isChecked,
-                      onChanged: (bool? value) {
-                        // Handle checkbox state changes
-                        setState(() {
-                          isChecked = value ?? false;
-                        });
-                      },
-                      activeColor: const Color.fromARGB(255, 153, 133, 93),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: screenHeight * 0.215,
-                left: screenWidth * 0.22,
-                child: const Row(
-                  children: [
-                    Text(
-                      'Remember me',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Color.fromARGB(255, 153, 133, 93),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: 200,
-                left: 74,
-                child: Visibility(
-                  visible: showWidget,
-                  child: Text(
-                    message,
-                    style: const TextStyle(
-                      fontSize: 11,
-                      color: Color.fromARGB(255, 255, 5, 5),
-                      fontWeight: FontWeight.bold, // Font Weight
-                      fontFamily: 'Roboto-Black', // System font
-                    ),
-                  ),
                 ),
               ),
             ],

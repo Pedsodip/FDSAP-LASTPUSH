@@ -32,7 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var client = http.Client();
     try {
       final response = await client
-          .get(Uri.parse('http://$domain:8080/api/user?id=${widget.userID}'));
+          .get(Uri.parse('http://$domain/api/user?id=${widget.userID}'));
 
       if (response.statusCode == 200) {
         // Parse the JSON response
@@ -247,11 +247,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         CircleAvatar(
                           radius: 50,
-                          backgroundImage: userData['profile_image'] != null
-                              ? MemoryImage(
-                                  base64Decode(userData['profile_image']!))
-                              : const AssetImage('assets/default_profile.png')
-                                  as ImageProvider,
+                          backgroundImage: userData['profile_picture'] == null
+                              ? const NetworkImage(
+                              'https://raw.githubusercontent.com/Valenzuela08/ImageStorage/main/images/default_profile.png')
+                              : NetworkImage(userData['profile_picture']),
                         ),
                       ],
                     ),
@@ -401,7 +400,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 height:
                                     4), // Adjust spacing between the two texts
                             Text(
-                              '${userData['dateOfBirth']}',
+                              '${userData['dateofbirth']}',
                               textAlign: TextAlign.center,
                               style: TextStyle(fontSize: 12),
                             ),
@@ -409,33 +408,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Text(
-                              'MEMBER SINCE',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 209, 166,
-                                    97), // Change 'Colors.green' to the color you want
-                              ),
-                            ),
 
-                            SizedBox(
-                                height:
-                                    4), // Adjust spacing between the two texts
-                            Text(
-                              '${userData['contact_no']}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
