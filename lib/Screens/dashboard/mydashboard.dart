@@ -146,22 +146,22 @@ class _MyDashboardState extends State<MyDashboard> {
 
       if (products.isEmpty) {
         // If dataofUser is empty, display a loading indicator or any placeholder widget
-        // return Center(child: CircularProgressIndicator());
-        return Center(
-          child: Text(
-            'No Data Available',
-          ),
-        );
+        return Center(child: CircularProgressIndicator());
+        // return Center(
+        //   child: Text(
+        //     'No Data Available',
+        //   ),
+        // );
       } else {
         return Scaffold(
           appBar: AppBar(
             title: Center(
               child: Padding(
-                padding: const EdgeInsets.only(top: 40),
+                padding: const EdgeInsets.only(top: 50),
                 child: Image.asset(
-                  'assets/design1/load001txt.png',
-                  height: 100,
-                  width: 200,
+                  'assets/design1/banner.png',
+                  height: 200,
+                  // width: 200,
                 ),
               ),
             ),
@@ -185,7 +185,7 @@ class _MyDashboardState extends State<MyDashboard> {
               children: <Widget>[
                 DrawerHeader(
                   decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 248, 237, 222),
+                     color: Color.fromARGB(255, 243, 176, 86),
                   ),
                   margin: EdgeInsets.only(bottom: 20),
                   child: GestureDetector(
@@ -224,6 +224,7 @@ class _MyDashboardState extends State<MyDashboard> {
                               ),
                             ),
                             SizedBox(
+
                               height: 20,
                               child: IconButton(
                                   onPressed: () {},
@@ -370,8 +371,7 @@ class _MyDashboardState extends State<MyDashboard> {
                         child: TextField(
                           decoration: InputDecoration(
                             hintText: 'Search...',
-                            contentPadding:
-                                const EdgeInsets.symmetric(vertical: 10),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 10),
                             prefixIcon: const Icon(Icons.search),
                             suffixIcon: PopupMenuButton(
                               icon: const Icon(Icons.filter_list),
@@ -897,7 +897,7 @@ void _showLogoutDialog(BuildContext context) {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Image.asset(
-                'assets/design1/paw.png',
+                'assets/design1/newpaw.png',
                 width: 75,
                 height: 75,
                 fit: BoxFit.cover,
@@ -949,12 +949,12 @@ class MessageBox {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Image.asset(
-                  'assets/design1/paw.png',
-                  width: 75,
-                  height: 75,
+                  'assets/design1/newpaw.png',
+                  width: 100,
+                  height: 100,
                   fit: BoxFit.cover,
                 ),
-                const SizedBox(height: 10),
+                // const SizedBox(height: 10),
               ],
             ),
           ),

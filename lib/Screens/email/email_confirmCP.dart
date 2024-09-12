@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../../domain.dart';
 import '../user/changepass.dart';
 import 'email_CP.dart';
 
@@ -63,7 +64,7 @@ class _EmailConfirmStateCP extends State<EmailConfirmCP> {
       showWidget = false;
     });
 
-    String apiUrl = 'http://localhost:8070/api/password';
+    String apiUrl = 'http://$domain/api/send/otp';
 
     String recipientEmail = widget.emailAddress;
 

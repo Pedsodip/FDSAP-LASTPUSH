@@ -9,6 +9,7 @@ import 'package:pawprojui/Screens/petscreens/petfoods.dart';
 import 'package:pawprojui/Screens/petscreens/petsearchall.dart';
 import 'package:pawprojui/Screens/products/feeds/feeds_upload.dart';
 import 'package:pawprojui/Screens/user/edit_profile.dart';
+import 'Screens/login/get_started.dart';
 import 'Screens/login/login.dart';
 import 'Screens/petCare/petcare.dart';
 import 'Screens/petscreens/petdetailspage.dart';
@@ -19,15 +20,15 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: '/login',
-      routes: DefineRoutes.define(),
-    );
-  }
-}
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       initialRoute: '/login',
+//       routes: DefineRoutes.define(),
+//     );
+//   }
+// }
 
 class DefineRoutes {
   static const String loginscreen = '/login';

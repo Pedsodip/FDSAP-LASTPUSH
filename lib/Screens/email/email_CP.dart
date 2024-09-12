@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import '../../domain.dart';
 import '../login/login.dart';
 import 'email_confirmCP.dart';
 import 'package:http/http.dart' as http;
@@ -27,7 +28,7 @@ class EmailStateCP extends State<_EmailCP> {
   String message = "";
 
   void _sendOtp() async {
-    String apiUrl = 'http://localhost:8070/api/password';
+    String apiUrl = 'http://$domain/api/send/otp';
 
     String recipientEmail = emailAddress.text;
 
@@ -87,36 +88,37 @@ class EmailStateCP extends State<_EmailCP> {
 
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 207, 184, 153),
-        ),
+        resizeToAvoidBottomInset: false,
+        // appBar: AppBar(
+        //   backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        // ),
         body: Container(
           color: Color.fromARGB(255, 207, 184, 153),
           child: Stack(
             alignment: Alignment.center,
             children: [
-              Image.asset(
-                'assets/design/brown.png',
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.cover,
-              ),
               Positioned(
-                child: Container(
-                  width: screenWidth * 0.87,
-                  height: screenHeight * 0.86,
-                  padding: EdgeInsets.all(20),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                  ),
+                top: 1,
+                left: 0,
+                right: 0,
+                child: Image.asset(
+                  'assets/design1/pinkbg.png',
+                  width: screenWidth * 0.9, // Set width to screen width
+                  height:
+                  screenHeight * 1, // Set height to 30% of screen height
+                  fit: BoxFit.fill, // Adjust the fit as needed
                 ),
               ),
+              // Positioned(
+              //   child: Container(
+              //     width: screenWidth * 1,
+              //     height: screenHeight * 1,
+              //     padding: EdgeInsets.all(20),
+              //     decoration: const BoxDecoration(
+              //       color: Colors.white,
+              //     ),
+              //   ),
+              // ),
               Positioned(
                   bottom: 595,
                   left: 70,
@@ -133,8 +135,8 @@ class EmailStateCP extends State<_EmailCP> {
                     ),
                   )),
               Positioned(
-                top: 50,
-                left: screenWidth * 0.1,
+                top: 100,
+                left: 25,
                 child: Container(
                   width: 25,
                   height: 25,
@@ -155,15 +157,15 @@ class EmailStateCP extends State<_EmailCP> {
                 ),
               ),
               Positioned(
-                top: 30,
+                top: 20,
                 child: Image.asset(
-                  'assets/design1/furpaw.png',
-                  width: 100,
-                  height: 100,
+                  'assets/design1/logo.png',
+                  // width: screenWidth * 0.,
+                  height: 200
                 ),
               ),
               const Positioned(
-                top: 130,
+                top: 200,
                 child: Text(
                   'Enter Your Email Account',
                   style: TextStyle(
@@ -175,7 +177,7 @@ class EmailStateCP extends State<_EmailCP> {
                 ),
               ),
               const Positioned(
-                top: 160,
+                top: 225,
                 child: Text.rich(
                   TextSpan(
                     text: 'We will send you a ',
@@ -200,19 +202,19 @@ class EmailStateCP extends State<_EmailCP> {
                 ),
               ),
               Positioned(
-                top: 190,
+                top: 250,
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Email Address',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 156, 153, 147),
-                          fontSize: 16,
-                        ),
-                      ),
+                      // const Text(
+                      //   'Email Address',
+                      //   style: TextStyle(
+                      //     color: Color.fromARGB(255, 156, 153, 147),
+                      //     fontSize: 16,
+                      //   ),
+                      // ),
                       SizedBox(
                         height: 3,
                       ),
@@ -222,10 +224,12 @@ class EmailStateCP extends State<_EmailCP> {
                         child: TextField(
                           controller: emailAddress,
                           decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Color.fromARGB(255, 240, 240, 240),
+                            // filled: true,
+                            // fillColor: Color.fromARGB(255, 240, 240, 240),
+                            labelText: 'Email Address',
                             labelStyle: TextStyle(
-                              color: Color.fromARGB(255, 156, 153, 147),
+                              color: Colors.black38,
+                              // color: Color.fromARGB(255, 156, 153, 147),
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -237,26 +241,26 @@ class EmailStateCP extends State<_EmailCP> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: const BorderSide(
-                                color: Color.fromARGB(255, 198, 198,
-                                    198), // Set the focused border color
+                                color: Colors.black38,
+                                // color: Color.fromARGB(255, 198, 198, 198), // Set the focused border color
                                 width: 2.0,
                               ),
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: emailInput
-                                    ? Color.fromARGB(255, 255, 132, 132)
-                                    : Color.fromARGB(255, 240, 240, 240),
-                                width: 2.0,
-                              ),
-                            ),
+                            // enabledBorder: OutlineInputBorder(
+                            //   borderRadius: BorderRadius.circular(10.0),
+                            //   borderSide: BorderSide(
+                            //     color: emailInput
+                            //         ? Color.fromARGB(255, 255, 132, 132)
+                            //         : Color.fromARGB(255, 240, 240, 240),
+                            //     width: 2.0,
+                            //   ),
+                            // ),
                             prefixIcon: Icon(
                               Icons.email,
                               size: 20,
                               color: Color.fromARGB(255, 169, 169, 169),
                             ),
-                            contentPadding: EdgeInsets.symmetric(vertical: 10),
+                            // contentPadding: EdgeInsets.symmetric(vertical: 10),
                           ),
                           style: TextStyle(
                             fontSize: 16,
@@ -269,37 +273,38 @@ class EmailStateCP extends State<_EmailCP> {
                 ),
               ),
               Positioned(
-                top: 320,
+                top: 400,
                 width: screenWidth * 0.7, // Set width to screen width
                 child: Stack(
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        _sendOtp();
-                      },
-                      style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _sendOtp();
+                        },
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
                           ),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            Color.fromARGB(255, 123, 97, 63), // Set the button's background color
+                          ),
+                          elevation: MaterialStateProperty.all<double>(10), // Remove button elevation
                         ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          Color.fromARGB(255, 123, 97,
-                              63), // Set the button's background color
-                        ),
-                        elevation: MaterialStateProperty.all<double>(
-                            0), // Remove button elevation
-                      ),
-                      child: const SizedBox(
-                        height: 50,
-                        child: Center(
-                          child: Text(
-                            'Send OTP',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                        child: const SizedBox(
+                          height: 40,
+                          width: 90,
+                          child: Center(
+                            child: Text(
+                              'Send OTP',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),

@@ -42,6 +42,8 @@ class RegisterState extends State<RegisterPage> {
   bool showTextFieldBorderCPASS = false;
 
   String message = "";
+  String? passwordError;
+  String? cPasswordError;
   bool showWidget = false;
 
   bool showPrimaryFields = true;
@@ -295,131 +297,11 @@ class RegisterState extends State<RegisterPage> {
     }
   }
 
-
-  // void _return() {
-  //   setState(() {
-  //     showSecondaryFields = false;
-  //     showPrimaryFields = true;
-  //     isButtonVisiblenext = true;
-  //     isButtonVisiblesignup = false;
-  //   });
-  // }
-
-  // void _return_email() {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => Email()),
-  //   );
-  // }
-
-  // void _insertUser() async {
-  //   // String email = widget.email;
-  //   String fname = firstname.text;
-  //   String lname = lastname.text;
-  //   String add = addresss.text;
-  //   String cont = contact.text;
-  //   String sex = selectedgender;
-  //   String date = dateofbirth.text;
-  //   // String emailadd = email;
-  //   String uname = username.text;
-  //   String pass = password.text;
-  //   String cpass = confirmpassword.text;
-  //   String profile =
-  //       'https://th.bing.com/th/id/OIP.eCrcK2BiqwBGE1naWwK3UwHaHa?rs=1&pid=ImgDetMain';
-  //   String bio = "Hi I'am $uname ";
-  //   bool anyEmpty = false;
-  //
-  //   if (username.text.isEmpty) {
-  //     anyEmpty = true;
-  //     showTextFieldBorderUN = true;
-  //   } else {
-  //     showTextFieldBorderUN = false;
-  //   }
-  //
-  //   if (password.text.isEmpty) {
-  //     anyEmpty = true;
-  //     showTextFieldBorderPASS = true;
-  //   } else {
-  //     showTextFieldBorderPASS = false;
-  //   }
-  //
-  //   if (confirmpassword.text.isEmpty) {
-  //     anyEmpty = true;
-  //     showTextFieldBorderCPASS = true;
-  //   } else {
-  //     showTextFieldBorderCPASS = false;
-  //   }
-  //
-  //   if (anyEmpty) {
-  //     setState(() {
-  //       message = 'Please fill out all empty fields.';
-  //       showWidget = true;
-  //     });
-  //
-  //     return;
-  //   }
-  //
-  //   if (pass != cpass) {
-  //     setState(() {
-  //       message = 'Password Do not Match';
-  //       showTextFieldBorderPASS = true;
-  //       showTextFieldBorderCPASS = true;
-  //       showWidget = true;
-  //     });
-  //     return;
-  //   }
-  //   if (sex == '') {
-  //     sex = 'N/A';
-  //   }
-  //
-  //   if (dateofbirth.text.isEmpty) {
-  //     date = 'N/A';
-  //   }
-  //
-  //   var url = Uri.parse('http://$domain:8070/api/users');
-  //   var response = await http.post(
-  //     url,
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: jsonEncode(<String, String>{
-  //       "firstname": fname,
-  //       "lastname": lname,
-  //       "address": add,
-  //       "dateofbirth": date,
-  //       "contact_no": cont,
-  //       "gender": sex,
-  //       // "email": emailadd,
-  //       "username": uname,
-  //       "password": pass,
-  //       "profile_picture": profile,
-  //       "bio": bio
-  //     }),
-  //   );
-  //
-  //   if (response.statusCode == 200) {
-  //     var jsonResponse = jsonDecode(response.body);
-  //     setState(() {
-  //       message = jsonResponse['message'];
-  //       MessageBox.show(context, "Congratulations!",
-  //           "You're officially part of our furry family!");
-  //     });
-  //   } else if (response.statusCode == 409) {
-  //     // Email or username already exists
-  //     setState(() {
-  //       message = 'Email already exists or in use';
-  //       showWidget = true;
-  //       showTextFieldBorderMAIL = true;
-  //     });
-  //   } else {
-  //     setState(() {
-  //       debugPrint("ERROR");
-  //       debugPrint(selectedgender);
-  //       debugPrint(response.body);
-  //       debugPrint(response.statusCode.toString());
-  //     });
-  //   }
-  // }
+  bool validatePassword(String password) {
+    String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regExp = RegExp(pattern);
+    return regExp.hasMatch(password);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -490,11 +372,11 @@ class RegisterState extends State<RegisterPage> {
                   ),
                 ),
               Positioned(
-                top: 90,
+                top: 55,
                 child: Image.asset(
-                  'assets/design1/banner.png',
+                  'assets/design1/logo.png',
                   width: 100,
-                  height: 100,
+                  height: 150,
                 ),
               ),
               // create account text
@@ -1127,79 +1009,95 @@ class RegisterState extends State<RegisterPage> {
                       Visibility(
                         visible: showSecondaryFields,
                         child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // const Text(
-                              //   'Password',
-                              //   style: TextStyle(
-                              //     color: Color.fromARGB(255, 156, 153, 147),
-                              //     fontSize: 16,
-                              //   ),
-                              // ),
-                              SizedBox(height: 3),
-                              Container(
-                                width: screenWidth * 0.7,
-                                height: 50,
-                                child: TextField(
-                                  controller: password,
-                                  obscureText: enablepassword,
-                                  decoration: InputDecoration(
-                                    // filled: true,
-                                    // fillColor:Color.fromARGB(255, 240, 240, 240),
-                                    labelText: 'Password',
-                                    labelStyle: TextStyle(
-                                      color: Color.fromARGB(255, 156, 153, 147),
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: const BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 156, 153, 147),
-                                        width: 2.0,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 3),
+                            SizedBox(
+                              width: screenWidth * 0.7,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 50,  // Fixed height for the TextField to prevent shrinking
+                                    child: TextField(
+                                      controller: password,
+                                      obscureText: enablepassword,
+                                      decoration: InputDecoration(
+                                        labelText: 'Password',
+                                        labelStyle: TextStyle(
+                                          color: Color.fromARGB(255, 156, 153, 147),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          borderSide: const BorderSide(
+                                            color: Color.fromARGB(255, 156, 153, 147),
+                                            width: 2.0,
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          borderSide: const BorderSide(
+                                            color: Colors.black38,
+                                            width: 2.0,
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          borderSide: BorderSide(
+                                            color: showTextFieldBorderPASS
+                                                ? Color.fromARGB(255, 255, 132, 132)
+                                                : Color.fromARGB(255, 240, 240, 240),
+                                            width: 2.0,
+                                          ),
+                                        ),
+                                        suffixIcon: IconButton(
+                                          icon: Icon(
+                                            enablepassword ?Icons.visibility_off :Icons.visibility,
+                                            color: Color.fromARGB(255, 156, 153, 147),
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              enablepassword = !enablepassword;
+                                            });
+                                          },
+                                        ),
+                                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                                       ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: const BorderSide(
-                                        color: Colors.black38,
-                                        // color: Color.fromARGB(255, 198, 198, 198), // Set the focused border color
-                                        width: 2.0,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Color.fromARGB(255, 135, 132, 127),
                                       ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                        color: showTextFieldBorderPASS
-                                            ? Color.fromARGB(255, 255, 132, 132)
-                                            : Color.fromARGB(
-                                                255, 240, 240, 240),
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                    suffixIcon: IconButton(
-                                      icon: Icon(
-                                        enablepassword
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
-                                        color:
-                                            Color.fromARGB(255, 156, 153, 147),
-                                      ),
-                                      onPressed: () {
+                                      onChanged: (value) {
                                         setState(() {
-                                          enablepassword = !enablepassword;
+                                          // Validate password on input change
+                                          if (validatePassword(value)) {
+                                            passwordError = null; // No error if valid
+                                            showTextFieldBorderPASS = false;
+                                          } else {
+                                            passwordError = 'Password must be strong';
+                                            showTextFieldBorderPASS = true;
+                                          }
                                         });
                                       },
                                     ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 20),
                                   ),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Color.fromARGB(255, 135, 132, 127),
-                                  ),
-                                ),
+                                  if (passwordError != null)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 5.0),
+                                      child: Text(
+                                        passwordError!,
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
-                            ]),
+                            )
+
+                          ],
+                        ),
                       ),
                       SizedBox(height: 10),
                       Visibility(
@@ -1207,78 +1105,98 @@ class RegisterState extends State<RegisterPage> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // const Text(
-                              //   'Confirm Password',
-                              //   style: TextStyle(
-                              //     color: Color.fromARGB(255, 156, 153, 147),
-                              //     fontSize: 16,
-                              //   ),
-                              // ),
-                              SizedBox(height: 3),
-                              Container(
+                              const SizedBox(height: 3),
+                              SizedBox(
                                 width: screenWidth * 0.7,
-                                height: 50,
-                                child: TextField(
-                                  controller: confirmpassword,
-                                  obscureText: enablepassword2,
-                                  decoration: InputDecoration(
-                                    // filled: true,
-                                    // fillColor: Color.fromARGB(255, 240, 240, 240),
-                                    labelText: 'Confirm Password',
-                                    labelStyle: TextStyle(
-                                      color: Color.fromARGB(255, 156, 153, 147),
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: const BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 156, 153, 147),
-                                        width: 2.0,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: 50, // Fixed height for the TextField to prevent shrinking
+                                      child: TextField(
+                                        controller: confirmpassword,
+                                        obscureText: enablepassword2,
+                                        decoration: InputDecoration(
+                                          labelText: 'Confirm Password',
+                                          labelStyle: TextStyle(
+                                            color: Color.fromARGB(255, 156, 153, 147),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                            borderSide: const BorderSide(
+                                              color: Color.fromARGB(255, 156, 153, 147),
+                                              width: 2.0,
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                            borderSide: const BorderSide(
+                                              color: Colors.black38,
+                                              width: 2.0,
+                                            ),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                            borderSide: BorderSide(
+                                              color: showTextFieldBorderCPASS
+                                                  ? Color.fromARGB(255, 255, 132, 132)
+                                                  : Color.fromARGB(255, 240, 240, 240),
+                                              width: 2.0,
+                                            ),
+                                          ),
+                                          suffixIcon: IconButton(
+                                            icon: Icon(
+                                              enablepassword2 ?Icons.visibility_off :Icons.visibility,
+                                              color: Color.fromARGB(255, 156, 153, 147),
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                enablepassword2 = !enablepassword2;
+                                              });
+                                            },
+                                          ),
+                                          contentPadding:
+                                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                        ),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Color.fromARGB(255, 135, 132, 127),
+                                        ),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            // Validate password on input change
+                                            if (!validatePassword(value)) {
+                                              cPasswordError = 'Password must be strong';
+                                              showTextFieldBorderCPASS = true;
+                                            } else if (password.text != confirmpassword.text) {
+                                              cPasswordError = 'Passwords do not match!';
+                                              showTextFieldBorderCPASS = true;
+                                            } else {
+                                              cPasswordError = null; // No error if valid
+                                              showTextFieldBorderCPASS = false;
+                                            }
+                                          });
+                                        },
                                       ),
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: const BorderSide(
-                                        color: Colors.black38,
-                                        // color: Color.fromARGB(255, 198, 198, 198), // Set the focused border color
-                                        width: 2.0,
+                                    if (cPasswordError != null)
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 5.0),
+                                        child: Text(
+                                          cPasswordError!,
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 12,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                        color: showTextFieldBorderCPASS
-                                            ? Color.fromARGB(255, 255, 132, 132)
-                                            : Color.fromARGB(
-                                                255, 240, 240, 240),
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                    suffixIcon: IconButton(
-                                      icon: Icon(
-                                        enablepassword2
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
-                                        color:
-                                            Color.fromARGB(255, 156, 153, 147),
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          enablepassword2 = !enablepassword2;
-                                        });
-                                      },
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 20),
-                                  ),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Color.fromARGB(255, 135, 132, 127),
-                                  ),
+                                  ],
                                 ),
-                              ),
+                              )
+
                             ]),
                       ),
+
                       SizedBox(height: 20),
                       Visibility(
                         visible: showSecondaryFields,

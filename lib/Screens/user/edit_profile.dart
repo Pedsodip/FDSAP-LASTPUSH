@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, duplicate_import, prefer_const_literals_to_create_immutables, unused_import, unused_local_variable
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:pawprojui/domain.dart';
@@ -28,7 +29,14 @@ class PetUploadState extends State<EditProfilePage> {
   TextEditingController contact = TextEditingController();
   TextEditingController username = TextEditingController();
   TextEditingController bio = TextEditingController();
-  
+
+  bool showTextFieldBorderFN = false;
+  bool showTextFieldBorderLN = false;
+  bool showTextFieldBorderAdd = false;
+  bool showTextFieldBorderCN = false;
+  bool showTextFieldBorderU = false;
+  bool showTextFieldBorderB = false;
+
   bool isButtonVisiblenext = true;
   bool showPrimaryFields = true;
 
@@ -79,16 +87,17 @@ void main() {
 
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 207, 184, 153),
-        ),
+        resizeToAvoidBottomInset: false,
+        // appBar: AppBar(
+        //   backgroundColor: const Color.fromARGB(255, 207, 184, 153),
+        // ),
         body: Container(
-          color: Color.fromARGB(255, 207, 184, 153),
+          // color: Color.fromARGB(255, 207, 184, 153),
           child: Stack(
             alignment: Alignment.center,
             children: [
               Image.asset(
-                'assets/brown.png',
+                'assets/design1/brownbg.png',
                 width: double.infinity,
                 height: double.infinity,
                 fit: BoxFit.cover,
@@ -96,8 +105,8 @@ void main() {
               Positioned(
                 child: SingleChildScrollView(
                   child: Container(
-                    width: screenWidth * 0.87,
-                    height: screenHeight * 0.86,
+                    width: screenWidth * .86,
+                    height: screenHeight * .86,
                     padding: const EdgeInsets.all(20),
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -113,8 +122,8 @@ void main() {
               ),
               if (isButtonVisiblenext)
                 Positioned(
-                  top: 50,
-                  left: screenWidth * 0.1,
+                  top: 80,
+                  left: 30,
                   child: Container(
                     width: 80, // Adjust the width of the back button container
                     height:
@@ -138,13 +147,12 @@ void main() {
               Positioned(
                 top: 30,
                 child: Image.asset(
-                  'assets/design1/furpaw.png',
-                  width: 100,
-                  height: 100,
+                  'assets/design1/banner.png',
+                  height: 200,
                 ),
               ),
               const Positioned(
-                top: 110,
+                top: 150,
                 child: Text(
                   'Edit Profile',
                   style: TextStyle(
@@ -156,7 +164,7 @@ void main() {
                 ),
               ),
               Positioned(
-                top: 110,
+                top: 150,
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Column(
@@ -168,13 +176,13 @@ void main() {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'First Name',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 156, 153, 147),
-                                fontSize: 16,
-                              ),
-                            ),
+                            // const Text(
+                            //   'First Name',
+                            //   style: TextStyle(
+                            //     color: Color.fromARGB(255, 156, 153, 147),
+                            //     fontSize: 16,
+                            //   ),
+                            // ),
                             SizedBox(height: 3),
                             Container(
                               width: screenWidth * 0.7,
@@ -182,12 +190,13 @@ void main() {
                               child: TextField(
                                 controller: fname,
                                 decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Color.fromARGB(255, 255, 255, 255),
+                                  // filled: true,
+                                  // fillColor: Color.fromARGB(255, 255, 255, 255),
+                                  labelText: 'First Name',
                                   labelStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
+                                    color: Colors.black38,
+                                    // color: Color.fromARGB(255, 156, 153, 147),
                                   ),
-                                 
 
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
@@ -199,26 +208,23 @@ void main() {
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: const BorderSide(
-                                      color: Color.fromARGB(255, 230, 230, 230),
+                                      color: Colors.black38,
+                                      // color: Color.fromARGB(255, 230, 230, 230),
                                       width: 2.0,
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: BorderSide(
-                                      color:
-                                           Color.fromARGB(255, 255, 255, 255),
+                                      color: showTextFieldBorderFN
+                                          ? Color.fromARGB(255, 255, 132, 132)
+                                          : Color.fromARGB(255, 240, 240, 240),
+                                      // color: Color.fromARGB(255, 255, 255, 255),
                                       width: 2.0,
                                     ),
                                   ),
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 20),
-                                  suffixIcon: Icon(
-                                    // Add the icon here
-                                    Icons.edit, // Change the icon as needed
-                                    color: Colors
-                                        .grey, // Adjust the icon color as needed
-                                  ),
                                 ),
                                 style: const TextStyle(
                                   fontSize: 16,
@@ -241,13 +247,13 @@ void main() {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Last Name',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 156, 153, 147),
-                                fontSize: 16,
-                              ),
-                            ),
+                            // const Text(
+                            //   'Last Name',
+                            //   style: TextStyle(
+                            //     color: Color.fromARGB(255, 156, 153, 147),
+                            //     fontSize: 16,
+                            //   ),
+                            // ),
                             SizedBox(height: 3),
                             Container(
                               width: screenWidth * 0.7,
@@ -255,10 +261,12 @@ void main() {
                               child: TextField(
                                 controller: lname,
                                 decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Color.fromARGB(255, 255, 255, 255),
+                                  // filled: true,
+                                  // fillColor: Color.fromARGB(255, 255, 255, 255),
+                                  labelText: 'Last Name',
                                   labelStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
+                                    color: Colors.black38,
+                                    // color: Color.fromARGB(255, 156, 153, 147),
                                   ),
                                 
                                   border: OutlineInputBorder(
@@ -271,25 +279,29 @@ void main() {
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: const BorderSide(
-                                      color: Color.fromARGB(255, 230, 230, 230),
+                                      color: Colors.black38,
+                                      // color: Color.fromARGB(255, 230, 230, 230),
                                       width: 2.0,
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 255, 255, 255),
+                                      color: showTextFieldBorderLN
+                                          ? Color.fromARGB(255, 255, 132, 132)
+                                          : Color.fromARGB(255, 240, 240, 240),
+                                      // color: Color.fromARGB(255, 255, 255, 255),
                                       width: 2.0,
                                     ),
                                   ),
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 20),
-                                  suffixIcon: Icon(
-                                    // Add the icon here
-                                    Icons.edit, // Change the icon as needed
-                                    color: Colors
-                                        .grey, // Adjust the icon color as needed
-                                  ),
+                                  // suffixIcon: Icon(
+                                  //   // Add the icon here
+                                  //   Icons.edit, // Change the icon as needed
+                                  //   color: Colors
+                                  //       .grey, // Adjust the icon color as needed
+                                  // ),
                                 ),
                                 style: const TextStyle(
                                   fontSize: 16,
@@ -312,13 +324,13 @@ void main() {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Address',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 156, 153, 147),
-                                fontSize: 16,
-                              ),
-                            ),
+                            // const Text(
+                            //   'Address',
+                            //   style: TextStyle(
+                            //     color: Color.fromARGB(255, 156, 153, 147),
+                            //     fontSize: 16,
+                            //   ),
+                            // ),
                             SizedBox(height: 3),
                             Container(
                               width: screenWidth * 0.7,
@@ -326,10 +338,12 @@ void main() {
                               child: TextField(
                                 controller: address,
                                 decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Color.fromARGB(255, 255, 255, 255),
+                                  // filled: true,
+                                  // fillColor: Color.fromARGB(255, 255, 255, 255),
+                                  labelText: 'Address',
                                   labelStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
+                                    color: Colors.black38,
+                                    // color: Color.fromARGB(255, 156, 153, 147),
                                   ),
                                    // Add hint text here
                                   hintStyle: TextStyle(
@@ -346,25 +360,28 @@ void main() {
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: const BorderSide(
-                                      color: Color.fromARGB(255, 230, 230, 230),
+                                      color: Colors.black38,
+                                      // color: Color.fromARGB(255, 230, 230, 230),
                                       width: 2.0,
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: BorderSide(
-                                      color:  Color.fromARGB(255, 255, 255, 255),
+                                      color: showTextFieldBorderAdd
+                                          ? Color.fromARGB(255, 255, 132, 132)
+                                          : Color.fromARGB(255, 240, 240, 240),
                                       width: 2.0,
                                     ),
                                   ),
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 20),
-                                  suffixIcon: Icon(
-                                    // Add the icon here
-                                    Icons.edit, // Change the icon as needed
-                                    color: Colors
-                                        .grey, // Adjust the icon color as needed
-                                  ),
+                                  // suffixIcon: Icon(
+                                  //   // Add the icon here
+                                  //   Icons.edit, // Change the icon as needed
+                                  //   color: Colors
+                                  //       .grey, // Adjust the icon color as needed
+                                  // ),
                                 ),
                                 style: const TextStyle(
                                   fontSize: 16,
@@ -387,13 +404,13 @@ void main() {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Contact No.',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 156, 153, 147),
-                                fontSize: 16,
-                              ),
-                            ),
+                            // const Text(
+                            //   'Contact No.',
+                            //   style: TextStyle(
+                            //     color: Color.fromARGB(255, 156, 153, 147),
+                            //     fontSize: 16,
+                            //   ),
+                            // ),
                             SizedBox(height: 3),
                             Container(
                               width: screenWidth * 0.7,
@@ -401,10 +418,12 @@ void main() {
                               child: TextField(
                                 controller: contact,
                                 decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Color.fromARGB(255, 255, 255, 255),
+                                  // filled: true,
+                                  // fillColor: Color.fromARGB(255, 255, 255, 255),
+                                  labelText: 'Contact No.',
                                   labelStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
+                                    color: Colors.black38,
+                                    // color: Color.fromARGB(255, 156, 153, 147),
                                   ),
                                  
                                   border: OutlineInputBorder(
@@ -424,28 +443,38 @@ void main() {
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 255, 255, 255),
+                                      color: showTextFieldBorderCN
+                                          ? Color.fromARGB(255, 255, 132, 132)
+                                          : Color.fromARGB(255, 240, 240, 240),
                                       width: 2.0,
                                     ),
                                   ),
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 20),
-                                  suffixIcon: Icon(
-                                    // Add the icon here
-                                    Icons.edit, // Change the icon as needed
-                                    color: Colors
-                                        .grey, // Adjust the icon color as needed
-                                  ),
+                                  // suffixIcon: Icon(
+                                  //   // Add the icon here
+                                  //   Icons.edit, // Change the icon as needed
+                                  //   color: Colors
+                                  //       .grey, // Adjust the icon color as needed
+                                  // ),
                                 ),
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Color.fromARGB(255, 135, 132, 127),
                                 ),
+                                keyboardType: TextInputType
+                                    .number, // Set the keyboard type to only allow numbers
+                                inputFormatters: <TextInputFormatter>[
+                                  LengthLimitingTextInputFormatter(
+                                      11), // Restrict the input length to 11 characters
+                                  FilteringTextInputFormatter
+                                      .digitsOnly // Restrict input to only digits
+                                ],
                                 onTap: () {
-                                  // setState(() {
-                                  //   showTextFieldBorderC =
-                                  //       false; // Update the border color state
-                                  // });
+                                  setState(() {
+                                    showTextFieldBorderCN =
+                                        false; // Update the border color state
+                                  });
                                 },
                               ),
                             ),
@@ -458,13 +487,13 @@ void main() {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Username',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 156, 153, 147),
-                                fontSize: 16,
-                              ),
-                            ),
+                            // const Text(
+                            //   'Username',
+                            //   style: TextStyle(
+                            //     color: Color.fromARGB(255, 156, 153, 147),
+                            //     fontSize: 16,
+                            //   ),
+                            // ),
                             SizedBox(height: 3),
                             Container(
                               width: screenWidth * 0.7,
@@ -472,10 +501,12 @@ void main() {
                               child: TextField(
                                 controller: username,
                                 decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Color.fromARGB(255, 255, 255, 255),
+                                  // filled: true,
+                                  // fillColor: Color.fromARGB(255, 255, 255, 255),
+                                  labelText: 'Username',
                                   labelStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
+                                    color: Colors.black38,
+                                    // color: Color.fromARGB(255, 156, 153, 147),
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
@@ -487,25 +518,28 @@ void main() {
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: const BorderSide(
-                                      color: Color.fromARGB(255, 230, 230, 230),
+                                      color: Colors.black38,
+                                      // color: Color.fromARGB(255, 230, 230, 230),
                                       width: 2.0,
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: BorderSide(
-                                      color:  Color.fromARGB(255, 255, 255, 255),
+                                      color: showTextFieldBorderU
+                                          ? Color.fromARGB(255, 255, 132, 132)
+                                          : Color.fromARGB(255, 240, 240, 240),
                                       width: 2.0,
                                     ),
                                   ),
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 20),
-                                  suffixIcon: Icon(
-                                    // Add the icon here
-                                    Icons.edit, // Change the icon as needed
-                                    color: Colors
-                                        .grey, // Adjust the icon color as needed
-                                  ),
+                                  // suffixIcon: Icon(
+                                  //   // Add the icon here
+                                  //   Icons.edit, // Change the icon as needed
+                                  //   color: Colors
+                                  //       .grey, // Adjust the icon color as needed
+                                  // ),
                                 ),
                                 style: const TextStyle(
                                   fontSize: 16,
@@ -528,13 +562,13 @@ void main() {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Bio',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 156, 153, 147),
-                                fontSize: 16,
-                              ),
-                            ),
+                            // const Text(
+                            //   'Bio',
+                            //   style: TextStyle(
+                            //     color: Color.fromARGB(255, 156, 153, 147),
+                            //     fontSize: 16,
+                            //   ),
+                            // ),
                             SizedBox(height: 3),
                             Container(
                               width: screenWidth * 0.7,
@@ -542,10 +576,12 @@ void main() {
                               child: TextField(
                                 controller: bio,
                                 decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Color.fromARGB(255, 255, 255, 255),
+                                  // filled: true,
+                                  // fillColor: Color.fromARGB(255, 255, 255, 255),
+                                  labelText: 'Bio',
                                   labelStyle: const TextStyle(
-                                    color: Color.fromARGB(255, 156, 153, 147),
+                                    color: Colors.black38,
+                                    // color: Color.fromARGB(255, 156, 153, 147),
                                   ),
                                
                                   border: OutlineInputBorder(
@@ -558,25 +594,28 @@ void main() {
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: const BorderSide(
-                                      color: Color.fromARGB(255, 230, 230, 230),
+                                      color: Colors.black38,
+                                      // color: Color.fromARGB(255, 230, 230, 230),
                                       width: 2.0,
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 255, 255, 255),
+                                      color: showTextFieldBorderB
+                                          ? Color.fromARGB(255, 255, 132, 132)
+                                          : Color.fromARGB(255, 240, 240, 240),
                                       width: 2.0,
                                     ),
                                   ),
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 20),
-                                  suffixIcon: Icon(
-                                    // Add the icon here
-                                    Icons.edit, // Change the icon as needed
-                                    color: Colors
-                                        .grey, // Adjust the icon color as needed
-                                  ),
+                                  // suffixIcon: Icon(
+                                  //   // Add the icon here
+                                  //   Icons.edit, // Change the icon as needed
+                                  //   color: Colors
+                                  //       .grey, // Adjust the icon color as needed
+                                  // ),
                                 ),
                                 style: const TextStyle(
                                   fontSize: 16,
@@ -599,17 +638,16 @@ void main() {
               ),
               if (isButtonVisiblenext)
                 Positioned(
-                  bottom: 60,
+                  bottom: 120,
                   height: 60,
-                  width: screenWidth * 0.7,
+                  width: screenWidth * 0.7 ,
                   child: Stack(
                     children: [
                       Align(
                         alignment: Alignment
                             .center, // Center the button within the Stack
                         child: Padding(
-                          padding: const EdgeInsets.all(
-                              3.0), // Add padding to the button
+                          padding: const EdgeInsets.all(3.0), // Add padding to the button
                           child: ElevatedButton(
                             onPressed: () {
                               main();
@@ -625,11 +663,11 @@ void main() {
                                 Color.fromARGB(255, 110, 77,
                                     34), // Set the button's background color
                               ),
-                              elevation: MaterialStateProperty.all<double>(
-                                  0), // Remove button elevation
+                              elevation: MaterialStateProperty.all<double>(10), // Remove button elevation
                             ),
                             child: SizedBox(
-                              height: 50,
+                              height: 40,
+                              width: screenWidth * .4,
                               child: Center(
                                 child: Text(
                                   'Submit',

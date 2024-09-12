@@ -56,7 +56,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
         SizedBox(
           height: 5,
         ),
-        Text('emailus@fufectpawradise.com',
+        Text('emailus@furfectpawradise.com',
             style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
         SizedBox(height: 30),
         Text(

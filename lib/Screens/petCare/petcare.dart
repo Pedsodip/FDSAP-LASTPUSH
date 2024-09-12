@@ -34,12 +34,30 @@ class _PetCarePageState extends State<PetCarePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.only(top: 25.0),
-          child: const Text('Pet Care'),
+        title: const Center(
+          child: Padding(
+            padding: EdgeInsets.only(top: 20.0),
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(0),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 90),
+                    child: Text(
+                      'PET CARE',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
         leading: Padding(
-          padding: const EdgeInsets.only(top: 20.0, left: 20),
+          padding: const EdgeInsets.only(top: 10.0),
           child: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -48,35 +66,73 @@ class _PetCarePageState extends State<PetCarePage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Tab bar at the top
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildTabItem('DOG', 0, screenWidth),
-                    _buildTabItem('CAT', 1, screenWidth),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // Conditional content based on selected tab
-              _selectedTabIndex == 0 ? _buildDogContent() : _buildCatContent(),
-
-              const SizedBox(height: 20),
-
-              // Other content widgets...
-            ],
+      body: Stack(
+        children: [
+          // Background image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/design1/pinkbg.png',
+              fit: BoxFit.cover, // Ensures the image covers the entire background
+            ),
           ),
-        ),
+          // Main content
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Tab bar at the top
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        _buildTabItem('DOG', 0, screenWidth),
+                        _buildTabItem('CAT', 1, screenWidth),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  // Conditional content based on selected tab
+                  _selectedTabIndex == 0 ? _buildDogContent() : _buildCatContent(),
+                  const SizedBox(height: 20),
+                  // Other content widgets...
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
+      // body: SingleChildScrollView(
+      //   child: Padding(
+      //     padding: const EdgeInsets.all(20.0),
+      //     child: Column(
+      //       crossAxisAlignment: CrossAxisAlignment.center,
+      //       children: [
+      //         // Tab bar at the top
+      //         SingleChildScrollView(
+      //           scrollDirection: Axis.horizontal,
+      //           child: Row(
+      //             children: [
+      //               _buildTabItem('DOG', 0, screenWidth),
+      //               _buildTabItem('CAT', 1, screenWidth),
+      //             ],
+      //           ),
+      //         ),
+      //
+      //         const SizedBox(height: 20),
+      //
+      //         // Conditional content based on selected tab
+      //         _selectedTabIndex == 0 ? _buildDogContent() : _buildCatContent(),
+      //
+      //         const SizedBox(height: 20),
+      //
+      //         // Other content widgets...
+      //       ],
+      //     ),
+      //   ),
+      // ),
+
     );
   }
 
@@ -93,10 +149,13 @@ class _PetCarePageState extends State<PetCarePage> {
         width: screenWidth * 0.45,
         decoration: BoxDecoration(
           border: Border(
-            right: const BorderSide(
-              color: Color.fromARGB(255, 255, 255, 255),
-              width: 1.2,
-            ),
+            // left: BorderSide(
+            //   color: Colors.black38,
+            // ),
+            // right: BorderSide(
+            //   color: Colors.black38,
+            // //   width: 1.2,
+            // ),
             bottom: BorderSide(
               color: isSelected ? Colors.black : Colors.transparent,
               width: 2.0,
@@ -114,8 +173,8 @@ class _PetCarePageState extends State<PetCarePage> {
             title,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 12,
-              color: const Color.fromARGB(255, 146, 146, 146),
+              fontSize: 16,
+              color: const Color.fromARGB(255, 0, 0, 0),
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
           ),

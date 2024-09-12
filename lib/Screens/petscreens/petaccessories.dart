@@ -1,15 +1,11 @@
-// ignore_for_file: library_private_types_in_public_api, unused_local_variable, prefer_const_literals_to_create_immutables, prefer_const_constructors, unused_import, sized_box_for_whitespace
+
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:pawprojui/Screens/petscreens/petdetailspage.dart';
-import 'package:pawprojui/Screens/petscreens/petfoods.dart';
-import '../login/login.dart';
-import '../dashboard/mydashboard.dart';
+import '../../domain.dart';
 import '../map/google_map.dart';
-import '../map/petclinicsmaps.dart';
-import '../user/profile.dart';
-import 'contactus.dart';
+import 'package:http/http.dart' as http;
 
 class PetAccessoriesPage extends StatefulWidget {
   final int userID;
@@ -88,11 +84,36 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
   ];
 
   final ScrollController _scrollController = ScrollController();
+
+  List<Map<String, dynamic>> accessories= [];
+  Future<void> fetchAllAccessory() async {
+    try {
+      final response =
+      await http.get(Uri.parse('http://$domain/api/all/accessory'));
+
+      if (response.statusCode == 200) {
+        // Decode the entire response body
+        var jsonResponse = jsonDecode(response.body);
+        List<dynamic> allAcess = jsonResponse['Data'];
+        setState(() {
+          accessories = List<Map<String, dynamic>>.from(allAcess);
+        });
+      } else {
+        // Handle error response
+        print('Failed to fetch products: ${response.statusCode}');
+      }
+    } catch (error) {
+      // Handle network errors
+      print('Error fetching products: $error');
+    }
+  }
+
   bool _showToTopButton = false;
 
   @override
   void initState() {
     super.initState();
+    fetchAllAccessory();
     _scrollController.addListener(_scrollListener);
   }
 
@@ -210,7 +231,18 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
-        child: Stack(
+        child: accessories.isEmpty
+            ? Center(
+          child: Text(
+            'No items available', // Message when there is no data
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
+            ),
+          ),
+        )
+            : Stack(
           children: [
             GridView.builder(
               controller: _scrollController,
@@ -219,14 +251,16 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
                 crossAxisSpacing: 7.0,
                 mainAxisSpacing: 7.0,
               ),
-              // Number of Cards
-              itemCount: 20,
+              // itemCount: 20, /
+              itemCount: accessories.length,
               itemBuilder: (BuildContext context, int index) {
+                final accItem = accessories[index];
+                // final cost = foodItem['cost'];
                 // Card color
                 Color cardColor;
                 if (index == 0) {
-                  cardColor =
-                      Color.fromARGB(255, 244, 243, 243); // First index (white)
+                  cardColor = Color.fromARGB(
+                      255, 244, 243, 243); // First index (white)
                 } else if ((index - 1) % 4 < 2) {
                   cardColor = Color.fromARGB(255, 207, 184,
                       153); // Brown color at index number 2, 3, 6, 7, 10, ...
@@ -254,14 +288,16 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
                               ),
                               borderRadius: BorderRadius.circular(15),
                               image: DecorationImage(
-                                image: AssetImage(
-                                  accImages[index % accImages.length],
-                                ),
-                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                    accItem['image'].toString()),
+                                fit: BoxFit.fitHeight,
                               ),
+                              // AssetImage(
+                              //   feedsImages[index % feedsImages.length],
+                              // ),
                             ),
                             child:
-                                null, // You can add additional content here if needed
+                            null, // You can add additional content here if needed
                           ),
                         ),
                         Expanded(
@@ -274,10 +310,12 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
                               right: 5,
                             ),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  accNames[index % accNames.length],
+                                  // feedsNames[index % feedsNames.length],
+                                  accItem['name'].toString(),
                                   style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
@@ -288,10 +326,13 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
                                   height: 5,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      '₱ ${accPrice[index % accPrice.length].toStringAsFixed(2)}',
+                                      '₱ ' +
+                                          accItem['price']
+                                              .toStringAsFixed(2),
                                       style: TextStyle(
                                         fontSize: 12.0,
                                         fontWeight: FontWeight.bold,
@@ -315,9 +356,9 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
               right: 20,
               child: _showToTopButton
                   ? FloatingActionButton(
-                      onPressed: _scrollToTop,
-                      child: Icon(Icons.arrow_upward),
-                    )
+                onPressed: _scrollToTop,
+                child: Icon(Icons.arrow_upward),
+              )
                   : SizedBox(),
             ),
           ],
@@ -330,6 +371,7 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        final accitems=accessories[index];
         return AlertDialog(
           contentPadding: EdgeInsets.zero,
           content: SizedBox(
@@ -347,8 +389,8 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
                       ),
                       borderRadius: BorderRadius.circular(20),
                       image: DecorationImage(
-                        image: AssetImage(
-                          accImages[index % accImages.length],
+                        image: NetworkImage(
+                          '${accitems['image'].toString()}',
                         ),
                         fit: BoxFit.cover,
                       ),
@@ -368,7 +410,7 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          accNames[index % accNames.length],
+                    '${accitems['name'].toString()}',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -394,7 +436,7 @@ class _PetAccessoriesPageState extends State<PetAccessoriesPage> {
                               .infinity, // Set a fixed height for the container
                           child: SingleChildScrollView(
                             child: Text(
-                              accDescriptions[index % accDescriptions.length],
+                              '${accitems['description'].toString()}',
                               textAlign: TextAlign.justify,
                               style: const TextStyle(
                                 fontSize: 12.0,

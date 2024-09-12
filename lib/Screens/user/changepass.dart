@@ -60,7 +60,7 @@ class ChangepassState extends State<Changepass> {
     }
 
     // Make PUT request to API
-    var url = Uri.parse('http://$domain:8070/api/users/forgetpassword');
+    var url = Uri.parse('http://$domain/user/reset/password');
     var response = await http.put(
       url,
       headers: {

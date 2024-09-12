@@ -1,14 +1,18 @@
 // ignore_for_file: library_private_types_in_public_api, unused_local_variable, prefer_const_literals_to_create_immutables, prefer_const_constructors, use_key_in_widget_constructors, must_be_immutable, unused_import
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pawprojui/Screens/petscreens/petaccessories.dart';
+import '../../domain.dart';
 import '../login/login.dart';
 import '../dashboard/mydashboard.dart';
 import '../map/google_map.dart';
 import '../map/petclinicsmaps.dart';
 import '../user/profile.dart';
 import 'contactus.dart';
+import 'package:http/http.dart' as http;
 
 class PetsFeedsPage extends StatefulWidget {
   final int userID;
@@ -73,10 +77,33 @@ class _PetsFeedsPageState extends State<PetsFeedsPage> {
 
   final ScrollController _scrollController = ScrollController();
   bool _showToTopButton = false;
+  List<Map<String, dynamic>> foods = [];
+  Future<void> fetchAllFood() async {
+    try {
+      final response =
+      await http.get(Uri.parse('http://$domain/api/all/food'));
+
+      if (response.statusCode == 200) {
+        // Decode the entire response body
+        var jsonResponse = jsonDecode(response.body);
+        List<dynamic> allFoods = jsonResponse['Data'];
+        setState(() {
+          foods = List<Map<String, dynamic>>.from(allFoods);
+        });
+      } else {
+        // Handle error response
+        print('Failed to fetch products: ${response.statusCode}');
+      }
+    } catch (error) {
+      // Handle network errors
+      print('Error fetching products: $error');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    fetchAllFood();
     _scrollController.addListener(_scrollListener);
   }
 
@@ -175,7 +202,18 @@ class _PetsFeedsPageState extends State<PetsFeedsPage> {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
-        child: Stack(
+        child: foods.isEmpty
+            ? Center(
+          child: Text(
+            'No items available', // Message when there is no data
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
+            ),
+          ),
+        )
+            : Stack(
           children: [
             GridView.builder(
               controller: _scrollController,
@@ -184,13 +222,16 @@ class _PetsFeedsPageState extends State<PetsFeedsPage> {
                 crossAxisSpacing: 7.0,
                 mainAxisSpacing: 7.0,
               ),
-              itemCount: 20, // Number of Cards
+              // itemCount: 20, /
+              itemCount: foods.length,
               itemBuilder: (BuildContext context, int index) {
+                final foodItem = foods[index];
+                // final cost = foodItem['cost'];
                 // Card color
                 Color cardColor;
                 if (index == 0) {
-                  cardColor =
-                      Color.fromARGB(255, 244, 243, 243); // First index (white)
+                  cardColor = Color.fromARGB(
+                      255, 244, 243, 243); // First index (white)
                 } else if ((index - 1) % 4 < 2) {
                   cardColor = Color.fromARGB(255, 207, 184,
                       153); // Brown color at index number 2, 3, 6, 7, 10, ...
@@ -218,14 +259,16 @@ class _PetsFeedsPageState extends State<PetsFeedsPage> {
                               ),
                               borderRadius: BorderRadius.circular(15),
                               image: DecorationImage(
-                                image: AssetImage(
-                                  feedsImages[index % feedsImages.length],
-                                ),
+                                image: NetworkImage(
+                                    foodItem['image'].toString()),
                                 fit: BoxFit.cover,
                               ),
+                              // AssetImage(
+                              //   feedsImages[index % feedsImages.length],
+                              // ),
                             ),
                             child:
-                                null, // You can add additional content here if needed
+                            null, // You can add additional content here if needed
                           ),
                         ),
                         Expanded(
@@ -238,10 +281,12 @@ class _PetsFeedsPageState extends State<PetsFeedsPage> {
                               right: 5,
                             ),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  feedsNames[index % feedsNames.length],
+                                  // feedsNames[index % feedsNames.length],
+                                  foodItem['name'].toString(),
                                   style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
@@ -252,11 +297,12 @@ class _PetsFeedsPageState extends State<PetsFeedsPage> {
                                   height: 5,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
                                   children: [
                                     Text(
                                       '₱ ' +
-                                          feedsPrice[index % feedsPrice.length]
+                                          foodItem['cost']
                                               .toStringAsFixed(2),
                                       style: TextStyle(
                                         fontSize: 12.0,
@@ -281,9 +327,9 @@ class _PetsFeedsPageState extends State<PetsFeedsPage> {
               right: 20,
               child: _showToTopButton
                   ? FloatingActionButton(
-                      onPressed: _scrollToTop,
-                      child: Icon(Icons.arrow_upward),
-                    )
+                onPressed: _scrollToTop,
+                child: Icon(Icons.arrow_upward),
+              )
                   : SizedBox(),
             ),
           ],
@@ -296,6 +342,7 @@ class _PetsFeedsPageState extends State<PetsFeedsPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        final foodItems = foods[index];
         return AlertDialog(
           contentPadding: EdgeInsets.zero,
           content: SizedBox(
@@ -313,8 +360,8 @@ class _PetsFeedsPageState extends State<PetsFeedsPage> {
                       ),
                       borderRadius: BorderRadius.circular(20),
                       image: DecorationImage(
-                        image: AssetImage(
-                          feedsImages[index % feedsImages.length],
+                        image: NetworkImage(
+                          '${foodItems['image'].toString()}',
                         ),
                         fit: BoxFit.cover,
                       ),
@@ -334,7 +381,7 @@ class _PetsFeedsPageState extends State<PetsFeedsPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          feedsNames[index % feedsNames.length],
+                          '${foodItems['name'].toString()}',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -360,8 +407,7 @@ class _PetsFeedsPageState extends State<PetsFeedsPage> {
                               .infinity, // Set a fixed height for the container
                           child: SingleChildScrollView(
                             child: Text(
-                              feedsDescriptions[
-                                  index % feedsDescriptions.length],
+                              '${foodItems['description'].toString()}',
                               textAlign: TextAlign.justify,
                               style: const TextStyle(
                                 fontSize: 12.0,

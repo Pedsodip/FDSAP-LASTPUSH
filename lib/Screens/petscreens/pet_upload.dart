@@ -90,98 +90,98 @@ class PetUploadState extends State<PetUploadPage> {
 
 
 
-  Future<void> _listingTable(String nameOfPet, String selectedtype, String selectedbreed, String price, String weight, String bday,String gender) async {
-    String dateUpload = DateTime.now().toString();
-    var url = Uri.parse('http://$domain:8070/addtolist');
-    var response = await http.post(
-      url,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: jsonEncode({
-        "user_id": widget.userID,
-        "pet_id": 777,
-        "date_uploaded": dateUpload,
-        "name": nameOfPet,
-        "type": selectedtype,
-        "breed": selectedbreed,
-        "gender": gender,
-        "date_of_birth": bday,
-        "weight": weight,
-        "price": price,
-        "image": "test"
-      }),
-    );
+  // Future<void> _listingTable(String nameOfPet, String selectedtype, String selectedbreed, String price, String weight, String bday,String gender) async {
+  //   String dateUpload = DateTime.now().toString();
+  //   var url = Uri.parse('http://$domain:8070/addtolist');
+  //   var response = await http.post(
+  //     url,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: jsonEncode({
+  //       "user_id": widget.userID,
+  //       "pet_id": 777,
+  //       "date_uploaded": dateUpload,
+  //       "name": nameOfPet,
+  //       "type": selectedtype,
+  //       "breed": selectedbreed,
+  //       "gender": gender,
+  //       "date_of_birth": bday,
+  //       "weight": weight,
+  //       "price": price,
+  //       "image": "test"
+  //     }),
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //     var jsonResponse = jsonDecode(response.body);
+  //     setState(() {
+  //       String message = jsonResponse['message'];
+  //       print(message);
+  //     });
+  //   } else if (response.statusCode == 409) {
+  //     // Email or username already exists
+  //     setState(() {
+  //
+  //     });
+  //   } else {
+  //     setState(() {
+  //       debugPrint("ERROR" );
+  //     });
+  //   }
+  // }
 
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-      setState(() {
-        String message = jsonResponse['message'];
-        print(message);
-      });
-    } else if (response.statusCode == 409) {
-      // Email or username already exists
-      setState(() {
-
-      });
-    } else {
-      setState(() {
-        debugPrint("ERROR" );
-      });
-    }
-  }
-
-  void _checkinput() {
-    setState(() {
-      bool anyEmpty = false;
-
-      if (name.text.isEmpty) {
-        anyEmpty = true;
-        showTextFieldBorderN = true;
-      } else {
-        showTextFieldBorderN = false;
-      }
-
-      if (price.text.isEmpty) {
-        anyEmpty = true;
-        showTextFieldBorderP = true;
-      } else {
-        showTextFieldBorderP = false;
-      }
-
-      if (weight.text.isEmpty) {
-        anyEmpty = true;
-        showTextFieldBorderW = true;
-      } else {
-        showTextFieldBorderW = false;
-      }
-
-      if (dateofbirth.text.isEmpty) {
-        anyEmpty = true;
-        showTextFieldBorderDOB = true;
-      } else {
-        showTextFieldBorderDOB = false;
-      }
-
-      if (anyEmpty) {
-        message = 'Please fill out all empty fields.';
-        showWidget = true;
-        return;
-      }
-
-      if (selectedGender == '') {
-        selectedGender = 'N/A';
-      }
-
-      showWidget = false;
-      showSecondaryFields = true;
-      showPrimaryFields = false;
-      isButtonVisiblenext = false;
-      isButtonVisiblesignup = true;
-    });
-  }
-
-  Uint8List? _byteaData;
+  // void _checkinput() {
+  //   setState(() {
+  //     bool anyEmpty = false;
+  //
+  //     if (name.text.isEmpty) {
+  //       anyEmpty = true;
+  //       showTextFieldBorderN = true;
+  //     } else {
+  //       showTextFieldBorderN = false;
+  //     }
+  //
+  //     if (price.text.isEmpty) {
+  //       anyEmpty = true;
+  //       showTextFieldBorderP = true;
+  //     } else {
+  //       showTextFieldBorderP = false;
+  //     }
+  //
+  //     if (weight.text.isEmpty) {
+  //       anyEmpty = true;
+  //       showTextFieldBorderW = true;
+  //     } else {
+  //       showTextFieldBorderW = false;
+  //     }
+  //
+  //     if (dateofbirth.text.isEmpty) {
+  //       anyEmpty = true;
+  //       showTextFieldBorderDOB = true;
+  //     } else {
+  //       showTextFieldBorderDOB = false;
+  //     }
+  //
+  //     if (anyEmpty) {
+  //       message = 'Please fill out all empty fields.';
+  //       showWidget = true;
+  //       return;
+  //     }
+  //
+  //     if (selectedGender == '') {
+  //       selectedGender = 'N/A';
+  //     }
+  //
+  //     showWidget = false;
+  //     showSecondaryFields = true;
+  //     showPrimaryFields = false;
+  //     isButtonVisiblenext = false;
+  //     isButtonVisiblesignup = true;
+  //   });
+  // }
+  //
+  // Uint8List? _byteaData;
 
   // Future<void> _selectImageAndUpload(String seller, String location) async {
   // final picker = ImagePicker();
@@ -369,16 +369,17 @@ class PetUploadState extends State<PetUploadPage> {
 
       return MaterialApp(
         home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: const Color.fromARGB(255, 207, 184, 153),
-          ),
+          resizeToAvoidBottomInset: false,
+          // appBar: AppBar(
+          //   backgroundColor: const Color.fromARGB(255, 207, 184, 153),
+          // ),
           body: Container(
             color: Color.fromARGB(255, 207, 184, 153),
             child: Stack(
               alignment: Alignment.center,
               children: [
                 Image.asset(
-                  'assets/design1/brown.png',
+                  'assets/design1/brownbg.png',
                   width: double.infinity,
                   height: double.infinity,
                   fit: BoxFit.cover,
@@ -401,7 +402,7 @@ class PetUploadState extends State<PetUploadPage> {
                 ),
                 if (isButtonVisiblenext)
                   Positioned(
-                    top: 50,
+                    top: 80,
                     left: screenWidth * 0.1,
                     child: Container(
                       width: 25,
@@ -421,15 +422,14 @@ class PetUploadState extends State<PetUploadPage> {
                   ),
                 // Label and icon
                 Positioned(
-                  top: 30,
+                  top: 10,
                   child: Image.asset(
-                    'assets/design1/furpaw.png',
-                    width: 100,
-                    height: 100,
+                    'assets/design1/banner.png',
+                    height: 250,
                   ),
                 ),
                 const Positioned(
-                  top: 110,
+                  top: 150,
                   child: Text(
                     'Find an New Home for the Little One',
                     style: TextStyle(
@@ -443,7 +443,7 @@ class PetUploadState extends State<PetUploadPage> {
 
                 // TextFields
                 Positioned(
-                  top: 100,
+                  top: 150,
                   child: Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Column(
@@ -459,6 +459,7 @@ class PetUploadState extends State<PetUploadPage> {
                             decoration: InputDecoration(
                               labelText: 'Pet Name',
                               labelStyle: const TextStyle(
+                                color: Colors.black38,
                                 fontSize: 16,
                               ),
                               border: OutlineInputBorder(
@@ -503,6 +504,7 @@ class PetUploadState extends State<PetUploadPage> {
                             decoration: InputDecoration(
                               labelText: 'Type',
                               labelStyle: const TextStyle(
+                                color: Colors.black38,
                                 fontSize: 16,
                               ),
                               border: OutlineInputBorder(
@@ -563,6 +565,7 @@ class PetUploadState extends State<PetUploadPage> {
                             decoration: InputDecoration(
                               labelText: 'Breed',
                               labelStyle: const TextStyle(
+                                color: Colors.black38,
                                 fontSize: 16,
                               ),
                               border: OutlineInputBorder(
@@ -630,6 +633,7 @@ class PetUploadState extends State<PetUploadPage> {
                             decoration: InputDecoration(
                               labelText: 'Price (₱)',
                               labelStyle: const TextStyle(
+                                color: Colors.black38,
                                 fontSize: 16,
                               ),
                               border: OutlineInputBorder(
@@ -683,6 +687,7 @@ class PetUploadState extends State<PetUploadPage> {
                             decoration: InputDecoration(
                               labelText: 'Weight (KG)',
                               labelStyle: const TextStyle(
+                                color: Colors.black38,
                                 fontSize: 16,
                               ),
                               border: OutlineInputBorder(
@@ -732,6 +737,7 @@ class PetUploadState extends State<PetUploadPage> {
                                   decoration: InputDecoration(
                                     labelText: 'Date of Birth',
                                     labelStyle: const TextStyle(
+                                      color: Colors.black38,
                                       fontSize: 16,
                                     ),
                                     border: OutlineInputBorder(
@@ -807,6 +813,7 @@ class PetUploadState extends State<PetUploadPage> {
                             decoration: InputDecoration(
                               labelText: 'Pet Gender',
                               labelStyle: const TextStyle(
+                                color: Colors.black38,
                                 fontSize: 16,
                               ),
                               border: OutlineInputBorder(
@@ -867,6 +874,7 @@ class PetUploadState extends State<PetUploadPage> {
                             decoration: InputDecoration(
                               labelText: 'Description',
                               labelStyle: const TextStyle(
+                                color: Colors.black38,
                                 fontSize: 16,
                               ),
                               border: OutlineInputBorder(
@@ -912,6 +920,7 @@ class PetUploadState extends State<PetUploadPage> {
                             decoration: InputDecoration(
                               labelText: 'Location',
                               labelStyle: const TextStyle(
+                                color: Colors.black38,
                                 fontSize: 16,
                               ),
                               border: OutlineInputBorder(
@@ -1028,8 +1037,8 @@ class PetUploadState extends State<PetUploadPage> {
                   ),
                 ),
                 Positioned(
-                  bottom: 20,
-                  height: 60,
+                  bottom: 70,
+                  height: 50,
                   width: screenWidth * 0.7,
                   child: Stack(
                     children: [
@@ -1037,8 +1046,7 @@ class PetUploadState extends State<PetUploadPage> {
                         alignment: Alignment
                             .center, // Center the button within the Stack
                         child: Padding(
-                          padding: const EdgeInsets.all(
-                              3.0), // Add padding to the button
+                          padding: const EdgeInsets.all(3.0), // Add padding to the button
                           child: ElevatedButton(
                             onPressed: () {
                               // _checkinput();
@@ -1052,13 +1060,12 @@ class PetUploadState extends State<PetUploadPage> {
                                 ),
                               ),
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                Color.fromARGB(255, 110, 77,
-                                    34), // Set the button's background color
+                                Color.fromARGB(255, 110, 77, 34), // Set the button's background color
                               ),
-                              elevation: MaterialStateProperty.all<double>(
-                                  0), // Remove button elevation
+                              elevation: MaterialStateProperty.all<double>(10), // Remove button elevation
                             ),
                             child: SizedBox(
+
                               height: 35,
                               child: Center(
                                 child: Text(

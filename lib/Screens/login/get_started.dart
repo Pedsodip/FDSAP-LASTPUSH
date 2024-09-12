@@ -34,6 +34,7 @@ class MyHomePage extends StatelessWidget {
     );
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(

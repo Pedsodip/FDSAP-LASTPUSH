@@ -40,103 +40,6 @@ class LoginState extends State<_Login> {
 
   bool enablepassword = true;
 
-  // Future<void> login(String email, String password) async {
-  //   String email = usernameCon.text;
-  //   String password = passwordCon.text;
-  //
-  //   // Validate name and password input
-  //   if (email.isEmpty || password.isEmpty) {
-  //     setState(() {
-  //       showWidget = true;
-  //       showTextFieldBorder = true;
-  //       message = 'Please enter your username and password.';
-  //
-  //       Timer(const Duration(seconds: 5), () {
-  //         setState(() {
-  //           showWidget = false;
-  //           showTextFieldBorder = false;
-  //         });
-  //       });
-  //     });
-  //     return;
-  //   }
-  //
-  //   void fetchItems() async {
-  //     String email = usernameCon.text;
-  //     String password = passwordCon.text;
-  //     final response = await http.get(Uri.parse(
-  //         'http://$domain:8070/api/users/all?email_or_username=$email&password=$password'));
-  //     if (response.statusCode == 200) {
-  //       setState(() {
-  //         List<dynamic> dataList = jsonDecode(response.body) as List;
-  //         if (dataList.isNotEmpty) {
-  //           // Extract the first item from the list (assuming there's only one)
-  //           Map<String, dynamic> userData = dataList.first;
-  //
-  //           // Access the "firstname" value
-  //           int userID = userData['id'] ?? '';
-  //           debugPrint('userid: $userID');
-  //           Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //               builder: (context) => MyDashboard(
-  //                 userID: userID,
-  //               ),
-  //             ),
-  //           );
-  //         } else {
-  //           // Handle case when the list is empty
-  //           debugPrint('No data found');
-  //         }
-  //       });
-  //     } else {
-  //       throw Exception('Failed to load items');
-  //     }
-  //   }
-  //
-  //   // Make GET request to API
-  //   final url = Uri.parse(
-  //       'http://$domain:8070/api/users?email_or_username=$email&password=$password');
-  //
-  //   final response = await http.get(
-  //     url,
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "Access-Control-Allow-Origin":
-  //           "*", // Ensure this matches CORS settings on server
-  //     },
-  //   );
-  //
-  //   if (response.statusCode == 200) {
-  //     var jsonResponse = jsonDecode(response.body);
-  //     if (jsonResponse.containsKey('error')) {
-  //       setState(() {
-  //         debugPrint(jsonResponse['error']);
-  //       });
-  //     } else {
-  //       setState(() {
-  //         fetchItems();
-  //       });
-  //     }
-  //   } else {
-  //     setState(() {
-  //       debugPrint("Login failed");
-  //       showWidget = true;
-  //       showTextFieldBorder = true;
-  //       message = 'Incorrect Username or Password';
-  //       usernameCon.clear();
-  //       passwordCon.clear();
-  //
-  //       Timer(const Duration(seconds: 5), () {
-  //         setState(() {
-  //           showWidget = false;
-  //           showTextFieldBorder = false;
-  //         });
-  //       });
-  //     });
-  //   }
-  // }
-
 
   List<dynamic> getDatas() {
     return dataofuser;
@@ -151,7 +54,7 @@ class LoginState extends State<_Login> {
       "password": password,
     };
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:8080/api/login'),
+      Uri.parse('http://$domain/api/login'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(requestBody),
     );
@@ -169,6 +72,8 @@ class LoginState extends State<_Login> {
         ),
       );
     } else {
+      var errorMessage = jsonDecode(response.body)['Message'];
+      show(context, errorMessage);
       throw Exception('Failed to load items');
     }
   }
@@ -269,7 +174,7 @@ class LoginState extends State<_Login> {
               // ),
               // username password
               Positioned(
-                bottom: screenHeight * 0.35,
+                bottom: screenHeight * 0.3,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -407,12 +312,11 @@ class LoginState extends State<_Login> {
               ),
               // login button
               Positioned(
-                bottom: 200,
+                bottom: 150,
                 height: 45,
                 width: screenWidth * 0.7,
                 child: Padding(
-                  padding: const EdgeInsets.all(
-                      3.0), // Add padding to the left and right
+                  padding: const EdgeInsets.all(3.0), // Add padding to the left and right
                   child: ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -426,10 +330,9 @@ class LoginState extends State<_Login> {
                         ),
                       ),
                       backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color.fromARGB(255, 110, 77,
-                            34), // Set the button's background color
+                        const Color.fromARGB(255, 110, 77, 34), // Set the button's background color
                       ),
-                      elevation: MaterialStateProperty.all<double>(0), // Remove button elevation
+                      elevation: MaterialStateProperty.all<double>(10), // Remove button elevation
                     ),
                     child: const SizedBox(
                       width:
@@ -451,7 +354,7 @@ class LoginState extends State<_Login> {
               ),
               // remeber me
               Positioned(
-                bottom: screenHeight * 0.300,
+                bottom: screenHeight * 0.22,
                 left: screenWidth * 0.13,
                 child: Row(
                   children: [
@@ -515,7 +418,7 @@ class LoginState extends State<_Login> {
               ),
               // Dont have account
               Positioned(
-                bottom: 150,
+                bottom: 100,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -573,4 +476,60 @@ class MessageBox {
       },
     );
   }
+}
+
+void show(BuildContext context, String title) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        title: null,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets/design1/paw_result.png',
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                ),
+                SizedBox(height: 20, width: 30),
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: const Color.fromARGB(255, 98, 74, 26),
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                // Text (foreground) color
+                backgroundColor: Color.fromARGB(255, 110, 77, 34),
+                side: BorderSide(
+                    color: const Color.fromARGB(255, 90, 90, 90),
+                    width: 1), // Border color and width
+              ),
+              child: Text(
+                'Ok',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    },
+  );
 }
